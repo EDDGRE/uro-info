@@ -67,6 +67,12 @@
     font-family:var(--mono); font-weight:400; font-size:11px;
     color:#9FB0C4; letter-spacing:.3px;
   }
+  .topbar .owner{
+    font-family:var(--mono); font-weight:500; font-size:11px;
+    color:#9FB0C4; letter-spacing:.5px; white-space:nowrap;
+    border:1px solid #33475F; border-radius:20px; padding:3px 10px;
+  }
+  .topbar .owner b{color:#EDEFF2; font-weight:600;}
   .hamburger{
     display:none; background:none; border:none; color:#fff;
     font-size:20px; cursor:pointer; padding:4px 8px;
@@ -162,6 +168,7 @@
   .callout.amber{border-color:var(--amber); background:var(--amber-tint);}
   .callout.high{border-color:var(--high); background:var(--high-tint);}
   .callout.internal{border-color:var(--internal); background:var(--internal-tint);}
+  .callout.low{border-color:var(--low); background:var(--low-tint);}
   .callout b{display:block; font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
     letter-spacing:.6px; margin-bottom:4px; color:inherit;}
   .tag-internal{background:var(--internal-tint); color:var(--internal);}
@@ -283,6 +290,7 @@
     .riskgrid.cols-2{grid-template-columns:1fr;}
     .searchwrap{max-width:none;}
     .topbar .brand .sub{display:none;}
+    .topbar .owner{display:none;}
     .navlist li a{padding:10px 18px; font-size:14.5px;}
     .home-hero{padding:28px 22px;}
     .home-hero h1{font-size:23px;}
@@ -306,6 +314,7 @@
 <div class="topbar">
   <button class="hamburger" id="hamburgerBtn" aria-label="Meny">☰</button>
   <div class="brand">UroOppslag <span class="sub">// LIS-oppslagsverk i urologi</span></div>
+  <span class="owner">Ansvarlig: <b>EDDGRE</b></span>
   <div class="searchwrap">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8FA1B7" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
     <input type="text" id="searchInput" placeholder="Søk (f.eks. TURP, Gleason, PSA-residiv)…" autocomplete="off">
@@ -335,7 +344,7 @@ const CATEGORIES = [
 ];
 
 const TOPICS = [
-  {id:'urinretensjon-akutt', cat:'akutt', title:'Akutt urinretensjon', status:'ferdig', icd:'R33.9'},
+  {id:'urinretensjon-akutt', cat:'akutt', title:'Akutt urinretensjon', status:'ferdig', icd:'R33.9', komp:[{label:'SPK', count:10}]},
   {id:'priapisme', cat:'akutt', title:'Priapisme', status:'ferdig', icd:'N48.3'},
   {id:'penisfraktur', cat:'akutt', title:'Penisfraktur', status:'ferdig', icd:'S39.848 / N48.8'},
   {id:'fourniers-gangren', cat:'akutt', title:'Fourniers gangren', status:'ferdig', icd:'N49.3'},
@@ -344,16 +353,16 @@ const TOPICS = [
 
 
   {id:'bph', cat:'benigne', title:'Benign prostatahyperplasi (BPH)', status:'ferdig', icd:'N40'},
-  {id:'nyrestein', cat:'benigne', title:'Urolithiasis / nyrestein', status:'ferdig', icd:'N20'},
-  {id:'oab', cat:'benigne', title:'Overaktiv blære / LUTS', status:'ferdig', icd:'N39.4'},
+  {id:'nyrestein', cat:'benigne', title:'Urolithiasis / nyrestein', status:'ferdig', icd:'N20', komp:[{label:'ESWL', count:5}]},
+  {id:'oab', cat:'benigne', title:'Overaktiv blære / LUTS', status:'ferdig', icd:'N39.4', komp:[{label:'Urodyn tolket', count:20},{label:'Urodyn utført', count:5}]},
   {id:'fimose', cat:'benigne', title:'Fimose og balanitt', status:'ferdig', icd:'N47 / N48.1'},
   {id:'hydrocele', cat:'benigne', title:'Hydrocele og varikocele', status:'ferdig', icd:'N43.3 / I86.1'},
   {id:'epididymitt', cat:'benigne', title:'Epididymitt / akutt skrotum', status:'ferdig', icd:'N45 / N44'},
   {id:'ed', cat:'benigne', title:'Erektil dysfunksjon', status:'ferdig', icd:'N48.4'},
   {id:'nevrogen', cat:'benigne', title:'Nevrogen blære', status:'ferdig', icd:'N31'},
-  {id:'bekkensmerter', cat:'benigne', title:'Bekkensmerter / smertefullt blæresyndrom', status:'ferdig', icd:'R10.2'},
+  {id:'bekkensmerter', cat:'benigne', title:'Bekkensmerter / smertefullt blæresyndrom', status:'ferdig', icd:'R10.2', komp:[{label:'Bekkensentermøte', count:20}]},
   {id:'stressinkontinens', cat:'benigne', title:'Stressinkontinens', status:'ferdig', icd:'N39.3'},
-  {id:'urinrorsstriktur', cat:'benigne', title:'Urinrørsstriktur', status:'ferdig', icd:'N35.8'},
+  {id:'urinrorsstriktur', cat:'benigne', title:'Urinrørsstriktur', status:'ferdig', icd:'N35.8', komp:[{label:'Diureserenografi', count:1}]},
 
   {id:'prostatakreft', cat:'maligne', title:'Prostatakreft', status:'ferdig', icd:'C61'},
   {id:'blarekreft', cat:'maligne', title:'Blærekreft (urotelialt karsinom)', status:'ferdig', icd:'C67'},
@@ -362,24 +371,24 @@ const TOPICS = [
   {id:'peniskreft', cat:'maligne', title:'Peniskreft', status:'ferdig', icd:'C60'},
   {id:'ovreurotelial', cat:'maligne', title:'Øvre urotelial kreft', status:'ferdig', icd:'C65 / C66'},
 
-  {id:'ralp', cat:'kirurgi', title:'RALP — Robotassistert prostatektomi', status:'ferdig'},
-  {id:'turp', cat:'kirurgi', title:'TURP', status:'ferdig', ncsp:'KED22', icd:'N40'},
-  {id:'turbt', cat:'kirurgi', title:'TURBT', status:'ferdig', ncsp:'KCD02', icd:'C67'},
-  {id:'nefrektomi', cat:'kirurgi', title:'Nefrektomi (radikal/partiell)', status:'ferdig'},
-  {id:'rirs', cat:'kirurgi', title:'Ureterorenoskopi / RIRS', status:'ferdig', ncsp:'KBE12, KBV02', icd:'N20.1'},
-  {id:'pcnl', cat:'kirurgi', title:'PCNL', status:'ferdig'},
-  {id:'cystektomi', cat:'kirurgi', title:'Cystektomi og urinavledning', status:'ferdig'},
-  {id:'sirkumsisjon', cat:'kirurgi', title:'Sirkumsisjon', status:'ferdig', ncsp:'KGH10', icd:'N47'},
-  {id:'vasektomi', cat:'kirurgi', title:'Vasektomi', status:'ferdig'},
-  {id:'orkidopeksi', cat:'kirurgi', title:'Orkidopeksi', status:'ferdig', ncsp:'KFH10', icd:'Q53.1'},
-  {id:'testistorsjon-op', cat:'kirurgi', title:'Detorkvering og fiksasjon ved testistorsjon', status:'ferdig', ncsp:'KFH20, KFH10', icd:'N44'},
-  {id:'intern-uretrotomi', cat:'kirurgi', title:'Intern uretrotomi', status:'ferdig', ncsp:'KDV12, KCX20', icd:'N35.8'},
+  {id:'ralp', cat:'kirurgi', title:'RALP — Robotassistert prostatektomi', status:'ferdig', komp:[{label:'Prostatektomi', count:10}]},
+  {id:'turp', cat:'kirurgi', title:'TURP', status:'ferdig', ncsp:'KED22', icd:'N40', komp:[{label:'TUR-P', count:70}]},
+  {id:'turbt', cat:'kirurgi', title:'TURB', status:'ferdig', ncsp:'KCD02', icd:'C67', komp:[{label:'TUR-B', count:70}]},
+  {id:'nefrektomi', cat:'kirurgi', title:'Nefrektomi (radikal/partiell)', status:'ferdig', komp:[{label:'Åpne nyrer', count:5},{label:'Lap nyrer', count:5},{label:'Nefroureterektomi', count:3}]},
+  {id:'rirs', cat:'kirurgi', title:'Ureterorenoskopi / RIRS', status:'ferdig', ncsp:'KBE12, KBV02', icd:'N20.1', komp:[{label:'URS', count:50},{label:'Fleksibel URS', count:15},{label:'JJ-stent', count:30}]},
+  {id:'pcnl', cat:'kirurgi', title:'PCNL', status:'ferdig', komp:[{label:'PCN', count:5}]},
+  {id:'cystektomi', cat:'kirurgi', title:'Cystektomi og urinavledning', status:'ferdig', komp:[{label:'Cystektomi', count:5}]},
+  {id:'sirkumsisjon', cat:'kirurgi', title:'Sirkumsisjon', status:'ferdig', ncsp:'KGH10', icd:'N47', komp:[{label:'Fimose', count:15}]},
+  {id:'vasektomi', cat:'kirurgi', title:'Vasektomi', status:'ferdig', komp:[{label:'Vasektomi', count:5}]},
+  {id:'orkidopeksi', cat:'kirurgi', title:'Orkiopeksi', status:'ferdig', ncsp:'KFH10', icd:'Q53.1', komp:[{label:'Orkiopeksi', count:10}]},
+  {id:'testistorsjon-op', cat:'kirurgi', title:'Detorkvering og fiksasjon ved testistorsjon', status:'ferdig', ncsp:'KFH20, KFH10', icd:'N44', komp:[{label:'Scrotalekspl', count:10, note:'omtrentlig — portalen spesifiserer «scrotal eksplorasjon» generelt, ikke isolert testistorsjon'}]},
+  {id:'intern-uretrotomi', cat:'kirurgi', title:'Intern uretrotomi', status:'ferdig', ncsp:'KDV12, KCX20', icd:'N35.8', komp:[{label:'Intern uretrotomi', count:10}]},
   {id:'botox-blare', cat:'kirurgi', title:'Botulinumtoksin (Botox) i blære', status:'ferdig'},
   {id:'snm', cat:'kirurgi', title:'Sakral nervemodulasjon (SNM)', status:'ferdig'},
   {id:'optilume', cat:'kirurgi', title:'Optilume (medikamentavgivende ballongdilatasjon)', status:'ferdig', ncsp:'KDH62, KUD02', icd:'N35.8'},
-  {id:'cystolitotripsi', cat:'kirurgi', title:'Cystolitotripsi', status:'ferdig', ncsp:'KCE02', icd:'N21.0'},
-  {id:'hydrocelectomi', cat:'kirurgi', title:'Hydrocelectomi ad modum Winkelmann', status:'ferdig', ncsp:'KFD20', icd:'N43.3'},
-  {id:'orkiektomi', cat:'kirurgi', title:'Orkiektomi (unilateral)', status:'ferdig', ncsp:'KFC00', icd:'C62 / N51.1'},
+  {id:'cystolitotripsi', cat:'kirurgi', title:'Cystolitotripsi', status:'ferdig', ncsp:'KCE02', icd:'N21.0', komp:[{label:'Cystolithotripsi', count:5},{label:'Cystotomi, TVP', count:5}]},
+  {id:'hydrocelectomi', cat:'kirurgi', title:'Hydrocelectomi ad modum Winkelmann', status:'ferdig', ncsp:'KFD20', icd:'N43.3', komp:[{label:'Hydrocele', count:10},{label:'Spermatocele', count:5}]},
+  {id:'orkiektomi', cat:'kirurgi', title:'Orkiektomi (unilateral)', status:'ferdig', ncsp:'KFC00', icd:'C62 / N51.1', komp:[{label:'Orkiektomi', count:10}]},
   {id:'penisplastikk', cat:'kirurgi', title:'Penisplastikk (Peyronies sykdom)', status:'ferdig', ncsp:'KGH20', icd:'N48.6'},
   {id:'inkontinenskirurgi', cat:'kirurgi', title:'Midturetral slynge og kunstig urinsfinkter', status:'ferdig', icd:'N39.3'},
 
@@ -466,7 +475,7 @@ Prostatakreft er den vanligste kreftformen hos menn i Norge. De fleste tilfeller
 
 <h4>Briganti-score — risiko for lymfeknutespredning</h4>
 <p>Briganti-nomogrammet er et validert verktøy som estimerer sannsynligheten for lymfeknutemetastaser (pN1) basert på PSA, klinisk T-stadium, ISUP-gradgruppe fra biopsi, og andel positive biopsisylindre (nyere versjoner inkluderer også MR-funn). Brukes klinisk til å avgjøre om <strong>utvidet bekken-lymfeknutedisseksjon</strong> er indisert ved RALP — en estimert risiko <strong>≥5 %</strong> brukes ofte som terskel for å anbefale utvidet disseksjon (se RALP under Operasjonsteknikker).</p>
-<div class="callout amber"><b>Om kalkulator</b>Vi har bevisst valgt å <em>ikke</em> bygge inn en egen tallkalkulator for Briganti-score her. Nomogrammet bygger på validerte regresjonskoeffisienter fra det opprinnelige datasettet, og en forenklet/uverifisert etterligning kunne gi feilaktige risikoestimat — med reell klinisk konsekvens dersom det legges til grunn for beslutning om lymfeknutedisseksjon. Bruk et validert verktøy (f.eks. MSKCC sine prediksjonsverktøy for prostatakreft eller tilsvarende nomogram-tjenester) for faktisk risikoberegning.</div>
+<div class="callout amber"><b>Om kalkulator</b>Vi har bevisst valgt å <em>ikke</em> bygge inn en egen tallkalkulator for Briganti-score her. Nomogrammet bygger på validerte regresjonskoeffisienter fra det opprinnelige datasettet, og en forenklet/uverifisert etterligning kunne gi feilaktige risikoestimat — med reell klinisk konsekvens dersom det legges til grunn for beslutning om lymfeknutedisseksjon. Bruk et validert verktøy (f.eks. MSKCC sine prediksjonsverktøy for prostatakreft eller tilsvarende nomogram-tjenester) for faktisk risikoberegning.<br><br><a href="https://www.mskcc.org/nomograms/prostate/pre-op" target="_blank" rel="noopener">MSKCC Prostate Cancer Nomogram — Pre-Radical Prostatectomy (åpnes i ny fane) →</a></div>
 
 <h4>Valg av supplerende stagingundersøkelser</h4>
 <p>Hensikten med supplerende bildediagnostikk er å avklare sykdomsutbredelse for å styre behandlingsvalg — nytteverdien avhenger av sannsynligheten for funn med reell behandlingskonsekvens. Praktisk tilnærming:</p>
@@ -629,6 +638,50 @@ CONTENT_MAP['blarekreft'] = {type:'simple', html: `
 <h2>Behandling</h2>
 <h3>NMIBC</h3>
 <p>TURBT er både diagnostisk og terapeutisk. Enkelt postoperativ instillasjon av mitomycin innen 24t reduserer residivrisiko ved lav/intermediær risiko. Re-TURB innen 2–6 uker anbefales ved T1 eller høygradig sykdom, eller ved ufullstendig initial reseksjon. Adjuvant intravesikal BCG (induksjon + vedlikehold) er standard ved høyrisikosykdom. Radikal cystektomi vurderes ved BCG-refraktær høyrisiko-NMIBC.</p>
+
+<h4>BCG-behandling ved NMIBC — instillasjonsbehandling</h4>
+
+<h5 style="margin-bottom:4px;font-family:var(--display);font-size:14.5px;">Bakgrunn og grunnlag</h5>
+<p>BCG (Bacillus Calmette-Guérin, en levende svekket stamme av <em>Mycobacterium bovis</em>) er førstevalget for både høy- og intermediærrisikopasienter med høygradig histologi, siden det både reduserer residivrisiko og forhindrer/utsetter progresjon til muskelinvasiv sykdom — dokumentert med langtidseffekt opptil 15 år. Forskjell i totaloverlevelse mellom BCG og kjemoterapi er imidlertid ikke sikkert dokumentert. BCG gir mer toksisitet enn intravesikal kjemoterapi, men bare BCG har vist evne til å redusere progresjonsrisiko, ikke bare residivrisiko.</p>
+<div class="callout amber"><b>CIS — BCG som standard initialbehandling</b>Ved primær carcinoma in situ (CIS) står valget mellom BCG og cystektomi uten klar konsensus. Tidlig cystektomi gir svært god sykdomsspesifikk overlevelse, men opptil 40–50 % av pasientene ville da vært overbehandlet — BCG holdes derfor som standard initialbehandling. Etter induksjonskuren (6 ukentlige instillasjoner) oppnår 83–93 % komplett remisjon. Ved persisterende CIS kan en ny 6-ukers kur forsøkes (opptil 50 % oppnår da remisjon); ved manglende respons etter andre induksjonskur, eller tidlig residiv, er cystektomi indisert.</div>
+
+<h5 style="margin-bottom:4px;font-family:var(--display);font-size:14.5px;">Virkningsmekanisme</h5>
+<p>BCG virker som en uspesifikk immunmodulator, ikke via én enkelt mekanisme. Etter instillasjon fester bakteriene seg til og passerer GAG-laget i blæreveggen, internaliseres av antigenpresenterende celler (APC) og av tumorceller, og antigenene presenteres for CD4⁺ T-celler. Dette utløser en overveiende Th1-preget cytokinrespons (IL-2, IL-12, IFN-γ), som rekrutterer og modner cytotoksiske effektorceller — granulocytter, monocytter/makrofager, NK-celler og T-lymfocytter — og fører til dannelse av granulomer i blæreveggen. Disse lokale inflammasjonsreaksjonene (cystitt, granulomer) kan være en vesentlig del av selve antitumoreffekten, ikke bare en bivirkning.</p>
+
+<h5 style="margin-bottom:4px;font-family:var(--display);font-size:14.5px;">Administrering og protokoll</h5>
+<div class="table-scroll"><table class="datatable">
+<tr><th>Fase</th><th>Skjema</th></tr>
+<tr><td class="mono">Induksjon</td><td>6 ukentlige intravesikale instillasjoner</td></tr>
+<tr><td class="mono">Vedlikehold</td><td>3 ukentlige instillasjoner, gitt med faste intervaller over 1–3 år (anbefalt minimum 1 år)</td></tr>
+</table></div>
+<p>Vedlikeholdsbehandling er en forutsetning for å oppnå fordelaktig effekt av BCG — uten vedlikeholdskur uteblir mye av gevinsten. Hos høyrisikopasienter (T1HG/G3, CIS) tilstrebes full 3-års vedlikeholdsbehandling, men nytten av de to ekstra årene må veies mot bivirkningsbelastningen. BCG-instillasjon skal <strong>ikke</strong> gis de første 2–4 ukene etter TURB, ved makroskopisk hematuri, eller rett etter traumatisk/vanskelig kateterisering, pga. risiko for systemisk absorpsjon. Full BCG-dose ser ut til å være mer effektivt enn redusert dosering ved multifokal tumorsykdom.</p>
+
+<h5 style="margin-bottom:4px;font-family:var(--display);font-size:14.5px;">Kontraindikasjoner</h5>
+<ul>
+<li>Makroskopisk hematuri</li>
+<li>Symptomatisk urinveisinfeksjon</li>
+<li>Vanskelig eller traumatisk kateterisering</li>
+<li>Nedsatt immunforsvar (f.eks. HIV, immunsuppressiv behandling) — relativ kontraindikasjon, brukes med forsiktighet</li>
+</ul>
+<p style="font-size:13px;color:var(--ink-soft)">Asymptomatisk bakteriuri og mikrohematuri er <strong>ikke</strong> kontraindikasjoner, og antibiotikaprofylakse er ikke nødvendig.</p>
+
+<h5 style="margin-bottom:4px;font-family:var(--display);font-size:14.5px;">Bivirkninger og håndtering</h5>
+<p>Milde lokale (cystitt) og systemiske (sykdomsfølelse, feber &lt;38,5 °C) symptomer de første 2–3 dagene etter instillasjon er vanlige og krever normalt bare NSAIDs og/eller paracetamol. Alvorlig toksisitet forekommer hos &lt;5 % av pasientene, og kan i praksis behandles effektivt hos nesten alle.</p>
+
+<div class="table-scroll"><table class="datatable">
+<tr><th>Bivirkning</th><th>Håndtering</th></tr>
+<tr><td><strong>Cystitt</strong> som vedvarer &gt;2–3 dager</td><td>Utsett neste instillasjon, ta urindyrkning, start empirisk antibiotika (juster ev. etter resistens). Vedvarende tross negativ dyrkning: fluorokinolon. Fortsatt symptomer: vurder tuberkulostatika + steroider, kontakt infeksjonsmedisiner. Skrumpblære/manglende respons: radikal cystektomi kan bli nødvendig.</td></tr>
+<tr><td><strong>Hematuri</strong></td><td>Urindyrkning for å utelukke hemoragisk cystitt. Behandle ev. infeksjon. Utsett BCG til makrohematuri har opphørt. Vedvarende makrohematuri: cystoskopi for å utelukke residivtumor.</td></tr>
+<tr><td><strong>Symptomatisk granulomatøs prostatitt</strong></td><td>Fluorokinolon initialt. Vedvarende symptomer: vurder tuberkulostatika (isoniazid + rifampicin) i 3 måneder og avslutt BCG-behandling. Kontakt infeksjonsmedisiner.</td></tr>
+<tr><td><strong>Epididymoorkitt</strong></td><td>Urindyrkning + fluorokinolon (vanligvis gramnegative bakterier fra kateterisering). Sene symptomer kan skyldes mykobakterier — vurder tuberkulostatika. Behandlingssvikt/abscedering: orkiektomi kan bli nødvendig.</td></tr>
+<tr><td><strong>Feber &gt;38,5 °C i 12–24 t</strong></td><td>Stopp BCG-behandlingen. Urindyrkning, infeksjonsstatus, rtg. thorax. Kontakt infeksjonsmedisiner, vurder isoniazid 300 mg × 1 i 3 måneder. BCG kan gjenopptas når pasienten er symptomfri.</td></tr>
+<tr><td><strong>Feber &gt;38,5 °C &gt;24–48 t + allmennsymptomer</strong></td><td>Mistenkt <strong>BCG-sepsis</strong>. Kontakt infeksjonsmedisiner mtp. dobbel-/trippelbehandling (isoniazid, rifampicin, etambutol). BCG-behandling stoppes <strong>permanent</strong>.</td></tr>
+<tr><td><strong>Artralgi/artritt</strong></td><td>Sjelden, oppfattes som autoimmun reaksjon. Behandles primært med NSAIDs. Manglende respons: vurder steroider, høydose fluorokinoloner eller tuberkulostatika.</td></tr>
+</table></div>
+
+<h5 style="margin-bottom:4px;font-family:var(--display);font-size:14.5px;">BCG-svikt og alternativer</h5>
+<p>Ved manglende effekt/toleranse for BCG er radikal cystektomi anbefalt hvis BCG ikke har hatt effekt 6 måneder etter behandlingsstart, eller ved residiv av T1HG-sykdom. Alternativer ved BCG-svikt hos pasienter som ikke er kandidater for cystektomi: intravesikal kjemoterapi (mitomycin, epirubicin, gemcitabin), samt intravesikal kjemohypertermi (device-assisted intravesical chemotherapy, DAIC) — sistnevnte fortsatt å anse som eksperimentell behandling uten klar indikasjon i EAU Guidelines. Ved perioder med BCG-mangel prioriteres induksjonskurer foran vedlikeholdskurer, og T1HG/CIS-pasienter prioriteres foran lavere risikogrupper.</p>
+
 <h3>MIBC</h3>
 <p>Neoadjuvant cisplatinbasert kombinasjonskjemoterapi + radikal cystektomi med bilateral lymfeknutedisseksjon og urinavledning er standard kurativ behandling (se Cystektomi under Operasjonsteknikker). Trimodal behandling (maksimal TURBT + kjemoterapi + strålebehandling) er et blærebevarende alternativ hos selekterte pasienter, særlig ved kontraindikasjon mot cystektomi.</p>
 <h3>Metastatisk sykdom</h3>
@@ -659,6 +712,8 @@ CONTENT_MAP['blarekreft'] = {type:'simple', html: `
 
 <div class="sources"><h4>Kilder</h4><ul>
 <li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/blaerekreft-handlingsprogram/oppfolging/oppfolging-av-ikke-muskelinfiltrerende-blaerekreft" target="_blank">Nasjonalt handlingsprogram for blære- og urotelkreft, kap. 10.2: Oppfølging av ikke-muskelinfiltrerende blærekreft</a> (sist oppdatert 24. april 2026)</li>
+<li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/blaerekreft-handlingsprogram/initial-behandling-og-behandling-av-nmibc/instillasjonsbehandling-av-nmibc" target="_blank">Nasjonalt handlingsprogram for blære- og urotelkreft, kap. 7.5: Instillasjonsbehandling av NMIBC (BCG)</a> (sist oppdatert 24. april 2026)</li>
+<li>Felleskatalogen — BCG-medac (SPC): virkningsmekanisme, kontraindikasjoner og bivirkninger</li>
 <li>EAU Guidelines — Non-muscle-invasive og Muscle-invasive Bladder Cancer, uroweb.org</li>
 </ul></div>
 <div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>
@@ -1500,7 +1555,33 @@ short: `
 `,
 detailed: `
 <div class="stepblock"><span class="stepnum">1</span><h3>Reseksjonsdybde</h3><div class="body"><p>Å inkludere detrusormuskel i preparatet er avgjørende for adekvat T-staging — utilstrekkelig dybde gir risiko for understaging.</p></div></div>
-<div class="stepblock"><span class="stepnum">2</span><h3>Fluorescensveiledet inspeksjon</h3><div class="body"><p>Visuell inspeksjon i både hvitt og blått lys (fotodynamisk/fluorescerende substans) øker sensitiviteten for å avdekke CIS-suspekte forandringer som lett kan overses i hvitt lys alene.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Fluorescensveiledet inspeksjon (Hexvix/PDD)</h3><div class="body">
+<p>Visuell inspeksjon i både hvitt og blått lys etter intravesikal instillasjon av heksaminolevulinat (Hexvix) øker sensitiviteten for å avdekke CIS-suspekte forandringer og små/flate lesjoner som lett kan overses i hvitt lys alene.</p>
+<table style="width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px;">
+<tr><td style="width:50%;vertical-align:top;padding:8px 10px 8px 0;border-right:1px solid var(--line);">
+<b style="color:var(--low)">Indisert</b>
+<ul style="margin:6px 0 0;padding-left:18px;">
+<li>Førstegangs TURB</li>
+<li>Kontroll etter CIS-behandling</li>
+<li>Residiv etter nylig reseksjon (&lt;1 år siden)</li>
+<li>Positiv urincytologi uten synlig tumor ved hvitt lys</li>
+</ul>
+</td>
+<td style="width:50%;vertical-align:top;padding:8px 0 8px 10px;">
+<b style="color:var(--high)">Ikke indisert / kontraindisert</b>
+<ul style="margin:6px 0 0;padding-left:18px;">
+<li>Minimalt residiv etter &gt;2 års residivfrihet</li>
+<li>Kontroll etter avsluttet intravesikal kjemoterapi eller strålebehandling</li>
+<li>Svært store tumorer der ikke hele tumor skal fjernes</li>
+<li>Kjent allergi/hypersensitivitet mot heksaminolevulinat (Hexvix)</li>
+<li>BCG-behandling innen siste 3 måneder</li>
+<li>Fertile/ammende kvinner</li>
+<li>Interstitiell cystitt / pågående blæreinflammasjon (falskt positive funn)</li>
+</ul>
+</td></tr>
+</table>
+<p style="margin-top:8px;font-size:12.5px;color:var(--ink-soft)">Kontraindikasjon mot porfyri gjelder også (SPC Hexvix). Nylig reseksjon/BCG/kjemoterapi og pågående inflammasjon gir økt risiko for falskt positive funn og reduserer nytteverdien av undersøkelsen.</p>
+</div></div>
 <div class="stepblock"><span class="stepnum">3</span><h3>Re-TURB</h3><div class="body"><p>Anbefalt innen 2–6 uker ved T1 eller høygradig tumor, eller ved ufullstendig initial reseksjon.</p></div></div>
 <div class="stepblock"><span class="stepnum">4</span><h3>Komplikasjoner — obturatorrefleks</h3><div class="body"><p>Ved lateral veggtumor er det økt risiko for blæreperforasjon pga. obturatorrefleks (ufrivillig adduksjon av lår ved stimulering av n. obturatorius gjennom blæreveggen) — kan reduseres med obturatorblokade eller sikker full muskelrelaksasjon under prosedyren.</p></div></div>
 
@@ -1519,6 +1600,7 @@ Pasient i narkose. Muskelrelaks. Trygg kirurgi. Visuell inspeksjon i hvitt og bl
 
 <div class="sources"><h4>Kilder</h4><ul>
 <li>Helsedirektoratet — Blærekreft-handlingsprogram; EAU Guidelines — NMIBC/MIBC, uroweb.org</li>
+<li>Hexvix/heksaminolevulinat — indikasjoner/kontraindikasjoner iht. preparatomtale (SPC) og AUA/SUO-konsensus for blålyscystoskopi; se Felleskatalogen for fullstendig SPC</li>
 <li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KCD02 Transurethral reseksjon av blæretumor, ZXM40 Intraoperativ bruk av fluorescerende substans, KCX20 Blærekateterisering)</li>
 </ul></div>
 <div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemalen er lokal Ahus-praksis — generelle prinsipper over gjelder bredere.</div>
@@ -2399,6 +2481,14 @@ function renderTopic(topic){
 
   const catLabel = CATEGORIES.find(c=>c.id===topic.cat).label;
 
+  let kompHtml = '';
+  if(topic.komp && topic.komp.length){
+    const rows = topic.komp.map(k=>`<tr><td>${k.label}</td><td class="mono" style="text-align:right;font-weight:600;">${k.count}</td></tr>${k.note ? `<tr><td colspan="2" style="font-size:11.5px;color:var(--ink-soft);padding-top:0;">${k.note}</td></tr>` : ''}`).join('');
+    kompHtml = `<div class="callout low"><b>Kompetanseportalen — krav til antall (LIS-utdanning)</b>
+      <div class="table-scroll"><table class="datatable" style="margin:6px 0 0;">${rows}</table></div>
+    </div>`;
+  }
+
   main.innerHTML = `
     <div class="crumb"><a href="#" onclick="navigate('home');return false;">UroOppslag</a> / ${catLabel}</div>
     <h1 class="pagetitle">${topic.title}</h1>
@@ -2407,6 +2497,7 @@ function renderTopic(topic){
       ${topic.icd ? `<span class="tag tag-code">ICD-10: ${topic.icd}</span>` : ''}
       ${topic.ncsp ? `<span class="tag tag-code">NCSP: ${topic.ncsp}</span>` : ''}
     </div>
+    ${kompHtml}
     <div class="content">${bodyHtml}</div>
   `;
 }
@@ -2440,15 +2531,66 @@ function navigate(id){
   document.getElementById('searchInput').value='';
 }
 
+/* Bygger et søkbart tekstindeks per emne: tittel + ICD/NCSP + alt innhold (HTML-tagger fjernet).
+   Kjøres én gang ved oppstart slik at søk i selve teksten (ikke bare tittel) blir raskt. */
+const _stripTags = (html) => (html||'').replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
+const SEARCH_INDEX = TOPICS.filter(t=>t.status==='ferdig').map(t=>{
+  const c = CONTENT_MAP[t.id];
+  let bodyText = '';
+  if(c){
+    if(c.type==='simple'){ bodyText = _stripTags(c.intro) + ' ' + _stripTags(c.html); }
+    else if(c.type==='toggle'){ bodyText = _stripTags(c.intro) + ' ' + _stripTags(c.short) + ' ' + _stripTags(c.detailed); }
+  }
+  const codeText = [t.icd, t.ncsp].filter(Boolean).join(' ');
+  return {
+    topic: t,
+    titleLower: t.title.toLowerCase(),
+    codeLower: codeText.toLowerCase(),
+    bodyLower: (bodyText + ' ' + codeText).toLowerCase(),
+    bodyText
+  };
+});
+
+function _snippetAround(text, q){
+  const i = text.toLowerCase().indexOf(q);
+  if(i<0) return '';
+  const start = Math.max(0, i-40);
+  const end = Math.min(text.length, i+q.length+60);
+  let snip = text.slice(start,end).trim();
+  if(start>0) snip = '…'+snip;
+  if(end<text.length) snip = snip+'…';
+  return snip;
+}
+
 document.getElementById('searchInput').addEventListener('input', (e)=>{
   const q = e.target.value.trim().toLowerCase();
   const box = document.getElementById('searchResults');
   if(!q){ box.classList.remove('show'); box.innerHTML=''; return; }
-  const matches = TOPICS.filter(t=> t.status==='ferdig' && t.title.toLowerCase().includes(q));
+
+  const titleMatches = [];
+  const codeMatches = [];
+  const bodyMatches = [];
+  SEARCH_INDEX.forEach(entry=>{
+    if(entry.titleLower.includes(q)){ titleMatches.push(entry); }
+    else if(entry.codeLower.includes(q)){ codeMatches.push(entry); }
+    else if(entry.bodyLower.includes(q)){ bodyMatches.push(entry); }
+  });
+  const matches = [...titleMatches, ...codeMatches, ...bodyMatches].slice(0, 25);
+
   if(!matches.length){
     box.innerHTML = `<div style="padding:12px 14px;font-size:13px;color:var(--ink-soft)">Ingen treff.</div>`;
   } else {
-    box.innerHTML = matches.map(t=>`<a href="#" onclick="navigate('${t.id}');return false;">${t.title}<br><span class="cat">${CATEGORIES.find(c=>c.id===t.cat).label}</span></a>`).join('');
+    box.innerHTML = matches.map(entry=>{
+      const t = entry.topic;
+      const isTitleMatch = titleMatches.includes(entry);
+      const isCodeMatch = codeMatches.includes(entry);
+      let extra = '';
+      if(!isTitleMatch){
+        const snip = isCodeMatch ? '' : _snippetAround(entry.bodyText, q);
+        if(snip) extra = `<br><span style="font-size:12px;color:var(--ink-soft)">${snip}</span>`;
+      }
+      return `<a href="#" onclick="navigate('${t.id}');return false;">${t.title}<br><span class="cat">${CATEGORIES.find(c=>c.id===t.cat).label}</span>${extra}</a>`;
+    }).join('');
   }
   box.classList.add('show');
 });
