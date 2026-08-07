@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="UroOppslag">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#16283C">
+<title>UroOppslag — Klinisk oppslagsverk for LIS i urologi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F4EF;
+    --paper-dim:#ECEAE2;
+    --card:#FFFFFF;
+    --ink:#1C2430;
+    --ink-soft:#5B6472;
+    --line:#DAD5C8;
+    --line-strong:#C7C1B2;
+    --steel:#2C4A6E;
+    --steel-deep:#16283C;
+    --steel-tint:#E8EEF4;
+    --amber:#A9711F;
+    --amber-tint:#F5EAD7;
+    --low:#3C7A5C;
+    --low-tint:#E3F0E9;
+    --mid:#A9741F;
+    --mid-tint:#F6EEDA;
+    --high:#A8453B;
+    --high-tint:#F5E3E1;
+    --internal:#6B4E8C;
+    --internal-tint:#EFE9F5;
+    --mono:'IBM Plex Mono', ui-monospace, monospace;
+    --sans:'IBM Plex Sans', system-ui, sans-serif;
+    --display:'Space Grotesk', system-ui, sans-serif;
+    --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--sans);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--steel);}
+  ::selection{background:var(--amber-tint);}
+
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    display:flex; align-items:center; gap:16px;
+    height:56px; padding:0 16px;
+    background:var(--steel-deep);
+    color:#EDEFF2;
+    border-bottom:1px solid var(--steel-deep);
+  }
+  .topbar .brand{
+    display:flex; align-items:baseline; gap:8px;
+    font-family:var(--display); font-weight:700; font-size:17px;
+    letter-spacing:.2px; color:#fff; white-space:nowrap;
+  }
+  .topbar .brand .sub{
+    font-family:var(--mono); font-weight:400; font-size:11px;
+    color:#9FB0C4; letter-spacing:.3px;
+  }
+  .hamburger{
+    display:none; background:none; border:none; color:#fff;
+    font-size:20px; cursor:pointer; padding:4px 8px;
+  }
+  .searchwrap{flex:1; max-width:420px; margin-left:auto; position:relative;}
+  .searchwrap input{
+    width:100%; padding:9px 12px 9px 32px; border-radius:20px; border:1px solid #33475F;
+    background:#1F344A; color:#EDEFF2; font-family:var(--sans); font-size:16px;
+    outline:none;
+  }
+  .searchwrap input::placeholder{color:#8FA1B7;}
+  .searchwrap input:focus{border-color:var(--amber);}
+  .searchwrap svg{position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:.6;}
+  .search-results{
+    position:absolute; top:38px; left:0; right:0; background:#fff; color:var(--ink);
+    border:1px solid var(--line-strong); border-radius:6px; max-height:340px; overflow:auto;
+    box-shadow:0 8px 24px rgba(0,0,0,.18); display:none; z-index:60;
+  }
+  .search-results.show{display:block;}
+  .search-results a{
+    display:block; padding:9px 14px; font-size:13.5px; color:var(--ink); text-decoration:none;
+    border-bottom:1px solid var(--paper-dim);
+  }
+  .search-results a:hover{background:var(--steel-tint);}
+  .search-results .cat{color:var(--ink-soft); font-size:11px; font-family:var(--mono);}
+
+  .shell{display:flex; min-height:calc(100vh - 56px);}
+  .sidebar{
+    width:280px; flex-shrink:0; background:var(--paper-dim);
+    border-right:1px solid var(--line); padding:18px 0 60px;
+    position:sticky; top:56px; height:calc(100vh - 56px); overflow-y:auto;
+  }
+  .sidebar h3.groupname{
+    font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:1px;
+    color:var(--ink-soft); margin:22px 18px 8px; display:flex; align-items:center; gap:6px;
+  }
+  .sidebar h3.groupname:first-child{margin-top:0;}
+  .swatch{width:9px; height:9px; border-radius:2px; display:inline-block;}
+  .sw-benign{background:var(--steel);}
+  .sw-malign{background:var(--high);}
+  .sw-kirurgi{background:var(--amber);}
+  .sw-admin{background:var(--internal);}
+  .sw-akutt{background:#C4451F;}
+  .navlist{list-style:none; margin:0; padding:0;}
+  .navlist li a{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    padding:7px 18px; font-size:13.5px; color:var(--ink); text-decoration:none;
+    border-left:3px solid transparent;
+  }
+  .navlist li a:hover{background:var(--steel-tint);}
+  .navlist li a.active{
+    background:var(--steel-tint); border-left-color:var(--steel); font-weight:600;
+  }
+  .navlist li a.disabled{color:#A6A196; cursor:default; pointer-events:none;}
+  .pill{
+    font-family:var(--mono); font-size:9.5px; padding:1px 6px; border-radius:10px;
+    background:var(--paper-dim); color:var(--ink-soft); border:1px solid var(--line);
+    white-space:nowrap;
+  }
+
+  .main{flex:1; min-width:0; padding:36px 40px 100px; max-width:900px;}
+
+  .crumb{font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); margin-bottom:10px;}
+  .crumb a{color:var(--ink-soft); text-decoration:none;}
+  .crumb a:hover{text-decoration:underline;}
+  h1.pagetitle{
+    font-family:var(--display); font-size:32px; font-weight:700; margin:0 0 6px; color:var(--steel-deep);
+    letter-spacing:-.2px;
+  }
+  .tagrow{display:flex; gap:8px; align-items:center; margin-bottom:26px; flex-wrap:wrap;}
+  .tag{
+    font-family:var(--mono); font-size:11px; padding:3px 9px; border-radius:20px; letter-spacing:.2px;
+  }
+  .tag-benign{background:var(--steel-tint); color:var(--steel);}
+  .tag-malign{background:var(--high-tint); color:var(--high);}
+  .tag-kirurgi{background:var(--amber-tint); color:var(--amber);}
+  .tag-akutt{background:#F5E1D8; color:#C4451F;}
+
+  .content h2{
+    font-family:var(--display); font-size:19px; font-weight:700; color:var(--steel-deep);
+    margin:34px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--line);
+  }
+  .content h3{font-family:var(--sans); font-size:15px; font-weight:600; margin:20px 0 8px; color:var(--ink);}
+  .content p{margin:0 0 12px; font-size:14.5px;}
+  .content ul, .content ol{margin:0 0 14px; padding-left:22px; font-size:14.5px;}
+  .content li{margin-bottom:5px;}
+  .content strong{color:var(--steel-deep);}
+
+  .callout{
+    border-left:3px solid var(--steel); background:var(--steel-tint); padding:12px 16px;
+    border-radius:0 4px 4px 0; margin:16px 0; font-size:13.8px;
+  }
+  .callout.amber{border-color:var(--amber); background:var(--amber-tint);}
+  .callout.high{border-color:var(--high); background:var(--high-tint);}
+  .callout.internal{border-color:var(--internal); background:var(--internal-tint);}
+  .callout b{display:block; font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.6px; margin-bottom:4px; color:inherit;}
+  .tag-internal{background:var(--internal-tint); color:var(--internal);}
+  .tag-code{background:var(--paper-dim); color:var(--ink-soft); border:1px solid var(--line-strong);}
+
+  table.datatable{width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13.3px;}
+  .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:14px 0 20px;}
+  .table-scroll table.datatable{margin:0; min-width:420px;}
+  table.datatable th{
+    text-align:left; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.4px;
+    color:var(--ink-soft); padding:7px 10px; border-bottom:1.5px solid var(--line-strong); background:var(--paper-dim);
+  }
+  table.datatable td{padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  table.datatable tr:hover td{background:var(--steel-tint);}
+  .mono{font-family:var(--mono);}
+
+  .riskgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0 22px;}
+  .riskgrid.cols-2{grid-template-columns:1fr 1fr;}
+  .riskcard{border-radius:6px; padding:14px; border:1px solid var(--line);}
+  .riskcard.low{background:var(--low-tint); border-color:#bcdcc9;}
+  .riskcard.mid{background:var(--mid-tint); border-color:#e3cf9f;}
+  .riskcard.high{background:var(--high-tint); border-color:#e5b8b2;}
+  .riskcard h4{margin:0 0 6px; font-family:var(--display); font-size:13.5px;}
+  .riskcard.low h4{color:var(--low);}
+  .riskcard.mid h4{color:var(--mid);}
+  .riskcard.high h4{color:var(--high);}
+  .riskcard p, .riskcard ul{font-size:12.8px; margin:0;}
+  .riskcard ul{padding-left:16px;}
+
+  .sources{
+    margin-top:38px; padding-top:16px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--ink-soft);
+  }
+  .sources h4{
+    font-family:var(--mono); text-transform:uppercase; letter-spacing:.5px; font-size:10.5px;
+    margin:0 0 8px; color:var(--ink-soft);
+  }
+  .sources ul{margin:0; padding-left:18px;}
+  .sources li{margin-bottom:4px;}
+
+  .disclaimer{
+    margin-top:20px; padding:10px 14px; background:#FBF8EF; border:1px solid #E7DCB8;
+    border-radius:4px; font-size:12px; color:#6B5A2B;
+  }
+  .footnote{
+    font-size:12px; color:var(--ink-soft); font-style:italic; margin:10px 0 0;
+    padding-left:10px; border-left:2px solid var(--line-strong);
+  }
+
+  .viewtoggle{display:flex; gap:0; margin-bottom:22px; border:1px solid var(--line-strong); border-radius:20px; width:fit-content; overflow:hidden;}
+  .viewtoggle button{
+    border:none; background:var(--card); padding:7px 18px; font-family:var(--mono); font-size:12px;
+    cursor:pointer; color:var(--ink-soft); letter-spacing:.3px;
+  }
+  .viewtoggle button.active{background:var(--steel); color:#fff;}
+  .viewpane{display:none;}
+  .viewpane.active{display:block;}
+
+  .steplist{list-style:none; margin:0 0 18px; padding:0; counter-reset:step;}
+  .steplist li{
+    counter-increment:step; position:relative; padding:10px 0 10px 40px; border-bottom:1px solid var(--line);
+    font-size:14px;
+  }
+  .steplist li:last-child{border-bottom:none;}
+  .steplist li::before{
+    content:counter(step); position:absolute; left:0; top:9px; width:26px; height:26px;
+    background:var(--steel); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:12px; font-weight:500;
+  }
+  .steplist.compact li{padding:7px 0 7px 34px; font-size:13.5px;}
+  .steplist.compact li::before{width:21px; height:21px; font-size:10.5px; top:6px;}
+
+  .stepblock{margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid var(--line);}
+  .stepblock:last-child{border-bottom:none;}
+  .stepblock .stepnum{
+    display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px;
+    background:var(--amber); color:#fff; border-radius:50%; font-family:var(--mono); font-size:11.5px; margin-right:8px;
+  }
+  .stepblock h3{display:inline; font-size:15px;}
+  .stepblock .body{margin-top:8px; padding-left:32px;}
+  .stepblock .body p{font-size:13.8px; margin-bottom:8px;}
+  .stepblock .body ul{font-size:13.3px;}
+
+  .badge-inline{
+    display:inline-block; font-family:var(--mono); font-size:10px; padding:1px 7px; border-radius:10px;
+    background:var(--high-tint); color:var(--high); margin-left:6px;
+  }
+
+  .placeholder{padding:60px 20px; text-align:center; color:var(--ink-soft);}
+  .placeholder .icon{font-size:34px; margin-bottom:10px;}
+
+  .home-hero{
+    background:linear-gradient(135deg, var(--steel-deep), var(--steel));
+    color:#fff; padding:44px 40px; border-radius:8px; margin-bottom:32px;
+  }
+  .home-hero h1{font-family:var(--display); font-size:30px; margin:0 0 10px; font-weight:700;}
+  .home-hero p{font-size:14.5px; max-width:600px; color:#D9E2EC; margin:0;}
+  .home-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:8px;}
+  .home-card{
+    background:var(--card); border:1px solid var(--line); border-radius:6px; padding:18px;
+    border-top:3px solid var(--steel);
+  }
+  .home-card.malign{border-top-color:var(--high);}
+  .home-card.kirurgi{border-top-color:var(--amber);}
+  .home-card h3{margin:0 0 6px; font-family:var(--display); font-size:15px;}
+  .home-card p{font-size:12.8px; color:var(--ink-soft); margin:0 0 10px;}
+  .home-card a{font-size:12.5px; font-family:var(--mono);}
+
+  @media(max-width:880px){
+    .hamburger{display:block;}
+    .sidebar{
+      position:fixed; left:-300px; top:56px; height:calc(100vh - 56px); width:280px; z-index:50;
+      transition:left .2s ease; box-shadow:4px 0 16px rgba(0,0,0,.15);
+    }
+    .sidebar.open{left:0;}
+    .main{padding:20px 16px 80px;}
+    .home-grid{grid-template-columns:1fr;}
+    .riskgrid{grid-template-columns:1fr;}
+    .riskgrid.cols-2{grid-template-columns:1fr;}
+    .searchwrap{max-width:none;}
+    .topbar .brand .sub{display:none;}
+    .navlist li a{padding:10px 18px; font-size:14.5px;}
+    .home-hero{padding:28px 22px;}
+    .home-hero h1{font-size:23px;}
+    .home-hero p{font-size:13.5px;}
+    h1.pagetitle{font-size:24px;}
+    .stepblock .body{padding-left:0; margin-top:6px;}
+    .stepblock .stepnum{margin-bottom:4px;}
+    .steplist li{padding-left:36px;}
+    .steplist li::before{width:23px; height:23px; font-size:11px;}
+    .viewtoggle{width:100%;}
+    .viewtoggle button{flex:1; padding:9px 10px;}
+    .content h2{font-size:17px; margin:26px 0 10px;}
+    .riskcard{padding:12px;}
+  }
+  .overlay{display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:45;}
+  .overlay.show{display:block;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="hamburger" id="hamburgerBtn" aria-label="Meny">☰</button>
+  <div class="brand">UroOppslag <span class="sub">// LIS-oppslagsverk i urologi</span></div>
+  <div class="searchwrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8FA1B7" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="searchInput" placeholder="Søk (f.eks. TURP, Gleason, PSA-residiv)…" autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="main" id="main"></main>
+</div>
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+
+const CATEGORIES = [
+  {id:'akutt', label:'Akutturologi', swatch:'sw-akutt'},
+  {id:'benigne', label:'Benigne tilstander', swatch:'sw-benign'},
+  {id:'maligne', label:'Maligne tilstander', swatch:'sw-malign'},
+  {id:'kirurgi', label:'Operasjonsteknikker', swatch:'sw-kirurgi'},
+  {id:'admin', label:'Henvisningsvurdering', swatch:'sw-admin'},
+  {id:'om', label:'Om siden', swatch:'sw-benign'}
+];
+
+const TOPICS = [
+  {id:'urinretensjon-akutt', cat:'akutt', title:'Akutt urinretensjon', status:'ferdig', icd:'R33.9'},
+  {id:'priapisme', cat:'akutt', title:'Priapisme', status:'ferdig', icd:'N48.3'},
+  {id:'penisfraktur', cat:'akutt', title:'Penisfraktur', status:'ferdig', icd:'S39.848 / N48.8'},
+  {id:'fourniers-gangren', cat:'akutt', title:'Fourniers gangren', status:'ferdig', icd:'N49.3'},
+  {id:'blaretamponade', cat:'akutt', title:'Blæretamponade (koagelretensjon)', status:'ferdig', icd:'N32.8 / R31.9'},
+  {id:'via-falsa', cat:'akutt', title:'Via falsa (falsk urinrørskanal)', status:'ferdig', icd:'N99.8 / T83.5'},
+
+
+  {id:'bph', cat:'benigne', title:'Benign prostatahyperplasi (BPH)', status:'ferdig', icd:'N40'},
+  {id:'nyrestein', cat:'benigne', title:'Urolithiasis / nyrestein', status:'ferdig', icd:'N20'},
+  {id:'oab', cat:'benigne', title:'Overaktiv blære / LUTS', status:'ferdig', icd:'N39.4'},
+  {id:'fimose', cat:'benigne', title:'Fimose og balanitt', status:'ferdig', icd:'N47 / N48.1'},
+  {id:'hydrocele', cat:'benigne', title:'Hydrocele og varikocele', status:'ferdig', icd:'N43.3 / I86.1'},
+  {id:'epididymitt', cat:'benigne', title:'Epididymitt / akutt skrotum', status:'ferdig', icd:'N45 / N44'},
+  {id:'ed', cat:'benigne', title:'Erektil dysfunksjon', status:'ferdig', icd:'N48.4'},
+  {id:'nevrogen', cat:'benigne', title:'Nevrogen blære', status:'ferdig', icd:'N31'},
+  {id:'bekkensmerter', cat:'benigne', title:'Bekkensmerter / smertefullt blæresyndrom', status:'ferdig', icd:'R10.2'},
+  {id:'stressinkontinens', cat:'benigne', title:'Stressinkontinens', status:'ferdig', icd:'N39.3'},
+  {id:'urinrorsstriktur', cat:'benigne', title:'Urinrørsstriktur', status:'ferdig', icd:'N35.8'},
+
+  {id:'prostatakreft', cat:'maligne', title:'Prostatakreft', status:'ferdig', icd:'C61'},
+  {id:'blarekreft', cat:'maligne', title:'Blærekreft (urotelialt karsinom)', status:'ferdig', icd:'C67'},
+  {id:'nyrekreft', cat:'maligne', title:'Nyrekreft (RCC)', status:'ferdig', icd:'C64'},
+  {id:'testikkelkreft', cat:'maligne', title:'Testikkelkreft', status:'ferdig', icd:'C62'},
+  {id:'peniskreft', cat:'maligne', title:'Peniskreft', status:'ferdig', icd:'C60'},
+  {id:'ovreurotelial', cat:'maligne', title:'Øvre urotelial kreft', status:'ferdig', icd:'C65 / C66'},
+
+  {id:'ralp', cat:'kirurgi', title:'RALP — Robotassistert prostatektomi', status:'ferdig'},
+  {id:'turp', cat:'kirurgi', title:'TURP', status:'ferdig', ncsp:'KED22', icd:'N40'},
+  {id:'turbt', cat:'kirurgi', title:'TURBT', status:'ferdig', ncsp:'KCD02', icd:'C67'},
+  {id:'nefrektomi', cat:'kirurgi', title:'Nefrektomi (radikal/partiell)', status:'ferdig'},
+  {id:'rirs', cat:'kirurgi', title:'Ureterorenoskopi / RIRS', status:'ferdig', ncsp:'KBE12, KBV02', icd:'N20.1'},
+  {id:'pcnl', cat:'kirurgi', title:'PCNL', status:'ferdig'},
+  {id:'cystektomi', cat:'kirurgi', title:'Cystektomi og urinavledning', status:'ferdig'},
+  {id:'sirkumsisjon', cat:'kirurgi', title:'Sirkumsisjon', status:'ferdig', ncsp:'KGH10', icd:'N47'},
+  {id:'vasektomi', cat:'kirurgi', title:'Vasektomi', status:'ferdig'},
+  {id:'orkidopeksi', cat:'kirurgi', title:'Orkidopeksi', status:'ferdig', ncsp:'KFH10', icd:'Q53.1'},
+  {id:'testistorsjon-op', cat:'kirurgi', title:'Detorkvering og fiksasjon ved testistorsjon', status:'ferdig', ncsp:'KFH20, KFH10', icd:'N44'},
+  {id:'intern-uretrotomi', cat:'kirurgi', title:'Intern uretrotomi', status:'ferdig', ncsp:'KDV12, KCX20', icd:'N35.8'},
+  {id:'botox-blare', cat:'kirurgi', title:'Botulinumtoksin (Botox) i blære', status:'ferdig'},
+  {id:'snm', cat:'kirurgi', title:'Sakral nervemodulasjon (SNM)', status:'ferdig'},
+  {id:'optilume', cat:'kirurgi', title:'Optilume (medikamentavgivende ballongdilatasjon)', status:'ferdig', ncsp:'KDH62, KUD02', icd:'N35.8'},
+  {id:'cystolitotripsi', cat:'kirurgi', title:'Cystolitotripsi', status:'ferdig', ncsp:'KCE02', icd:'N21.0'},
+  {id:'hydrocelectomi', cat:'kirurgi', title:'Hydrocelectomi ad modum Winkelmann', status:'ferdig', ncsp:'KFD20', icd:'N43.3'},
+  {id:'orkiektomi', cat:'kirurgi', title:'Orkiektomi (unilateral)', status:'ferdig', ncsp:'KFC00', icd:'C62 / N51.1'},
+  {id:'penisplastikk', cat:'kirurgi', title:'Penisplastikk (Peyronies sykdom)', status:'ferdig', ncsp:'KGH20', icd:'N48.6'},
+  {id:'inkontinenskirurgi', cat:'kirurgi', title:'Midturetral slynge og kunstig urinsfinkter', status:'ferdig', icd:'N39.3'},
+
+  {id:'henvisningsvurdering', cat:'admin', title:'Prioritering av henvisninger', status:'ferdig'},
+
+  {id:'om-siden', cat:'om', title:'Om siden og kilder', status:'ferdig'}
+];
+
+const TAGCLASS = {benigne:'tag-benign', maligne:'tag-malign', kirurgi:'tag-kirurgi', admin:'tag-internal', akutt:'tag-akutt'};
+const TAGLABEL = {benigne:'Benign', maligne:'Malign', kirurgi:'Operasjonsteknikk', admin:'Administrativt', akutt:'Akutt'};
+
+/* ============================================================
+   CONTENT MAP
+   type: 'simple' -> {intro?, html}
+   type: 'toggle' -> {intro?, short, detailed}
+   ============================================================ */
+const CONTENT_MAP = {};
+
+/* ---------------- PROSTATAKREFT ---------------- */
+CONTENT_MAP['prostatakreft'] = {type:'simple', html: `
+<div class="callout">
+<b>Kjapt sammendrag</b>
+Prostatakreft er den vanligste kreftformen hos menn i Norge. De fleste tilfeller er lokalisert og langsomtvoksende. Utredning bygger på PSA → mpMR prostata → målrettet + systematisk biopsi. Risikogruppering (EAU-modellen) styrer valg mellom aktiv overvåking, kirurgi, stråling og eventuell hormonbehandling.
+</div>
+
+<h2>Epidemiologi</h2>
+<p>Prostatakreft utgjør om lag 30 % av all kreft hos menn i Norge, og er den hyppigste kreftdiagnosen hos menn totalt. Om lag hver åttende mann får diagnosen før fylte 75 år. De fleste dør med, ikke av, sykdommen — noe som er selve grunnlaget for risikostratifisert, ikke ensartet aggressiv, behandling.</p>
+
+<h2>Utredning</h2>
+<h3>PSA</h3>
+<p>PSA er organspesifikt, ikke kreftspesifikt — forhøyet verdi kan også skyldes BPH, prostatitt, nylig instrumentering (kateterisering, cystoskopi, biopsi) eller ejakulasjon. Det finnes ingen biologisk grenseverdi for PSA som skiller behandlingstrengende fra ikke-behandlingstrengende kreft — <strong>populasjonsbasert screening er ikke innført i Norge</strong>.</p>
+
+<h4>Hvem bør testes</h4>
+<ul>
+<li>Asymptomatiske menn som selv ønsker det, bør tilbys PSA + DRE som ledd i en individuell, risikotilpasset strategi — beslutning tas i samråd med lege etter nøktern informasjon om fordeler/ulemper</li>
+<li>PSA-testing er som hovedregel <strong>ikke aktuelt hos menn &lt;50 år uten risikofaktorer</strong>, eller hos menn <strong>&gt;80 år</strong></li>
+<li>Aldersgruppe 70–79 år: individuell vurdering. Aktsomhet ved forventet levetid &lt;10 år</li>
+<li>PSA bør ikke tas for å avdekke tidlig kreft hos menn med forventet levetid &lt;10–15 år som ikke er kandidater for kurativ lokalbehandling</li>
+<li>Testing bør avsluttes når det ikke lenger er hensiktsmessig — urolog bør da skissere en skriftlig plan for videre PSA-oppfølging/aksjonsgrenser til pasient og fastlege</li>
+</ul>
+
+<h4>Arvelig risiko — egen algoritme</h4>
+<p>Menn med påvist genfeil som gir økt risiko for behandlingstrengende prostatakreft (særlig <em>BRCA2</em>, også <em>HOXB13, MSH2, MSH6</em>) bør måle PSA <strong>årlig fra 40 års alder</strong>. Uten påvist genfeil, men ved familiær opphopning, kan PSA-testing fra 40 år tilbys ved:</p>
+<ul>
+<li>Én førstegradsslektning med prostatakreft ≤60 år, <strong>eller</strong></li>
+<li>To nære slektninger med prostatakreft, snittalder ≤70 år, <strong>eller</strong></li>
+<li>Tre nære slektninger med prostatakreft uansett alder</li>
+</ul>
+<p>Disse henvises urolog ved: PSA utenfor referanseområdet for pasientens alder, økning &gt;1 ng/mL på ett år, eller dobling av verdien i løpet av ett år.</p>
+
+<h4>Ved symptomer/funn</h4>
+<ul>
+<li>PSA skal <strong>alltid</strong> tas ved DRE-funn som gir mistanke om prostatakreft — malignitetssuspekte palpasjonsfunn henvises urolog <strong>uavhengig av PSA-nivå</strong></li>
+<li>Ingen sikker sammenheng mellom obstruktive vannlatingssymptomer (LUTS) og behandlingstrengende prostatakreft — beslutning om PSA-testing ved LUTS tas på samme grunnlag som hos asymptomatiske menn</li>
+<li>PSA tas ved utredning av metastaser med ukjent utgangspunkt, spesielt ved sklerotiske skjelettlesjoner eller bekken-/retroperitoneal glandelsvulst</li>
+</ul>
+
+<h4>Tolkning</h4>
+<div class="callout amber"><b>Praktisk håndtering av forhøyet PSA</b>Ved forhøyet PSA og normal DRE: kontrollmål etter <strong>minst 3 uker</strong>. Utelukk samtidig urinveisinfeksjon — ved påvist infeksjon gjentas målingen etter <strong>1–2 måneder</strong>.</div>
+<p class="mono" style="font-size:12px;color:var(--ink-soft)">Merk: referanseverdier oppgitt i labsvar kan avvike fra aksjonsgrensene for henvisning til spesialisthelsetjenesten beskrevet her. Tolkning hos menn uten risikofaktorer må sees i sammenheng med alder og PSA-verdi (handlingsprogrammets Figur 5.1) — denne aldersjusterte grafiske fremstillingen er ikke gjengitt i detalj her; se originalkilden for de eksakte alderstilpassede aksjonsgrensene.</p>
+
+<h4>Hvorfor kan palpasjonsfunn alene gi henvisning til pakkeforløp?</h4>
+<p>«Begrunnet mistanke» om prostatakreft — som utløser pakkeforløp — baseres på <strong>enten</strong> bekreftet høy PSA <strong>eller</strong> klinisk mistanke (funn ved DRE, eller tilfeldig UL-prostata-/MR-bekken-funn av annen grunn). Dette er et <em>enten/eller</em>-kriterium, ikke et krav om at begge skal foreligge samtidig. Bakgrunnen er at enkelte aggressive prostatakarsinomer (bl.a. lite differensierte og duktale subtyper) ikke nødvendigvis gir proporsjonal PSA-stigning — en suspekt kjertel ved palpasjon har egen selvstendig prediktiv verdi for malignitet, uavhengig av PSA-nivå. <strong>Motsatt</strong> skal en enkelt forhøyet PSA-verdi <em>ikke</em> i seg selv føre til biopsering — den skal først bekreftes og suppleres med mpMR, siden PSA alene har lav spesifisitet.</p>
+
+<div class="callout internal"><b>Ahus internt</b>Ahus har (2026–2027) et pilotprosjekt for populasjonsbasert/organisert PSA-testing, finansiert av Kreftforeningen, Prostatakreftforeningen og Helse Sør-Øst. Menn født 1972–1977 i Ahus' opptaksområde inviteres via Helsenorge til PSA-test; ved forhøyet verdi følges MR og ev. biopsi. Tilsvarende pilotprosjekter pågår i flere europeiske land, bl.a. Sverige, i tråd med EU-kommisjonens 2022-anbefaling om å vurdere organisert screening for prostatakreft.</p></div>
+
+<h3>mpMR prostata</h3>
+<p>Multiparametrisk MR gjøres før biopsi, og vurderes med PI-RADS-score (1–5). MR brukes til å målstyre biopsier, men <strong>klinisk T-stadium (cT) settes fortsatt kun på grunnlag av DRE</strong> — ikke MR-funn — ved risikogruppering. Ved kontraindikasjon mot MR (enkelte pacemakere, ICD, cochleaimplantat) kan PSMA-PET/CT vurderes som alternativ der tilgjengelig; ellers gjøres systematiske UL-veiledede biopsier uten forutgående bildediagnostikk. Tradisjonell (ikke-multiparametrisk) ultralyd og røntgen/CT/skjelettscintigrafi har ingen rolle i lokal staging av prostatakreft.</p>
+
+<h3>Biopsi</h3>
+<p>Kombinasjon av MR-målrettede biopsier (PI-RADS ≥3) og systematiske biopsier er standard. Indikasjon for prostatabiopsi baseres på malignitetssuspekt palpasjonsfunn, MR-funn (PI-RADS) og/eller PSA-tetthet — se koelis-prosedyren under. En forutsetning for biopsering er at forventet gjenstående levetid (alder, komorbiditet, funksjon) tilsier gevinst av behandling. Ved flere ISUP-graderte lesjoner brukes høyeste ISUP-grad for risikogruppering.</p>
+
+<h4>Patologiske risikofaktorer i biopsisvaret — hvorfor de vektlegges</h4>
+<p>Utover selve ISUP-graden ser patologen etter flere funn som har selvstendig prognostisk betydning og kan endre behandlingsvalg allerede før bildediagnostikk/kirurgi:</p>
+<ul>
+<li><strong>Infiltrasjon i periprostatisk fettvev:</strong> tilsvarer ekstraprostatisk vekst (EPE, ~pT3a-ekvivalent) allerede påvist på biopsinivå — indikerer lokalavansert sykdom og kan endre behandlingsplanlegging (f.eks. styrke indikasjon for utvidet feltbestråling eller diskusjon om nervesparingsgrad ved kirurgi) før man i det hele tatt har fått bildediagnostikk.</li>
+<li><strong>Perinevral vekst:</strong> tumor vokser langs/rundt nervetråder — en kjent spredningsvei for ekstraprostatisk vekst langs de nevrovaskulære buntene. Assosiert med økt risiko for positive reseksjonsrender ved kirurgi og biokjemisk residiv, og er direkte relevant for beslutning om grad av nervesparing ved RALP.</li>
+<li><strong>Kribriforme strukturer og IDC-P (intraduktalt karsinom i prostata):</strong> økende anerkjent som selvstendig ugunstig prognostisk faktor <em>selv innenfor samme Gleason-score</em> — assosiert med høyere risiko for metastase, biokjemisk residiv og prostatakreftspesifikk død. Bør rapporteres eksplisitt av patolog uavhengig av Gleason-score, og påvirker i praksis risikovurdering/behandlingsintensitet selv om det ennå ikke er formelt innarbeidet som egen tier i EAUs risikogruppering.</li>
+</ul>
+
+<h4>Hvorfor ISUP-gradgruppe — og hvorfor «grad 4» er så viktig</h4>
+<p>Gleason-score (2–10) ble historisk oppfattet forvirrende av pasienter — en «Gleason 6»-diagnose hørtes ut som midtsjiktet alvorlighet, selv om den faktisk representerer den mildeste, indolente kategorien. Dette bidro til unødig engstelse og overbehandling. ISUP-gradgruppene (1–5) ble innført for å gi et tallsystem som bedre gjenspeiler faktiske prognostiske sjikt.</p>
+<p>Andelen <strong>Gleason-mønster 4</strong> er selve kjernen i systemet: Gleason-score 7 deles i gradgruppe 2 (3+4, overvekt av mønster 3) og gradgruppe 3 (4+3, overvekt av mønster 4) nettopp fordi disse har ulik prognose — jo mer mønster 4, desto verre prognose. Av samme grunn angir patologen ofte eksakt <em>prosentandel</em> mønster 4/5 i tillegg til selve gradgruppen, og kommenterer eventuelt <em>tertiært mønster</em> (en liten komponent av høyeste malignitetsgrad, særlig mønster 5, selv om den ikke er dominerende) — også en liten andel høygradig komponent har vist selvstendig prognostisk vekt utover hovedgraderingen.</p>
+
+<h4>Briganti-score — risiko for lymfeknutespredning</h4>
+<p>Briganti-nomogrammet er et validert verktøy som estimerer sannsynligheten for lymfeknutemetastaser (pN1) basert på PSA, klinisk T-stadium, ISUP-gradgruppe fra biopsi, og andel positive biopsisylindre (nyere versjoner inkluderer også MR-funn). Brukes klinisk til å avgjøre om <strong>utvidet bekken-lymfeknutedisseksjon</strong> er indisert ved RALP — en estimert risiko <strong>≥5 %</strong> brukes ofte som terskel for å anbefale utvidet disseksjon (se RALP under Operasjonsteknikker).</p>
+<div class="callout amber"><b>Om kalkulator</b>Vi har bevisst valgt å <em>ikke</em> bygge inn en egen tallkalkulator for Briganti-score her. Nomogrammet bygger på validerte regresjonskoeffisienter fra det opprinnelige datasettet, og en forenklet/uverifisert etterligning kunne gi feilaktige risikoestimat — med reell klinisk konsekvens dersom det legges til grunn for beslutning om lymfeknutedisseksjon. Bruk et validert verktøy (f.eks. MSKCC sine prediksjonsverktøy for prostatakreft eller tilsvarende nomogram-tjenester) for faktisk risikoberegning.</div>
+
+<h4>Valg av supplerende stagingundersøkelser</h4>
+<p>Hensikten med supplerende bildediagnostikk er å avklare sykdomsutbredelse for å styre behandlingsvalg — nytteverdien avhenger av sannsynligheten for funn med reell behandlingskonsekvens. Praktisk tilnærming:</p>
+<ul>
+<li><strong>Lavrisikosykdom:</strong> supplerende metastaseutredning er normalt ikke indisert</li>
+<li><strong>Intermediær og høyrisikosykdom:</strong> utredning for skjelett- og lokoregionale lymfeknutemetastaser vurderes</li>
+<li><strong>PSMA-PET/CT er førstevalg der tilgjengelig</strong> — mest sensitive modalitet, kan med fordel kombineres med fulldose CT med intravenøs kontrast, slik at annen bildediagnostikk (CT thorax/abdomen/bekken, skjelettscintigrafi) kan sløyfes</li>
+<li><strong>MR</strong> er et alternativ som samtidig kan kartlegge både lymfeknuter og skjelett (f.eks. med T2-vektet Dixon-sekvens) — særlig aktuelt der PSMA-PET ikke er tilgjengelig</li>
+<li>Ved påviste fjernmetastaser (MR/PSMA-PET) kan supplerende CT thorax/abdomen/bekken og skjelettscintigrafi brukes for å skille høy fra lav metastasebyrde — relevant fordi lav metastasebyrde kan gi grunnlag for å legge til prostatabestråling ved metastatisk sykdom</li>
+</ul>
+
+
+<h3>Biopsibeslutning ved PSA-tetthet og PI-RADS («koelis-prosedyre»)</h3>
+<p>Biopsibeslutning kan støttes av en kombinasjon av MR-funn (PI-RADS) og PSA-tetthet (PSA/prostatavolum, ng/mL²):</p>
+<div class="table-scroll"><table class="datatable">
+<tr><th>MR</th><th>PSA-tetthet &lt;0,1</th><th>PSA-tetthet 0,1–0,149</th><th>PSA-tetthet 0,15–0,199</th><th>PSA-tetthet ≥0,2</th></tr>
+<tr><td>Negativ/PI-RADS 1–2</td><td>Ingen biopsi</td><td>Ingen biopsi</td><td>Ingen biopsi</td><td>Biopsi (S)</td></tr>
+<tr><td>PI-RADS 3</td><td>Ingen biopsi</td><td>Biopsi (M+/-P)</td><td>Biopsi (M+/-P)</td><td>Biopsi (M+S)</td></tr>
+<tr><td>PI-RADS 4–5</td><td>Biopsi (M+/-P)</td><td>Biopsi (M+/-P)</td><td>Biopsi (M+/-P)</td><td>Biopsi (M+S)</td></tr>
+</table></div>
+<p class="mono" style="font-size:12px;color:var(--ink-soft)">M = målrettet biopsi, P = planleggingsbiopsi (kartleggingsbiopsi), S = systematisk biopsi.</p>
+<ul>
+<li>Biopsi tas ved positiv DRE uavhengig av tabellen over</li>
+<li>Hereditet (arvelig disposisjon) kan tilsi biopsi utenom tabellen</li>
+</ul>
+
+<h2>Klassifikasjon og staging</h2>
+<h3>TNM (8. utgave)</h3>
+<div class="table-scroll"><table class="datatable">
+<tr><th>Stadium</th><th>Betydning</th></tr>
+<tr><td class="mono">T1c</td><td>Ikke palpabel, kun påvist ved biopsi (vanligst i dag)</td></tr>
+<tr><td class="mono">T2a–c</td><td>Palpabel, begrenset til prostata</td></tr>
+<tr><td class="mono">T3a</td><td>Ekstrakapsulær vekst, ev. mikroskopisk innvekst i blærehals</td></tr>
+<tr><td class="mono">T3b</td><td>Innvekst i vesicula seminalis</td></tr>
+<tr><td class="mono">T4</td><td>Fiksert eller innvekst i naboorgan</td></tr>
+<tr><td class="mono">N1</td><td>Regional lymfeknutemetastase</td></tr>
+<tr><td class="mono">M1a/b/c</td><td>Fjernmetastase — a: lymfeknuter, b: skjelett, c: andre organer</td></tr>
+</table></div>
+
+<h3>Gleason / ISUP-gradgruppe</h3>
+<div class="table-scroll"><table class="datatable">
+<tr><th>Gleason-score</th><th>ISUP grad-gruppe</th></tr>
+<tr><td class="mono">≤6</td><td>1</td></tr>
+<tr><td class="mono">7 (3+4)</td><td>2</td></tr>
+<tr><td class="mono">7 (4+3)</td><td>3</td></tr>
+<tr><td class="mono">8</td><td>4</td></tr>
+<tr><td class="mono">9–10</td><td>5</td></tr>
+</table></div>
+
+<h3>EAU risikogruppering (ikke-metastatisk sykdom)</h3>
+<div class="riskgrid">
+  <div class="riskcard low"><h4>Lav risiko</h4><p>ISUP 1 <strong>og</strong> PSA &lt;10 <strong>og</strong> cT1–2a</p></div>
+  <div class="riskcard mid"><h4>Intermediær risiko</h4><p><strong>Gunstig:</strong> ISUP 2, PSA &lt;10, cT1–2b<br><strong>Ugunstig:</strong> ISUP 3, eller ISUP 2 m/PSA 10–20</p></div>
+  <div class="riskcard high"><h4>Høy risiko</h4><p><strong>Lokalisert:</strong> ISUP 4–5, PSA &gt;20, eller cT2c<br><strong>Lokalavansert:</strong> cT3–4 eller cN+</p></div>
+</div>
+
+<h2>Behandling etter risikogruppe</h2>
+<h3>Lav risiko</h3>
+<p><strong>Aktiv overvåking</strong> er standard ved forventet levetid ≥10 år.</p>
+<h3>Intermediær risiko</h3>
+<p>Både RALP og strålebehandling diskuteres som likeverdige. Kortvarig ADT (4–6 mnd) ved radikal stråling.</p>
+<h3>Høy risiko, lokalisert</h3>
+<p>RALP er kirurgisk standard, ofte med utvidet lymfeknutedisseksjon. Langvarig ADT (2–3 år); ved ekstra høy risiko legges abirateron/prednisolon til i 2 år.</p>
+<h3>Høy risiko, lokalavansert</h3>
+<p>Strålebehandling er standard. Ved cN1: stråling mot prostata og bekkenfelt + intensivert ADT.</p>
+
+<h2>PSA-residiv og salvage-behandling</h2>
+<div class="callout amber"><b>Etter RALP</b>PSA ≥ 0,10 ng/mL ved to påfølgende prøver → henvises urolog.</div>
+<div class="callout amber"><b>Etter radikal stråling</b>PSA-stigning ≥2 ng/mL over nadir.</div>
+<p>Moderne praksis favoriserer <strong>tidlig salvage-stråling</strong> fremfor rutinemessig adjuvant stråling. Konkomitant kortvarig ADT bedrer utfall ved høy Gleason/ISUP eller kort PSADT.</p>
+
+<h2>Medikamentell behandling ved metastatisk sykdom</h2>
+<p><strong>ADT</strong> er paraplybegrep for all androgenreduserende behandling (kastrasjon + antiandrogener). <strong>NHT</strong> brukes spesifikt om enzalutamid, apalutamid, darolutamid og abirateron — bikalutamid regnes ikke som NHT.</p>
+
+<h4>Grunnlaget for ADT</h4>
+<p>Prostatakreftceller er i utgangspunktet androgenavhengige (Huggins' klassiske observasjon) — androgenreduksjon gir derfor tumorregresjon/-stabilisering hos de fleste pasienter innledningsvis. ADT brukes langs hele spekteret: som tillegg til strålebehandling ved intermediær/høyrisiko lokalisert sykdom (se Behandling etter risikogruppe), og som ryggraden i behandling av metastatisk sykdom.</p>
+
+<h4>Bikalutamid som monoterapi — når og hvorfor</h4>
+<p>Bikalutamid alene (uten kastrasjon) bevarer libido, bentetthet og muskelmasse bedre enn kastrasjonsbasert ADT, og har historisk vært brukt som alternativ hos pasienter med lokalavansert (ikke-metastatisk) sykdom som prioriterer livskvalitet. EAU-guidelines påpeker imidlertid at bikalutamid-monoterapi gir <strong>svakere onkologisk kontroll</strong> enn kastrasjonsbasert behandling, særlig ved metastatisk sykdom. I dagens praksis er bikalutamid-monoterapi derfor stort sett reservert til:</p>
+<ul>
+<li>Kortvarig «flare»-beskyttelse ved oppstart av GnRH-agonist (se Zoladex/Firmagon)</li>
+<li>Selekterte pasienter med lokalavansert, ikke-metastatisk sykdom som etter samvalg aktivt prioriterer bevart seksualfunksjon/livskvalitet fremfor maksimal onkologisk kontroll, med forståelse for denne avveiningen</li>
+</ul>
+
+<h4>Grunnlaget for å legge til NHT</h4>
+<p>Store fase III-studier (STAMPEDE, LATITUDE, TITAN, ARCHES) har vist overlevelsesgevinst av å legge NHT (abirateron, enzalutamid, apalutamid) til ADT ved hormonsensitiv metastatisk sykdom, sammenlignet med ADT alene — som historisk var standard. ADT alene brukes derfor i dag sjelden som eneste behandling ved nyoppdaget metastatisk sykdom hos pasienter som tåler intensivert behandling.</p>
+
+<h4>Doublet vs. triplet — hvilke betraktninger gjøres</h4>
+<p>Tillegg av docetaksel til ADT+NHT (triplet, basert på PEACE-1 og ARASENS-studiene) gir ytterligere gevinst, særlig ved høyt tumorvolum/høyrisikosykdom. Valget mellom doublet (ADT+NHT) og triplet (ADT+NHT+docetaksel), samt hvilket NHT-middel som velges, baseres på en samlet vurdering av:</p>
+<ul>
+<li><strong>Tumorvolum</strong> (CHAARTED-kriterier — høyt vs. lavt volum basert på antall/lokalisasjon av metastaser)</li>
+<li><strong>Risikokategori</strong> (LATITUDE-kriterier for høyrisiko metastatisk sykdom)</li>
+<li>Pasientens allmenntilstand, komorbiditet og evne til å tåle kjemoterapi</li>
+<li>Bivirkningsprofil og pasientens preferanser (f.eks. abirateron krever samtidig prednisolon og monitorering av leverfunksjon/blodtrykk; enzalutamid/apalutamid har annen bivirkningsprofil bl.a. mtp. fatigue/kognitive symptomer og krampeterskel)</li>
+<li>Tilgjengelighet/godkjenning i norsk klinisk praksis</li>
+</ul>
+
+<p>Standard ved hormonsensitiv metastatisk sykdom er dermed ADT + NHT (doublet), ev. + docetaksel (triplet) ved høyt tumorvolum/høyrisiko og god allmenntilstand.</p>
+<div class="callout amber"><b>Definisjon — kastrasjonsresistent sykdom (CRPC)</b>Kastrasjonsnivå testosteron (&lt;1,7 nmol/L) <strong>og</strong> én av: (1) PSA-stigning &gt;50 % over nadir <strong>og</strong> PSA &gt;2 ng/mL, og/eller (2) radiologisk progresjon.</div>
+<p>Ved CRPC vurderes NHT-bytte, kjemoterapi, radionuklidbehandling og PARP-hemmer ved BRCA-mutasjon. PSA brukes aktivt i oppfølging av metastatisk sykdom, men alltid sammen med klinisk vurdering, markører for osteoblastaktivitet (ALP) og generell kreftaktivitet (LDH), samt bildediagnostikk — PSA-utvikling reflekterer ikke alltid det kliniske forløpet.</p>
+
+<h2>Oppfølging</h2>
+<ul>
+<li>Aktiv overvåking: regelmessig PSA, DRE, re-biopsi/MR</li>
+<li>Etter RALP/stråling: PSA-kontroll etter residiv-kriteriene over</li>
+<li>Metastatisk sykdom: tett urolog/onkolog-samarbeid</li>
+</ul>
+
+<h3>Oppfølging etter RALP (Helsedirektoratets anbefaling)</h3>
+<p>Spesialisthelsetjenesten har ansvar for å planlegge oppfølgingen, i samarbeid med fastlege. Anbefalt kontrollopplegg (klinisk kontroll + PSA, med fokus på bivirkninger og residiv definert som PSA &gt;0,1 ng/mL):</p>
+<ul>
+<li>3, 6 og 12 måneder — første året</li>
+<li>Hver 6. måned — andre og tredje år</li>
+<li>Deretter årlig i totalt 5–7 år</li>
+<li>Etter 5 år: individuell vurdering ut fra alder og komorbiditet</li>
+<li>Pasienter med &lt;10 års forventet levetid bør avslutte PSA-kontroll</li>
+</ul>
+<p>Pasienten kan re-henvises urologisk avdeling ved plagsom urininkontinens og/eller for bistand med seksuell rehabilitering.</p>
+
+<h3>Kontroll etter prostatektomi — praktisk skjema fra undervisningsmateriale</h3>
+<p style="font-size:12.5px;color:var(--ink-soft)">Tabellen under viser samme prinsipp med mer detaljert ressursfordeling (sykepleier/urolog/fastlege) og innhold per kontroll, hentet fra internt undervisningsmateriale — supplerer, ikke erstatter, det offisielle skjemaet over.</p>
+<div class="table-scroll"><table class="datatable">
+<tr><th>Tid etter operasjon</th><th>Ressurs</th><th>Innhold</th></tr>
+<tr><td>10 dager</td><td>Sykepleier</td><td>Fjerne kateter &amp; agraffer; instruksjon ED-behandling; instruksjon bekkenbunnstrening</td></tr>
+<tr><td>6 uker</td><td>Urolog</td><td>Histologisvar; PSA</td></tr>
+<tr><td>3 måneder</td><td>Sykepleier</td><td>Klinisk kontroll (mental helse, seneffekter); PROM; PSA</td></tr>
+<tr><td>6 måneder</td><td>Sykepleier (telefon)</td><td>PSA</td></tr>
+<tr><td>12 måneder</td><td>Sykepleier</td><td>Klinisk kontroll (mental helse, seneffekter); PROM; PSA</td></tr>
+<tr><td>Hver 6. måned i andre og tredje år, deretter årlig i totalt 5 år, deretter individuell vurdering</td><td>Fastlege</td><td>Klinisk kontroll (mental helse, seneffekter); PSA</td></tr>
+</table></div>
+<p style="font-size:13px;color:var(--ink-soft)">Ved biokjemisk residiv (definert som PSA ≥0,1 ng/mL) bør pasienten henvises til vurdering hos spesialist — se PSA-residiv og salvage-behandling over.</p>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/prostatakreft-handlingsprogram" target="_blank">Nasjonalt handlingsprogram for prostatakreft</a>, kap. 5.3 «Bruk av PSA», kap. 5.4 «PSA og arvelig prostatakreft», kap. «Risikoinndeling»/«Bildediagnostisk utredning», og kap. 12.2 «Oppfølgning etter RALP» (sist oppdatert 15. juli 2025)</li>
+<li>EAU Guidelines — Prostate Cancer, uroweb.org</li>
+<li>Internt undervisningsmateriale/presentasjon — «Koelis prosedyre» (biopsibeslutning PSA-tetthet/PI-RADS) og «Kontroll etter prostatektomi»</li>
+<li>Ahus/healthtalk.no/NRK — omtale av Ahus' pilotprosjekt for prostatakreftscreening (2026–2027)</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no og uroweb.org. Biopsi- og kontrolltabellene er transkribert fra fotograferte presentasjonslysbilder — kontroller mot originalkilde ved operativ bruk.</div>
+`};
+
+/* ---------------- BLÆREKREFT ---------------- */
+CONTENT_MAP['blarekreft'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Over 95 % er urotelialt karsinom. Smertefri makrohematuri er kardinalsymptom. Skillet mellom ikke-muskelinvasiv (NMIBC) og muskelinvasiv (MIBC) sykdom styrer hele behandlingsløpet.</div>
+
+<h2>Epidemiologi og risikofaktorer</h2>
+<p>Røyking er den viktigste risikofaktoren. Andre: yrkeseksponering for aromatiske aminer, tidligere strålebehandling mot bekkenet, kronisk irritasjon/infeksjon, og Lynch syndrom (familiær opphopning).</p>
+
+<h2>Utredning</h2>
+<p>Cystoskopi og urincytologi er hjørnesteiner ved mistanke om blæretumor. CT urinveier (CT-urografi) kartlegger øvre urinveier og ev. lymfeknute-/fjernspredning. Endelig diagnostikk og initial stadiebestemmelse skjer ved TURBT (se Operasjonsteknikker).</p>
+
+<h2>Klassifikasjon</h2>
+<div class="table-scroll"><table class="datatable">
+<tr><th>Gruppe</th><th>Definisjon</th></tr>
+<tr><td class="mono">NMIBC</td><td>Ta, T1, og CIS (carcinoma in situ) — ikke muskelinvasiv</td></tr>
+<tr><td class="mono">MIBC</td><td>≥T2 — infiltrerer detrusormuskulatur</td></tr>
+</table></div>
+<p>NMIBC risikogrupperes (lav/intermediær/høy) basert på stadium, grad, tumorstørrelse, multiplisitet og residivmønster (EORTC/EAU-modell). Høyrisikogruppen inkluderer alle T1, alle høygradige tumores, CIS, og multiple/store lavgradige Ta-tumores.</p>
+
+<h2>Behandling</h2>
+<h3>NMIBC</h3>
+<p>TURBT er både diagnostisk og terapeutisk. Enkelt postoperativ instillasjon av mitomycin innen 24t reduserer residivrisiko ved lav/intermediær risiko. Re-TURB innen 2–6 uker anbefales ved T1 eller høygradig sykdom, eller ved ufullstendig initial reseksjon. Adjuvant intravesikal BCG (induksjon + vedlikehold) er standard ved høyrisikosykdom. Radikal cystektomi vurderes ved BCG-refraktær høyrisiko-NMIBC.</p>
+<h3>MIBC</h3>
+<p>Neoadjuvant cisplatinbasert kombinasjonskjemoterapi + radikal cystektomi med bilateral lymfeknutedisseksjon og urinavledning er standard kurativ behandling (se Cystektomi under Operasjonsteknikker). Trimodal behandling (maksimal TURBT + kjemoterapi + strålebehandling) er et blærebevarende alternativ hos selekterte pasienter, særlig ved kontraindikasjon mot cystektomi.</p>
+<h3>Metastatisk sykdom</h3>
+<p>Platinabasert kjemoterapi (cisplatin der mulig), immunterapi (checkpoint-hemmere) og antistoff-legemiddelkonjugater (f.eks. enfortumab vedotin) benyttes sekvensielt/i kombinasjon avhengig av linje og platina-egnethet.</p>
+
+<h2>Oppfølging</h2>
+<p>Målsettingen med kontroll av NMIBC er å oppdage rekurrens eller progresjon til MIBC. <strong>Tilbakefall som T1 høygradig bør i praksis vurderes som potensielt livstruende sykdom på linje med MIBC.</strong> Cystoskopi er gullstandard i oppfølgingen. Første cystoskopikontroll gjøres <strong>3 måneder etter TURB hos alle</strong>, uavhengig av risikogruppe — resultatet på dette tidspunktet er en viktig prognostisk faktor for senere residiv og progresjon.</p>
+<p style="font-size:13px;color:var(--ink-soft)">MIBC følges primært med bildediagnostikk (CT) etter kurativ behandling (cystektomi/trimodal behandling), i tillegg til klinisk kontroll — se Cystektomi under Operasjonsteknikker.</p>
+
+<h3>Kontrollopplegg etter risikogruppe (handlingsprogrammets tabell 8)</h3>
+<div class="table-scroll"><table class="datatable">
+<tr><th>Risikogruppe</th><th>Cystoskopi-intervall etter TURB (re-TURB)</th></tr>
+<tr><td><strong>Lav risiko</strong><br>Primære, solitære, Ta, lavgradig (inkl. PUNLP), &lt;3 cm, ingen CIS</td><td>Cystoskopi 3 mnd. etter TURB/re-TURB<br>Cystoskopi 12 mnd. etter TURB<br>Cystoskopi årlig t.o.m. år 2<br>Små residiv kan elektrokoaguleres poliklinisk</td></tr>
+<tr><td><strong>Intermediær risiko</strong><br>Ta lavgradig, men multiple, residiv, eller store (&gt;3 cm)</td><td>Cystoskopi 3 mnd. etter TURB/re-TURB<br>Cystoskopi hver 6. måned i 2 år<br>Cystoskopi årlig fra 3. til 10. år</td></tr>
+<tr><td><strong>Høy risiko</strong><br>Minst ett av: T1-svulst, høygradig svulst, CIS</td><td>Cystoskopi + <strong>cytologi</strong> 3 mnd. etter TURB/re-TURB<br>Cystoskopi + cytologi hver 3. mnd. i 2 år<br>Cystoskopi + cytologi hver 6. måned t.o.m. 5. året<br>Cystoskopi + cytologi årlig livslangt etter 5 år</td></tr>
+</table></div>
+<p style="font-size:12.5px;color:var(--ink-soft)">Egenprodusert tabell, Nasjonalt handlingsprogram for blære- og urotelkreft.</p>
+
+<ul>
+<li>Intermediær risiko-svulst med høygradig histologi følges <strong>som høyrisiko</strong></li>
+<li>Ved residiv gjenopptas oppfølgingen med cystoskopi 3 mnd. etter, deretter videre som intermediær- eller høyrisikoskjema</li>
+<li>Ved høyrisikosvulster suppleres cystoskopi alltid med cytologi</li>
+<li>Høy alder, dårlig allmenntilstand, komorbiditet og psykososiale forhold kan tilsi at kontrollene avsluttes</li>
+</ul>
+
+<h3>Oppfølging av øvre urinveier</h3>
+<p>Urotelial svulst i øvre urinveier under NMIBC-oppfølging er sjelden (2–4 %), høyest ved høyrisikosvulster (T1 høygradig og CIS, opp mot 10 % etter 7 år). Billeddiagnostikk gjøres derfor <strong>ikke rutinemessig</strong>, men kontrastforsterket CT hvert 2. år anbefales hos høyrisikogruppen, med første CT 1 år etter avsluttet behandling (siste TURB/BCG). Faktorer som kan gi indikasjon for hyppigere billeddiagnostikk: utbredt primær CIS, svulst i ureterostium, og hyppig residiverende høyrisikosvulster.</p>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/blaerekreft-handlingsprogram/oppfolging/oppfolging-av-ikke-muskelinfiltrerende-blaerekreft" target="_blank">Nasjonalt handlingsprogram for blære- og urotelkreft, kap. 10.2: Oppfølging av ikke-muskelinfiltrerende blærekreft</a> (sist oppdatert 24. april 2026)</li>
+<li>EAU Guidelines — Non-muscle-invasive og Muscle-invasive Bladder Cancer, uroweb.org</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>
+`};
+
+/* ---------------- NYREKREFT ---------------- */
+CONTENT_MAP['nyrekreft'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>~850–900 nye tilfeller/år i Norge. Klarcellet nyrecellekarsinom (RCC) utgjør ~70 %. 60 % oppdages tilfeldig ved bildediagnostikk tatt av annen årsak. 5-års overlevelse i Norge ~70 %.</div>
+
+<h2>Risikofaktorer</h2>
+<p>Røyking, overvekt, hypertensjon, kronisk nyresvikt/dialyse, og eksponering for trikloretylen. 2–3 % skyldes arvelige syndromer, først og fremst von Hippel-Lindau.</p>
+
+<h2>Utredning</h2>
+<p>CT eller MR abdomen med kontrast er hjørnestein for karakterisering og staging. Biopsi vurderes ved diagnostisk usikkerhet, ved liten tumor der aktiv overvåkning overveies, eller før systemisk behandling av metastatisk sykdom uten tidligere histologi.</p>
+
+<h2>Behandling etter utbredelse</h2>
+<h3>Lokalisert, liten tumor</h3>
+<p>Partiell (nefronsparende) nefrektomi er førstevalg der teknisk gjennomførbart — bevarer nyrefunksjon. Aktiv overvåkning er et alternativ hos skrøpelige pasienter med liten, langsomtvoksende tumor.</p>
+<h3>Lokalisert, stor tumor</h3>
+<p>Radikal nefrektomi, i dag oftest laparoskopisk/robotassistert.</p>
+<h3>Lokalavansert sykdom</h3>
+<p>Radikal nefrektomi, ev. med trombektomi ved venetrombe (v. renalis/v. cava).</p>
+<h3>Metastatisk sykdom</h3>
+<p>Systemisk behandling er hovedpilaren: immunterapikombinasjoner (f.eks. nivolumab/ipilimumab) eller immunterapi + TKI, valgt ut fra IMDC-risikogruppering. Cytoreduktiv nefrektomi kan vurderes hos selekterte pasienter med lav metastasebyrde og god allmenntilstand.</p>
+
+<h2>Komplikasjoner ved kirurgi</h2>
+<ul>
+<li>Postoperativ blødning, sårinfeksjon</li>
+<li>Nedsatt nyrefunksjon (spesielt etter radikal nefrektomi)</li>
+<li>DVT/lungeemboli, UVI, pneumoni</li>
+<li>Perioperativ mortalitet lav (&lt;1–2 %)</li>
+</ul>
+
+<h2>Oppfølging</h2>
+<p>Todelt: tidlig postoperativ kontroll av komplikasjoner, blodtrykk og nyrefunksjon, deretter langtidskontroll for residiv/metastaser. 80 % av residiv oppstår innen 2 år, 75–85 % innen 5 år — metastaser etter 10 år forekommer, men er sjeldne.</p>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/nyrecellekreft-handlingsprogram" target="_blank">Nasjonalt handlingsprogram for nyrekreft</a></li>
+<li>EAU Guidelines — Renal Cell Carcinoma, uroweb.org</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>
+`};
+
+/* ---------------- TESTIKKELKREFT ---------------- */
+CONTENT_MAP['testikkelkreft'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Hyppigste kreftform hos unge menn (20–40 år). Fremragende prognose — 5-års relativ overlevelse ~98–99 % i Norge, selv ved metastatisk sykdom ved diagnose.</div>
+
+<h2>Presentasjon og initial håndtering</h2>
+<p>Klassisk presentasjon er en smertefri skrotal kul eller diffus forstørrelse. Utredes med skrotal ultralyd og tumormarkører (AFP, hCG, LDH) <strong>før</strong> orkiektomi — markørene er avgjørende for senere stadieinndeling og responsvurdering. Pasienten skal tilbys sædbanking før kirurgi.</p>
+
+<h2>Kirurgi og histologi</h2>
+<p>Inguinal orkiektomi er standard tilnærming (aldri transskrotal biopsi — risiko for endret lymfedrenasje og lokal tumorspredning; se Operasjonsteknikker — Orkiektomi). Testikkelbevarende kirurgi kan vurderes ved solitær testikkel eller bilaterale svulster. Histologisk skilles mellom <strong>seminom</strong> og <strong>non-seminøs germinalcelletumor (NSGCT)</strong> — dette styrer all videre behandling.</p>
+
+<h2>Stadieinndeling</h2>
+<p>Endelig stadium settes etter histologisvar, CT thorax/abdomen/bekken og postoperative tumormarkører. Pasienter med dårlig prognose (svært høye markører eller metastaser utenfor lymfeknuter/lunger) henvises direkte til onkologisk avdeling.</p>
+
+<h2>Behandling etter stadium</h2>
+<h3>Stadium I</h3>
+<p>Overvåkning er ofte foretrukket ved lav residivrisiko, som alternativ til adjuvant kjemoterapi (ett kur karboplatin ved seminom) eller adjuvant behandling ved NSCGT med risikofaktorer (f.eks. karinvasjon).</p>
+<h3>Metastatisk sykdom</h3>
+<p>Cisplatinbasert kombinasjonskjemoterapi (BEP-regime) er kurativ standard, risikostratifisert etter IGCCCG-kriteriene. Retroperitoneal lymfeknutedisseksjon (RPLND) kan være aktuelt ved reststumor etter kjemoterapi, særlig ved NSGCT.</p>
+
+<h2>Oppfølging og seneffekter</h2>
+<p>Strukturerte kontroller med markører og bildediagnostikk, tilpasset stadium, histologi og behandling. Langtidsoppfølging er viktig pga. seneffekter: hypogonadisme (kontroll av testosteron/LH/FSH), økt kardiovaskulær og metabolsk risiko, fertilitetsproblemer, og økt risiko for sekundærkreft.</p>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/testikkelkreft-handlingsprogram" target="_blank">Nasjonalt handlingsprogram for testikkelkreft</a> (sist oppdatert mai 2025)</li>
+<li>SWENOTECA-protokoller (felles norsk-svensk samarbeid)</li>
+<li>EAU Guidelines — Testicular Cancer, uroweb.org</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>
+`};
+
+/* ---------------- PENISKREFT ---------------- */
+CONTENT_MAP['peniskreft'] = {type:'simple', html: `
+<div class="callout amber"><b>Merk</b>Det foreligger <strong>ikke</strong> et eget norsk handlingsprogram for peniskreft. Pakkeforløpet bygger direkte på EAU Guidelines. Behandling foregår sentralisert ved regionsykehus med tverrfaglig team.</div>
+
+<h2>Epidemiologi og risikofaktorer</h2>
+<p>Sjelden kreftform i vestlige land. Assosiert med HPV-infeksjon, fimose, dårlig hygiene, lichen sclerosus (BXO) og røyking.</p>
+
+<h2>Presentasjon og utredning</h2>
+<p>Synlig eller palpabel lesjon på glans eller forhud — kan lett forveksles med benigne tilstander, så det bør være lav terskel for biopsi ved ikke-tilhelende lesjoner. Utredning omfatter biopsi for histologisk diagnose, klinisk og radiologisk vurdering av lyskeglandler (helt sentralt for prognose), og MR penis ved usikker lokal utbredelse.</p>
+
+<h2>Behandling</h2>
+<h3>Lokal tumor</h3>
+<p>Organbevarende kirurgi (glansectomi, delvis amputasjon) foretrekkes der onkologisk forsvarlig, fremfor total amputasjon.</p>
+<h3>Lyskeglandler</h3>
+<p>Avgjørende for prognosen. Dynamisk sentinel node-biopsi eller formelt lyskeglandeltoalett vurderes ut fra risiko for okkult spredning. Ved avansert lymfeknutesykdom kan neoadjuvant kjemoterapi etterfulgt av kirurgi være aktuelt.</p>
+
+<h2>Rehabilitering</h2>
+<p>Sterkt fokus på seksualfunksjon og kroppsbilde. Henvisning til sexolog anbefales sterkt, og partner/pårørendes behov for informasjon bør ivaretas aktivt.</p>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/nasjonale-forlop/peniskreft" target="_blank">Pakkeforløp for peniskreft</a></li>
+<li>EAU Guidelines — Penile Cancer, uroweb.org</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på uroweb.org.</div>
+`};
+
+/* ---------------- ØVRE UROTELIAL KREFT ---------------- */
+CONTENT_MAP['ovreurotelial'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Sjeldnere enn blærekreft (~80–100 tilfeller/år i Norge). Samme risikofaktorer som blærekreft (røyking), og assosiert med Lynch syndrom. Følger samme pakkeforløp som blærekreft.</div>
+
+<h2>Utredning</h2>
+<p>CT-urografi er hovedundersøkelse for kartlegging av nyrebekken og ureter. Ureterorenoskopi med biopsi/cytologi benyttes ved diagnostisk usikkerhet eller for å avklare grad før behandlingsvalg.</p>
+
+<h2>Behandling</h2>
+<p><strong>Radikal nefroureterektomi med bladmansjett</strong> er standard ved høyrisiko/invasiv sykdom — fjerner nyre, hele ureter og en mansjett av blæreveggen rundt ureterostiet, for å redusere risiko for lokalt residiv i det gjenværende uroteliale slimhinnetreet.</p>
+<p><strong>Nyresparende, endoskopisk behandling</strong> (URS-basert laserreseksjon/-ablasjon) er aktuelt hos selekterte lavrisikopasienter, eller der nyrefunksjon må bevares (solitær nyre, nedsatt nyrefunksjon) — krever tett endoskopisk oppfølging pga. høyere lokal residivrisiko.</p>
+<p>Adjuvant enkelt intravesikal instillasjon (mitomycin) etter nefroureterektomi reduserer risikoen for senere blæreresidiv, som er hyppig i denne pasientgruppen.</p>
+
+<h2>Oppfølging</h2>
+<p>Høy risiko for metakron blærekreft gjør regelmessig cystoskopikontroll nødvendig. Bildediagnostikk av gjenværende urotel (kontralateral øvre urinvei) inngår også i oppfølgingen.</p>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/blaerekreft-handlingsprogram" target="_blank">Nasjonalt handlingsprogram for blære- og urotelkreft</a> (dekker øvre urotelial kreft i eget kapittel)</li>
+<li>EAU Guidelines — Upper Tract Urothelial Carcinoma, uroweb.org</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>
+`};
+
+/* ---------------- BENIGNE TILSTANDER ---------------- */
+
+CONTENT_MAP['bph'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Aldersrelatert forstørrelse av prostatas transisjonssone. Svært vanlig etter 50 år. Symptombildet (LUTS) og resturin/flowmetri styrer behandlingsvalg — ikke prostatastørrelse alene.</div>
+
+<h2>Symptomer (LUTS)</h2>
+<ul>
+<li><strong>Lagringssymptomer:</strong> frequency, urgency, nokturi</li>
+<li><strong>Tømmingssymptomer:</strong> svak stråle, hesitasjon, avbrutt stråle, følelse av ufullstendig tømming, etterdrypp</li>
+</ul>
+
+<h2>Utredning</h2>
+<p>Anamnese med symptomskår (IPSS), klinisk undersøkelse inkl. DRE, urinstiks, flowmetri med resturinmåling. PSA diskuteres med pasienten på samme grunnlag som ved screening for øvrig. Ultralyd nyre/blære vurderes ved høyt resturin, hematuri eller nedsatt nyrefunksjon.</p>
+
+<h2>Komplikasjoner ved ubehandlet/progredierende sykdom</h2>
+<p>Akutt urinretensjon, residiverende UVI, blærestein, og i sjeldne tilfeller nyresvikt sekundært til kronisk høytrykksretensjon.</p>
+
+<h2>Behandling</h2>
+<h3>Medikamentell</h3>
+<ul>
+<li><strong>Alfablokkere</strong> (tamsulosin, alfuzosin) — rask symptomlindring via avslapning av glatt muskulatur</li>
+<li><strong>5-alfareduktasehemmere</strong> (finasterid, dutasterid) — reduserer prostatavolum over måneder, reduserer risiko for retensjon/kirurgi ved stort volum</li>
+<li>Kombinasjonsbehandling ved stort volum og moderate–alvorlige symptomer</li>
+<li>Beta-3-agonist/antikolinergika ved uttalt lagringskomponent, forutsatt lavt resturin</li>
+</ul>
+<h3>Kirurgisk</h3>
+<p>Indisert ved refraktære symptomer på medikamenter, residiverende retensjon/UVI/hematuri, blæresten, eller obstruktiv nyresvikt. TURP er gullstandard ved moderate prostatavolum (se Operasjonsteknikker). Laserenukleasjon (HoLEP) og robotassistert enukleasjon er alternativer ved større volum. Minimalinvasive teknikker (f.eks. UroLift) kan være aktuelle hos selekterte pasienter som ønsker å bevare ejakulasjonsfunksjon.</p>
+
+<h2>Ahus intern retningslinje — henvisning og kirurgisk utfallsvurdering</h2>
+<div class="callout internal"><b>Ahus internt — urologisk poliklinikk</b>Lokal prosedyre for henvisning ved obstruktiv mannlig LUTS/BPH (internt undervisningsmateriale, sist endret sept. 2024). Ikke en nasjonal retningslinje.</div>
+
+<h3>Avvisningskriterier ved henvisning</h3>
+<p>Henvisninger for obstruktiv mannlig LUTS avvises dersom medikamentell behandling ikke er forsøkt. Fastlege anbefales å forsøke alfablokker som førstevalg, og legge til 5-alfareduktasehemmer hvis prostata kjennes forstørret uten tumormistanke ved DRE. Rehenvisning er aktuelt ved manglende effekt av medikamentell behandling, eller uakseptable bivirkninger, dersom pasienten er motivert for kirurgisk behandling (TURP/enukleasjon).</p>
+<p>Ved rehenvisning ønskes minimum: tidligere sykdommer, faste medisiner, høyde/vekt, utfylt IPSS-skjema og drikke-/miksjonsliste, samt funn ved rektaleksplorasjon.</p>
+
+<h3>Forventet utfall av kirurgi mot utløpsobstruksjon</h3>
+<p>Ahus bruker en strukturert baseline-vurdering (basert på internasjonal LUTS-litteratur) for å anslå sannsynlig gevinst av kirurgi mot utløpsobstruksjon:</p>
+<div class="riskgrid cols-2">
+<div class="riskcard low"><h4>Gunstige faktorer</h4><ul>
+<li>Plagsomme tømmingssymptomer (høy ICIQ-MLUTS voiding-subskår)</li>
+<li>Lav flow på flowmetri (korrigert Qmax &lt;10 mL/s)</li>
+<li>Høy symptombyrde (IPSS &gt;16)</li>
+<li>Dårlig livskvalitet pga. LUTS (IPSS QoL &gt;4)</li>
+<li>Alder &lt;74 år, lav komorbiditet</li>
+</ul><p style="margin-top:8px"><strong>Alle 5 til stede</strong> → sannsynlig symptombedring av kirurgi</p></div>
+<div class="riskcard high"><h4>Ugunstige faktorer</h4><ul>
+<li>Tømmingssymptomer som ikke påvirker livskvalitet</li>
+<li>Moderat/god flow (korrigert Qmax ≥13 mL/s)</li>
+<li>Symptomer med kjent dårlig responsrate (nokturi, inkontinens, postmiksjonsdrypp)</li>
+<li>Utbredt komorbiditet</li>
+</ul><p style="margin-top:8px"><strong>Én eller flere til stede</strong> → nøytral effekt eller risiko for forverring</p></div>
+</div>
+<p>Ved uklart bilde er <strong>urodynamikk</strong> nyttig for å skille reell obstruksjon (høy blæreutløpsobstruksjonsindeks/-kontraktilitetsindeks) fra uobstruert eller underaktiv detrusor — noe som direkte påvirker forventet nytte av kirurgisk avlastning.</p>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Management of Non-neurogenic Male LUTS, uroweb.org</li>
+<li><strong>Ahus urologisk poliklinikk</strong> — internt undervisningsmateriale «LUTS og bekkensmerter, ark til leger» (lokal prosedyre, sist endret sept. 2024)</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid gjeldende Ahus-prosedyre.</div>
+`};
+
+CONTENT_MAP['nyrestein'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Livstidsrisiko for nyrestein er 10–15 %, med høy residivrisiko uten forebygging. Feber + obstruerende stein er en urologisk akuttsituasjon som krever rask avlastning. Ca. 85 % er idiopatisk kalsiumurolithiasis — de resterende ca. 15 % har en identifiserbar MIAF-årsak (se under) som krever målrettet utredning og behandling.</div>
+
+<h2>Steintyper</h2>
+<p>Kalsiumoksalat/kalsiumfosfat er vanligst (ca. 80 %). Andre: urinsyre (radiolucent på vanlig røntgen, men synlig på CT), struvitt/infeksjonsstein (assosiert med ureasesproduserende bakterier), og cystin (arvelig).</p>
+
+<h2>Akutt presentasjon og utredning</h2>
+<p>Klassisk bilde er akutt flankesmerte (nyrekolikk) med kvalme, ofte uten feber. <strong>CT urinveier uten kontrast</strong> er gullstandard for diagnostikk. Ultralyd er førstevalg hos gravide og barn. Urinstiks tas rutinemessig for å avdekke samtidig infeksjon.</p>
+<div class="callout high"><b>Akutt varsel</b>Feber + obstruerende stein = urosepsis-risiko. Krever akutt avlastning (JJ-stent eller perkutan nefrostomi) — ikke vent til steinen kan fjernes definitivt.</div>
+
+<h2>Innleggelseskriterier</h2>
+<p>Følgende bør vurderes for akutt innleggelse: manglende analgetisk effekt av primærbehandling, ledsagende feber (&gt;38,5 °C), underliggende nyresykdom, eller tidlig residiv av steinanfall. Ukomplisert urolithiasis kan henvises til elektiv CT-urografi innen 3–4 uker fra fastlege/legevakt, med kopi til fastlege og parallell henvisning til urologisk poliklinikk for vurdering etter CT.</p>
+
+<h2>Akutt behandling</h2>
+<p>Smertestillende — NSAID er førstevalg der ikke kontraindisert. Medikamentell ekspulsjonsterapi (alfablokker) kan fremme spontan avgang av distale ureterstein &lt;10 mm. Akutt avlastning er indisert ved infeksjon, komplett obstruksjon med nedsatt nyrefunksjon, eller obstruksjon av solitær/transplantert nyre.</p>
+
+<h2>Definitiv steinbehandling</h2>
+<p>Valg av metode avhenger av steinstørrelse, -lokalisasjon og -sammensetning: ESWL (ekstrakorporal støtbølgelitotripsi), ureterorenoskopi/RIRS, eller PCNL ved store steinbyrder (se Operasjonsteknikker for detaljer om de endoskopiske metodene). Blærestein behandles med cystolitotripsi (se Operasjonsteknikker).</p>
+<p>Ikke alle konkrementer trenger aktiv behandling: asymptomatiske nyrebekkenkonkrementer man forventer passerer spontant (&lt;5 mm) og konkrementer i nedre calyx &lt;1–1,5 cm kan følges. Steindannere med restkonkrementer som bevisst ikke behandles, bør kontrolleres med CT etter 1–3 år.</p>
+
+<h2>MIAF-klassifikasjon</h2>
+<p>Steindannere deles i to hovedgrupper:</p>
+<div class="riskgrid" style="grid-template-columns:1fr 1fr;">
+<div class="riskcard low"><h4>Idiopatisk kalsiumurolithiasis (~85 %)</h4><p>Ingen enkeltstående årsak — skyldes en kombinasjon av økt urin-supersaturasjon, lav døgndiurese, kostfaktorer og redusert mengde naturlige krystallisasjonshemmere i urinen (særlig citrat).</p></div>
+<div class="riskcard high"><h4>MIAF-urolithiasis (~15 %)</h4><p><strong>M</strong>etabolisk (f.eks. hyperparatyreoidisme, enterisk hyperoksaluri), <strong>I</strong>nfeksiøs (struvittstein), <strong>A</strong>natomisk (f.eks. avløpshinder, hesteskonyre) eller <strong>F</strong>unksjonell årsak til steindannelse — krever målrettet utredning og spesifikk behandling av underliggende årsak.</p></div>
+</div>
+
+<h2>Metabolsk utredning — tre nivåer</h2>
+<p>Utredningsdybden trappes opp etter kompleksitet og residivmønster:</p>
+<table class="datatable">
+<tr><th>Nivå</th><th>Indikasjon</th><th>Innhold</th></tr>
+<tr><td class="mono">Basal</td><td>Alle pasienter</td><td>S-kreatinin, S-ionisert kalsium, S-urat; urinstiks/-dyrkning; steinanalyse når mulig</td></tr>
+<tr><td class="mono">Utvidet</td><td>Komplisert idiopatisk kalsiumurolithiasis</td><td>Døgnurin: kalsium, citrat, volum</td></tr>
+<tr><td class="mono">Selektiv</td><td>Mistanke om MIAF-årsak</td><td>Målrettet etter mistanke — f.eks. PTH, døgnurin-oksalat, døgnurin-/urinkvalitativ cystin, syre/base-status</td></tr>
+</table>
+
+<h2>Forebygging og profylakse</h2>
+<h3>Generelle (ikke-farmakologiske) tiltak</h3>
+<ul>
+<li><strong>Væskeinntak</strong> — viktigste enkelttiltak. Mål er døgnurinvolum &gt;2–2,5 L, som reduserer metningsgraden av alle potensielt krystalldannende salter</li>
+<li><strong>Moderat inntak av animalsk protein</strong> og salt-/kaloririk kost</li>
+<li><strong>Ikke kalsiumrestriksjon</strong> — kontraintuitivt, men viktig: lavt kalsiuminntak er assosiert med <em>økt</em> steinrisiko (kalsium i kosten binder oksalat i tarmen og reduserer oksalatabsorpsjon), og kan i tillegg gi osteopeni. Generelle råd om redusert kalsiuminntak frarådes derfor</li>
+</ul>
+<h3>Farmakologisk profylakse (spesialistoppgave)</h3>
+<ul>
+<li><strong>Kaliumcitrat</strong> — ved hypocitraturi, residiverende idiopatisk kalsiumstein, urinsyrestein, cystinuri eller renal tubulær acidose. Virker ved å alkalisere urinen og øke citratutskillelsen, som kompleksbinder kalsium og reduserer overmetning</li>
+<li><strong>Tiazid</strong> — ved idiopatisk hyperkalsiuri uten hyperkalsemi</li>
+<li><strong>Allopurinol</strong> — ved urinsyrestein/hyperurikosuri</li>
+<li>Farmakologisk profylakse er i praksis alltid en spesialistoppgave og forutsetter forutgående metabolsk utredning</li>
+</ul>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Urolithiasis, uroweb.org</li>
+<li>Metodebok.no — Urologi (HUS): Urolithiasis, Steinkirurgi — indikasjon for ulike behandlinger, Steinprofylakse</li>
+<li>Nyresten.dk — Årsager (MIAF-klassifikasjon)</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Metodebok.no gjenspeiler praksis ved Haukeland universitetssjukehus — kan avvike fra lokal praksis andre steder.</div>
+`};
+
+CONTENT_MAP['oab'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Overaktiv blære (OAB) er en klinisk diagnose basert på lagringssymptomer, satt etter at andre årsaker (infeksjon, tumor, blærestein) er utelukket.</div>
+
+<h2>Definisjon</h2>
+<p>Urgency (plutselig, vanskelig utsettbar vannlatingstrang), ofte med urgency-inkontinens, frequency og nokturi, uten påvist urinveisinfeksjon eller annen forklarende patologi.</p>
+
+<h2>Utredning</h2>
+<p>Anamnese, miksjonslister (3 døgn er standard), urinstiks for å utelukke infeksjon/hematuri, og resturinmåling. Urodynamisk undersøkelse er ikke rutine, men bør vurderes ved diagnostisk usikkerhet, manglende respons på behandling, eller før invasive tiltak.</p>
+
+<h2>Behandling — trinnvis</h2>
+<ol>
+<li>Livsstilstiltak og blæretrening (væskejustering, planlagt vannlating)</li>
+<li>Medikamentell: antikolinergika eller beta-3-agonist (mirabegron) — sistnevnte har gunstigere bivirkningsprofil hos eldre (mindre kognitiv/antikolinerg belastning)</li>
+<li>Intravesikal botulinumtoksin-injeksjon ved medikamentrefraktær sykdom (se Operasjonsteknikker)</li>
+<li>Sakral nervemodulasjon (SNM) eller perkutan tibialisnervestimulering (PTNS) ved fortsatt refraktær sykdom</li>
+</ol>
+
+<h2>Ahus intern retningslinje — poliklinisk forløp</h2>
+<div class="callout internal"><b>Ahus internt — urologisk poliklinikk</b>Lokal prosedyre for henvisning og poliklinisk utredning av LUTS ved Ahus (internt undervisningsmateriale, sist endret sept. 2024). Ikke en nasjonal retningslinje.</div>
+
+<h3>Henvisningskrav og avvisningskriterier</h3>
+<p>Henvisninger med mangelfulle opplysninger avvises. Pasienter som ikke har forsøkt medikamentell behandling tilbakehenvises til fastlege. Pasienter henvist med samtidig forhøyet PSA og vannlatingsplager skal <strong>ikke</strong> LUTS-utredes før PSA er utredet særskilt.</p>
+<div class="table-scroll"><table class="datatable">
+<tr><th>Ved obstruktive symptomer (mistenkt BPH)</th><th>Ved urgency/inkontinens (mistenkt OAB)</th></tr>
+<tr><td>Anbefal alfablokker; legg til 5-alfareduktasehemmer hvis forstørret prostata uten tumormistanke ved DRE</td><td>Blæretrening, redusér irritanter (koffein, kullsyre, kunstig søtning, alkohol, røyk), væskerestriksjon til 1,5–2 L ved høyt inntak</td></tr>
+<tr><td>Henvis ved manglende effekt/uakseptable bivirkninger og motivasjon for kirurgi (TURP/enukleasjon) — se BPH</td><td>Ved manglende effekt av konservative tiltak: 1) mirabegron, 2) muskarinreseptorhemmer, 3) kombinasjon — hver linje forsøkes i 3 mnd</td></tr>
+</table></div>
+<p>Minimum vedlagt ved (re)henvisning: tidligere sykdommer, faste medisiner, høyde/vekt, utfylt IPSS-skjema og drikke-/miksjonsliste, samt DRE-funn (obstruktiv gruppe) eller U-stiks-funn (OAB-gruppe).</p>
+
+<h3>Poliklinisk forløp</h3>
+<div class="callout internal" style="margin-bottom:14px;"><b>Flytskjema — Ahus internt</b>Gjengitt fra internt undervisningsmateriale «LUTS og bekkensmerter, ark til leger».</div>
+<div style="background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px;margin:0 0 16px;overflow-x:auto;">
+<svg viewBox="0 0 660 610" style="width:100%;max-width:640px;height:auto;display:block;margin:0 auto;font-family:'IBM Plex Sans',sans-serif;" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ahA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5B6472"/></marker></defs>
+<rect x="20" y="30" width="260" height="44" rx="4" fill="#2C4A6E"/>
+<text x="150" y="57" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">HENVISNING</text>
+<rect x="340" y="8" width="300" height="38" rx="4" fill="#F5E3E1" stroke="#A8453B"/>
+<text x="490" y="32" text-anchor="middle" fill="#1C2430" font-size="10.5">Manglende opplysninger → avvises</text>
+<rect x="340" y="56" width="300" height="38" rx="4" fill="#F5E3E1" stroke="#A8453B"/>
+<text x="490" y="80" text-anchor="middle" fill="#1C2430" font-size="10.5">Ikke prøvd medikamentelt → henvises FL</text>
+<rect x="340" y="104" width="300" height="38" rx="4" fill="#F5E3E1" stroke="#A8453B"/>
+<text x="490" y="128" text-anchor="middle" fill="#1C2430" font-size="10.5">Forhøyet PSA + LUTS → PSA utredes først</text>
+<line x1="280" y1="45" x2="335" y2="27" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahA)"/>
+<line x1="280" y1="52" x2="335" y2="75" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahA)"/>
+<line x1="280" y1="60" x2="335" y2="123" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahA)"/>
+<line x1="150" y1="74" x2="150" y2="158" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahA)"/>
+<rect x="20" y="160" width="260" height="40" rx="4" fill="#E8EEF4" stroke="#2C4A6E"/>
+<text x="150" y="184" text-anchor="middle" fill="#1C2430" font-size="12" font-weight="600">LUTS UTREDNING</text>
+<line x1="150" y1="200" x2="150" y2="238" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahA)"/>
+<rect x="20" y="240" width="260" height="100" rx="4" fill="#E8EEF4" stroke="#2C4A6E"/>
+<text x="35" y="260" font-size="12" font-weight="600" fill="#1C2430">SYKEPLEIERLISTE</text>
+<text x="35" y="280" font-size="11" fill="#1C2430">• Flow/rest</text>
+<text x="35" y="298" font-size="11" fill="#1C2430">• Miksjonslister / IPSS-skjema</text>
+<text x="35" y="316" font-size="11" fill="#1C2430">• Flow/restnotat (mal)</text>
+<line x1="150" y1="340" x2="150" y2="398" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahA)"/>
+<text x="290" y="362" font-size="10" fill="#5B6472" font-style="italic">Sykepleier godkjenner og</text>
+<text x="290" y="376" font-size="10" fill="#5B6472" font-style="italic">setter opp legetime</text>
+<rect x="20" y="400" width="260" height="100" rx="4" fill="#E8EEF4" stroke="#2C4A6E"/>
+<text x="35" y="420" font-size="12" font-weight="600" fill="#1C2430">LEGELISTE</text>
+<text x="35" y="440" font-size="11" fill="#1C2430">• Anamnese</text>
+<text x="35" y="458" font-size="11" fill="#1C2430">• DRE</text>
+<text x="35" y="476" font-size="11" fill="#1C2430">• TRUL, vurdering/tiltak</text>
+<line x1="150" y1="500" x2="150" y2="538" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahA)"/>
+<rect x="20" y="540" width="260" height="44" rx="4" fill="#A9711F"/>
+<text x="150" y="567" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">BEHANDLING</text>
+</svg>
+</div>
+<ol class="steplist compact">
+<li>Henvisning vurderes — avvises ved manglende opplysninger, manglende forsøkt medikasjon, eller uavklart PSA</li>
+<li>Sykepleierliste: flow/rest, miksjonslister, IPSS-skjema, standardisert flow/restnotat</li>
+<li>Sykepleier godkjenner dokumentasjon og setter opp legetime</li>
+<li>Legeliste: anamnese, DRE, TRUL, vurdering/tiltak</li>
+<li>Behandling iverksettes</li>
+</ol>
+
+<h3>Frase — flow-liste sykepleier (mal)</h3>
+<div class="callout amber" style="font-family:var(--mono);font-size:12.5px;line-height:1.8;">
+Flow: Void __ mL, qMax __ mL.<br>
+Rest: __ mL.<br>
+Miksjonslister for __ døgn. Har __ og __ miksjoner per døgn.<br>
+Totalvolum er __ mL og __ mL. Minste volum er __ mL, største volum er __ mL.<br>
+Drikker __ mL og __ mL.<br>
+Scorer _ på IPSS og _ på livskvalitetsindeks.
+</div>
+
+<h3>Behandlingsalgoritme — lagring, tømming og nokturi</h3>
+<p>Utredning starter med anamnese, miksjonslister, IPSS, flow/rest og U-stiks, og deles i tre spor etter symptommønster:</p>
+
+<div class="callout internal" style="margin-bottom:14px;"><b>Flytskjema — Ahus internt</b>Gjengitt fra internt undervisningsmateriale «LUTS og bekkensmerter, ark til leger».</div>
+<div style="background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px;margin:0 0 16px;overflow-x:auto;">
+<svg viewBox="0 0 1280 590" style="width:100%;min-width:900px;height:auto;font-family:'IBM Plex Sans',sans-serif;" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ahB" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#5B6472"/></marker></defs>
+<rect x="20" y="10" width="1220" height="40" rx="4" fill="#2C4A6E"/>
+<text x="630" y="35" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="600">Anamnese, miksjonslister, IPSS, Flow/rest, U-stiks</text>
+<line x1="200" y1="50" x2="200" y2="76" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<line x1="630" y1="50" x2="630" y2="76" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<line x1="1050" y1="50" x2="1050" y2="76" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+
+<!-- COL 1: Fylning/lagring -->
+<rect x="20" y="78" width="360" height="34" rx="4" fill="#E8EEF4" stroke="#2C4A6E"/>
+<text x="200" y="100" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1C2430">Fylning/lagring</text>
+<line x1="200" y1="112" x2="200" y2="134" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<rect x="20" y="136" width="360" height="46" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="35" y="154" font-size="11" fill="#1C2430">Konservative tiltak: blæretrening,</text>
+<text x="35" y="170" font-size="11" fill="#1C2430">væskerestriksjon</text>
+<text x="390" y="150" font-size="10" fill="#3C7A5C">✓ Effekt</text>
+<text x="390" y="163" font-size="10" fill="#3C7A5C">→ Avslutt</text>
+<line x1="200" y1="182" x2="200" y2="204" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<text x="210" y="197" font-size="9.5" fill="#A8453B" font-style="italic">ikke effekt</text>
+<rect x="20" y="206" width="360" height="46" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="35" y="224" font-size="11" fill="#1C2430">Medikamentelt: 1. Betmiga 2. Antimusk.</text>
+<text x="35" y="240" font-size="11" fill="#1C2430">3. Kombinasjon</text>
+<line x1="200" y1="252" x2="200" y2="274" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<text x="210" y="267" font-size="9.5" fill="#A8453B" font-style="italic">ikke effekt</text>
+<rect x="20" y="276" width="360" height="46" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="35" y="294" font-size="11" fill="#1C2430">Urodynamikk, cystoskopi hvis</text>
+<text x="35" y="310" font-size="11" fill="#1C2430">hematuri</text>
+<line x1="200" y1="322" x2="200" y2="344" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<text x="210" y="337" font-size="9.5" fill="#A8453B" font-style="italic">ikke effekt</text>
+<rect x="20" y="346" width="360" height="36" rx="4" fill="#F5EAD7" stroke="#A9711F"/>
+<text x="200" y="369" text-anchor="middle" font-size="11" fill="#1C2430">Botox eller SNM</text>
+<line x1="200" y1="382" x2="200" y2="404" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<text x="210" y="397" font-size="9.5" fill="#A8453B" font-style="italic">ikke effekt</text>
+<rect x="20" y="406" width="360" height="36" rx="4" fill="#A9711F"/>
+<text x="200" y="429" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Urinavledning</text>
+
+<!-- COL 2: Tømming -->
+<rect x="440" y="78" width="360" height="34" rx="4" fill="#E8EEF4" stroke="#2C4A6E"/>
+<text x="620" y="100" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1C2430">Tømming</text>
+<line x1="620" y1="112" x2="620" y2="134" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<rect x="440" y="136" width="360" height="46" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="455" y="154" font-size="11" fill="#1C2430">Konservativt: blæretrening,</text>
+<text x="455" y="170" font-size="11" fill="#1C2430">RIK/permanent kateter</text>
+<text x="810" y="150" font-size="10" fill="#3C7A5C">✓ Effekt</text>
+<text x="810" y="163" font-size="10" fill="#3C7A5C">→ Avslutt</text>
+<line x1="620" y1="182" x2="620" y2="204" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<text x="630" y="197" font-size="9.5" fill="#A8453B" font-style="italic">ikke effekt</text>
+<rect x="440" y="206" width="360" height="46" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="455" y="222" font-size="10.5" fill="#1C2430">DRE/TRUL, PSA hvis relevant,</text>
+<text x="455" y="238" font-size="10.5" fill="#1C2430">cystoskopi v/hematuri, medikamenter</text>
+<text x="810" y="220" font-size="10" fill="#3C7A5C">✓ Effekt</text>
+<text x="810" y="233" font-size="10" fill="#3C7A5C">→ Avslutt</text>
+<line x1="620" y1="252" x2="620" y2="274" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<text x="630" y="267" font-size="9.5" fill="#A8453B" font-style="italic">ikke effekt</text>
+<rect x="440" y="276" width="360" height="58" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="455" y="292" font-size="10.5" fill="#1C2430">Urodynamikk hvis: Qmax&gt;10, alder</text>
+<text x="455" y="307" font-size="10.5" fill="#1C2430">&gt;80/&lt;50, tidl. kir., nevrol. sykd.,</text>
+<text x="455" y="322" font-size="10.5" fill="#1C2430">prostata &lt;40 cc</text>
+<line x1="620" y1="334" x2="620" y2="354" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<rect x="440" y="356" width="360" height="32" rx="4" fill="#F5EAD7" stroke="#A9711F"/>
+<text x="620" y="377" text-anchor="middle" font-size="10.5" fill="#1C2430">Obstruksjon → Kirurgi/PAE</text>
+<rect x="440" y="394" width="360" height="32" rx="4" fill="#F5EAD7" stroke="#A9711F"/>
+<text x="620" y="415" text-anchor="middle" font-size="10.5" fill="#1C2430">Dyssynergi → SNM</text>
+<rect x="440" y="432" width="360" height="32" rx="4" fill="#F5EAD7" stroke="#A9711F"/>
+<text x="620" y="453" text-anchor="middle" font-size="10.5" fill="#1C2430">Blæreparese → Kateter</text>
+
+<!-- COL 3: Nokturi -->
+<rect x="860" y="78" width="360" height="34" rx="4" fill="#E8EEF4" stroke="#2C4A6E"/>
+<text x="1040" y="100" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1C2430">Nokturi</text>
+<line x1="1040" y1="112" x2="1040" y2="134" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<rect x="860" y="136" width="360" height="46" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="875" y="154" font-size="11" fill="#1C2430">Konservativt: utelukk hjertesvikt,</text>
+<text x="875" y="170" font-size="11" fill="#1C2430">væskerestriksjon</text>
+<text x="1230" y="150" font-size="10" fill="#3C7A5C" text-anchor="end">✓ Effekt</text>
+<text x="1230" y="163" font-size="10" fill="#3C7A5C" text-anchor="end">→ Avslutt</text>
+<line x1="1040" y1="182" x2="1040" y2="204" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahB)"/>
+<text x="1050" y="197" font-size="9.5" fill="#A8453B" font-style="italic">ikke effekt</text>
+<rect x="860" y="206" width="360" height="46" rx="4" fill="#F5EAD7" stroke="#A9711F"/>
+<text x="875" y="224" font-size="11" fill="#1C2430">Nattlig polyuri:</text>
+<text x="875" y="240" font-size="11" fill="#1C2430">medikamentell behandling</text>
+</svg>
+</div>
+
+<h4>Fylning/lagring</h4>
+<ol class="steplist compact">
+<li>Konservative tiltak: blæretrening, væskerestriksjon → effekt: avslutt</li>
+<li>Ikke effekt: medikamentell behandling (1. Betmiga/mirabegron, 2. antimuskarine, 3. kombinasjon)</li>
+<li>Ikke effekt: urodynamikk, cystoskopi hvis hematuri</li>
+<li>Ikke effekt: Botox eller SNM (se Operasjonsteknikker)</li>
+<li>Ikke effekt: urinavledning</li>
+</ol>
+
+<h4>Tømming</h4>
+<ol class="steplist compact">
+<li>Konservative tiltak: blæretrening, RIK/permanent kateter → effekt: avslutt</li>
+<li>Ikke effekt: DRE/TRUL hos menn, PSA hvis det vil endre forløp, cystoskopi hvis hematuri, medikamenter</li>
+<li>Ikke effekt: urodynamikk hvis Qmax &gt;10 mL/s, alder &gt;80/&lt;50 år, tidligere kirurgi, nevrologisk sykdom, eller prostatavolum &lt;40 cc</li>
+<li>Utfall styrer videre tiltak: <strong>obstruksjon</strong> → kirurgi/PAE, <strong>dyssynergi</strong> → SNM, <strong>blæreparese</strong> → kateter</li>
+</ol>
+
+<h4>Nokturi</h4>
+<ol class="steplist compact">
+<li>Konservative tiltak: utelukk hjertesvikt, væskerestriksjon → effekt: avslutt</li>
+<li>Ikke effekt: vurder nattlig polyuri → medikamentell behandling</li>
+</ol>
+
+<p style="font-size:12.5px;color:var(--ink-soft)">Avføringsplager henvises gastrokirurgisk avdeling (GAK). Udiagnostiserte nevrologiske symptomer henvises nevrologisk avdeling (NEV).</p>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Non-neurogenic Female/Male LUTS, uroweb.org</li>
+<li><strong>Ahus urologisk poliklinikk</strong> — internt undervisningsmateriale «LUTS og bekkensmerter, ark til leger» (lokal prosedyre, sist endret sept. 2024)</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Lokale doser/frister må dobbeltsjekkes mot gjeldende Ahus-prosedyre.</div>
+`};
+
+CONTENT_MAP['fimose'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Fysiologisk fimose hos små gutter er normalt og løser seg som regel spontant — patologisk fimose hos voksne (arrdannelse/BXO) krever behandling.</div>
+
+<h2>Fimose</h2>
+<p>Fysiologisk (aldersrelatert, umoden adherens mellom forhud og glans) skilles fra patologisk fimose, som oftest skyldes arrdannelse etter gjentatte infeksjoner eller lichen sclerosus (balanitis xerotica obliterans, BXO) — en kronisk, arrdannende hudtilstand som gir hvitlig, fortykket, uelastisk forhudsåpning.</p>
+
+<h2>Balanitt</h2>
+<p>Inflammasjon i glans/forhud, ofte candida- eller bakterielt betinget. Assosiert med dårlig hygiene og diabetes mellitus — residiverende balanitt bør gi mistanke om udiagnostisert diabetes.</p>
+
+<h2>Behandling</h2>
+<p>Topikal steroidkrem er førstelinjebehandling ved patologisk fimose uten mistanke om BXO, og kan være tilstrekkelig hos en betydelig andel. Sirkumsisjon (se Operasjonsteknikker) er indisert ved refraktær fimose, BXO, residiverende balanitt eller residiverende parafimose.</p>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Paediatric Urology (fimose hos barn), uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+CONTENT_MAP['hydrocele'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Skrotal ultralyd er obligatorisk ved enhver skrotal hevelse for å utelukke underliggende testistumor før hydrocele/varikocele antas som eneste forklaring.</div>
+
+<h2>Hydrocele</h2>
+<p>Væskeansamling mellom tunica vaginalis' to blad. Hos barn er den ofte <strong>kommuniserende</strong> (persisterende processus vaginalis) og kan gå tilbake spontant første leveår. Hos voksne er non-kommuniserende hydrocele vanligst, og kan være idiopatisk eller sekundær til infeksjon, traume eller tumor.</p>
+
+<h2>Varikocele</h2>
+<p>Dilatasjon av pampiniforme venøse plexus. Venstre side dominerer sterkt pga. anatomisk vinkling av v. testicularis inn i v. renalis ("nøtteknekker"-fenomen). Assosiert med redusert fertilitet hos en andel av pasientene.</p>
+
+<h2>Utredning</h2>
+<p>Klinisk undersøkelse — transilluminasjon er klassisk for hydrocele. Skrotal ultralyd med Doppler er obligatorisk for å utelukke testistumor og for å karakterisere varikocele.</p>
+
+<h2>Behandling</h2>
+<p>Hydrocelectomi ved store eller symptomatiske hydroceler (se Operasjonsteknikker — Hydrocelectomi ad modum Winkelmann). Varikocelekirurgi (åpen, laparoskopisk eller radiologisk embolisering) vurderes ved symptomer, kosmetiske plager, eller som ledd i infertilitetsutredning/-behandling.</p>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Sexual and Reproductive Health, uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+CONTENT_MAP['epididymitt'] = {type:'simple', html: `
+<div class="callout high"><b>Akutt skrotum — alltid utelukk torsjon først</b>Testistorsjon er en kirurgisk emergency. Ved høy klinisk mistanke skal eksplorasjon ikke forsinkes av bildediagnostikk.</div>
+
+<h2>Differensialdiagnoser ved akutt skrotum</h2>
+<ul>
+<li><strong>Testistorsjon:</strong> akutt, ofte hos unge menn/gutter, kraftig smerte, høytstående/horisontalt liggende testikkel, fraværende kremasterrefleks</li>
+<li><strong>Epididymitt:</strong> gradvis smerteutvikling over timer–dager</li>
+<li><strong>Torkvert testishydatide (appendix testis):</strong> ofte hos prepubertale gutter, "blue dot sign"</li>
+</ul>
+
+<h2>Testistorsjon</h2>
+<p>Kritisk tidsvindu — irreversibel iskemisk skade øker raskt etter 6 timer. Klinisk mistanke alene er nok til å indisere akutt skrotal eksplorasjon; ultralyd med Doppler kan støtte diagnosen, men skal aldri forsinke kirurgi ved høy mistanke. Ved bekreftet torsjon gjøres detorkvering og fiksasjon (orkidopeksi) av begge testikler — se Operasjonsteknikker.</p>
+
+<h2>Epididymitt</h2>
+<p>Vanligvis infeksiøs. Hos yngre, seksuelt aktive menn er klamydia/gonoré vanligste agens; hos eldre og etter urologisk instrumentering er E. coli og andre urinveispatogener hyppigst. Positiv Prehn's tegn (smertelindring ved elevasjon av skrotum) kan støtte diagnosen klinisk, men er ikke pålitelig alene. Behandles med målrettet antibiotika etter agens/eksponeringsanamnese.</p>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Urological Infections; Paediatric Urology, uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+CONTENT_MAP['ed'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Erektil dysfunksjon hos en middelaldrende/eldre mann kan være en tidlig markør for kardiovaskulær sykdom — kardiovaskulær risikovurdering bør alltid vurderes.</div>
+
+<h2>Årsaker</h2>
+<ul>
+<li><strong>Vaskulær</strong> (vanligst) — deler risikofaktorer med koronarsykdom (hypertensjon, diabetes, dyslipidemi, røyking)</li>
+<li><strong>Nevrogen</strong> — etter bekkenkirurgi (bl.a. RALP), diabetisk nevropati, ryggmargsskade</li>
+<li><strong>Hormonell</strong> — hypogonadisme</li>
+<li><strong>Medikamentindusert</strong> — bl.a. enkelte antihypertensiva, antidepressiva</li>
+<li><strong>Psykogen</strong> — ofte situasjonsbetinget, brå debut</li>
+</ul>
+
+<h2>Utredning</h2>
+<p>Strukturert anamnese (f.eks. IIEF-skjema), kardiovaskulær risikovurdering, og testosteronmåling ved mistanke om hypogonadisme.</p>
+
+<h2>Behandling — trinnvis</h2>
+<ol>
+<li>Optimalisering av livsstil og kardiovaskulære risikofaktorer</li>
+<li>PDE5-hemmere (sildenafil m.fl.) som førstelinje medikamentell behandling</li>
+<li>Intrakavernøs injeksjonsbehandling eller vakuumpumpe ved utilstrekkelig effekt/kontraindikasjon</li>
+<li>Penisimplantat ved behandlingsrefraktær ED</li>
+</ol>
+<p>Etter nervesparende RALP er gradvis bedring av erektil funksjon vanlig over 12–24 måneder — tidlig rehabiliteringsstrategi (f.eks. regelmessig PDE5-hemmerbruk) diskuteres ofte med pasienten.</p>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Sexual and Reproductive Health, uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+CONTENT_MAP['nevrogen'] = {type:'simple', html: `
+<div class="callout high"><b>Hovedmål</b>Ved nevrogen blære er hovedmålet å beskytte øvre urinveier (nyrefunksjon) — ikke nødvendigvis kontinens alene. Høytrykks lagringsfase er den største trusselen.</div>
+
+<h2>Årsaker</h2>
+<p>Ryggmargsskade, multippel sklerose, spina bifida, diabetisk nevropati, og iatrogent etter omfattende bekkenkirurgi (f.eks. rektumkirurgi, prolapskirurgi).</p>
+
+<h2>Klassifisering</h2>
+<p>Kan grovt deles i detrusor-overaktiv (ofte ved suprasakrale lesjoner, gjerne med samtidig sfinkterdyssynergi) versus detrusor-underaktiv/arefleksisk blære (ofte ved infrasakrale/perifere lesjoner). Mønsteret avgjør både symptombilde og risiko for øvre urinveis-skade.</p>
+
+<h2>Utredning</h2>
+<p>Urodynamisk undersøkelse er sentral for å karakterisere blæremønsteret og identifisere høytrykks lagringsfase (høyt detrusortrykk under fylning), som er hovedrisikofaktor for hydronefrose og nyresvikt over tid.</p>
+
+<h2>Behandling</h2>
+<ul>
+<li><strong>Ren intermitterende kateterisering (RIK)</strong> er bærebjelken ved tømmingssvikt</li>
+<li>Antikolinergika eller intravesikal botulinumtoksin ved detrusor-overaktivitet med høyt lagringstrykk — helt sentralt for å beskytte øvre urinveier</li>
+<li>Regelmessig oppfølging av nyrefunksjon og øvre urinveier (ultralyd/blodprøver) gjennom hele forløpet</li>
+</ul>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Neuro-Urology, uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+CONTENT_MAP['bekkensmerter'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Kroniske bekkensmerter relatert til vannlating deles etter smertemønster: ved fylning/lagring, under/etter miksjon, eller uavhengig av vannlating. Smertemønsteret styrer videre utredningsløp.</div>
+
+<h2>Utredning</h2>
+<p>Basisutredning er anamnese, miksjonsliste, IPSS og flow/rest — samme grunnlag som ved LUTS for øvrig (se OAB/LUTS). Smertemønsteret deler videre utredning i tre spor.</p>
+
+<div class="callout internal"><b>Ahus internt — urologisk poliklinikk</b>Algoritmen under er lokal prosedyre ved Ahus urologisk poliklinikk (internt undervisningsmateriale, sist endret sept. 2024), ikke en nasjonal retningslinje.</div>
+
+<div style="background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px;margin:0 0 16px;overflow-x:auto;">
+<svg viewBox="0 0 1280 500" style="width:100%;min-width:900px;height:auto;font-family:'IBM Plex Sans',sans-serif;" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ahC" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#5B6472"/></marker></defs>
+
+<!-- COL 1 -->
+<rect x="20" y="10" width="360" height="46" rx="4" fill="#E8EEF4" stroke="#2C4A6E"/>
+<text x="200" y="28" text-anchor="middle" font-size="11.5" font-weight="600" fill="#1C2430">Smerter ved fylning/</text>
+<text x="200" y="44" text-anchor="middle" font-size="11.5" font-weight="600" fill="#1C2430">lagring</text>
+<line x1="200" y1="56" x2="200" y2="78" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahC)"/>
+<rect x="20" y="80" width="360" height="46" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="35" y="98" font-size="11" fill="#1C2430">Konservativt: blæretrening,</text>
+<text x="35" y="114" font-size="11" fill="#1C2430">kost-/væskejustering</text>
+<text x="390" y="94" font-size="10" fill="#3C7A5C">✓ Effekt</text>
+<text x="390" y="107" font-size="10" fill="#3C7A5C">→ Avslutt</text>
+<line x1="200" y1="126" x2="200" y2="148" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahC)"/>
+<text x="210" y="141" font-size="9.5" fill="#A8453B" font-style="italic">ikke effekt</text>
+<rect x="20" y="150" width="360" height="32" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="200" y="171" text-anchor="middle" font-size="11" fill="#1C2430">Cystoskopi</text>
+<line x1="200" y1="182" x2="200" y2="204" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahC)"/>
+<rect x="20" y="206" width="360" height="46" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="35" y="224" font-size="10.5" fill="#1C2430">Neg. cystoskopi: instillasjon</text>
+<text x="35" y="240" font-size="10.5" fill="#1C2430">ukentlig × 6 + Sarotex</text>
+<line x1="200" y1="252" x2="200" y2="274" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahC)"/>
+<rect x="20" y="276" width="360" height="46" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="35" y="292" font-size="10" fill="#1C2430">Effekt: instillasjon hver 3.–4. mnd</text>
+<text x="35" y="306" font-size="10" fill="#1C2430">±Sarotex — v/smerter ved avslutn.:</text>
+<text x="35" y="318" font-size="10" fill="#1C2430">Elmiron, cysto hvert 2. år</text>
+<text x="210" y="340" font-size="9.5" fill="#A8453B" font-style="italic">ikke effekt: cysto i narkose</text>
+<line x1="200" y1="322" x2="200" y2="352" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahC)"/>
+<rect x="20" y="354" width="360" height="40" rx="4" fill="#F5EAD7" stroke="#A9711F"/>
+<text x="35" y="371" font-size="10" fill="#1C2430">−HU: Botox, SNM eller urinavledning</text>
+<text x="35" y="386" font-size="10" fill="#1C2430">+HU: gjenta cystoskopi ved symptomer</text>
+
+<!-- COL 2 -->
+<rect x="440" y="10" width="360" height="46" rx="4" fill="#E8EEF4" stroke="#2C4A6E"/>
+<text x="620" y="28" text-anchor="middle" font-size="11.5" font-weight="600" fill="#1C2430">Smerter under/etter</text>
+<text x="620" y="44" text-anchor="middle" font-size="11.5" font-weight="600" fill="#1C2430">miksjon</text>
+<line x1="620" y1="56" x2="620" y2="78" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahC)"/>
+<rect x="440" y="80" width="360" height="46" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="455" y="98" font-size="11" fill="#1C2430">Medikamentelt: 1. Betmiga</text>
+<text x="455" y="114" font-size="11" fill="#1C2430">2. Antimusk. 3. Kombinasjon</text>
+<text x="810" y="94" font-size="10" fill="#3C7A5C">✓ Effekt</text>
+<text x="810" y="107" font-size="10" fill="#3C7A5C">→ Avslutt</text>
+<line x1="620" y1="126" x2="620" y2="148" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahC)"/>
+<text x="630" y="141" font-size="9.5" fill="#A8453B" font-style="italic">ikke effekt</text>
+<rect x="440" y="150" width="360" height="32" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="620" y="171" text-anchor="middle" font-size="11" fill="#1C2430">Urodynamisk undersøkelse</text>
+<line x1="620" y1="182" x2="620" y2="204" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahC)"/>
+<rect x="440" y="206" width="360" height="34" rx="4" fill="#F5EAD7" stroke="#A9711F"/>
+<text x="620" y="228" text-anchor="middle" font-size="10.5" fill="#1C2430">Etterkontraksjon → Botox / SNM</text>
+<text x="455" y="264" font-size="10" fill="#5B6472" font-style="italic">Smerter uavhengig av vannlating</text>
+<text x="455" y="278" font-size="10" fill="#5B6472" font-style="italic">→ se kolonne 3</text>
+
+<!-- COL 3 -->
+<rect x="860" y="10" width="360" height="46" rx="4" fill="#E8EEF4" stroke="#2C4A6E"/>
+<text x="1040" y="28" text-anchor="middle" font-size="11.5" font-weight="600" fill="#1C2430">Smerter uavhengig av</text>
+<text x="1040" y="44" text-anchor="middle" font-size="11.5" font-weight="600" fill="#1C2430">vannlating</text>
+<line x1="1040" y1="56" x2="1040" y2="78" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahC)"/>
+<rect x="860" y="80" width="360" height="58" rx="4" fill="#fff" stroke="#C7C1B2"/>
+<text x="875" y="98" font-size="10.5" fill="#1C2430">Cystoskopi, palpasjon av bekkenbunn,</text>
+<text x="875" y="113" font-size="10.5" fill="#1C2430">urodynamikk (i samråd med</text>
+<text x="875" y="128" font-size="10.5" fill="#1C2430">nevrourolog), Sarotex</text>
+<line x1="960" y1="138" x2="960" y2="160" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahC)"/>
+<line x1="1120" y1="138" x2="1120" y2="160" stroke="#5B6472" stroke-width="1.5" marker-end="url(#ahC)"/>
+<rect x="860" y="162" width="220" height="40" rx="4" fill="#F5EAD7" stroke="#A9711F"/>
+<text x="970" y="178" text-anchor="middle" font-size="10" fill="#1C2430">Øm bekkenbunn</text>
+<text x="970" y="193" text-anchor="middle" font-size="10" fill="#1C2430">→ Fysioterapi</text>
+<rect x="1000" y="204" width="220" height="40" rx="4" fill="#F5EAD7" stroke="#A9711F"/>
+<text x="1110" y="220" text-anchor="middle" font-size="10" fill="#1C2430">Uøm bekkenbunn</text>
+<text x="1110" y="235" text-anchor="middle" font-size="10" fill="#1C2430">→ Smertepoliklinikk</text>
+</svg>
+</div>
+
+<h2>Smerter ved fylning/lagring</h2>
+<ol class="steplist compact">
+<li>Konservative tiltak: blæretrening, kost-/væskejustering → effekt: avslutt</li>
+<li>Ikke effekt: cystoskopi</li>
+<li>Negativ cystoskopi: ukentlig instillasjonsbehandling × 6 + Sarotex</li>
+<li>Effekt: fortsett instillasjon hver 3.–4. mnd ± Sarotex — ved smerter ved avslutning gis Elmiron og cystoskopikontroll hvert 2. år</li>
+<li>Ikke effekt av instillasjonsserien: cystoskopi i narkose — skiller Hunnerske sår (+HU) fra ikke (−HU)</li>
+<li>−HU: Botox, SNM eller urinavledning · +HU: gjenta cystoskopi ved symptomer</li>
+</ol>
+
+<h2>Smerter under/etter miksjon</h2>
+<ol class="steplist compact">
+<li>Medikamentell behandling: 1. Betmiga/mirabegron, 2. antimuskarine, 3. kombinasjon → effekt: avslutt</li>
+<li>Ikke effekt: urodynamisk undersøkelse</li>
+<li>Ved etterkontraksjon: Botox eller SNM (se Operasjonsteknikker)</li>
+<li>Ved smerter uavhengig av vannlating: se eget spor under</li>
+</ol>
+
+<h2>Smerter uavhengig av vannlating</h2>
+<ol class="steplist compact">
+<li>Cystoskopi, palpasjon av bekkenbunn, urodynamikk (i samråd med nevrourolog), Sarotex</li>
+<li>Øm bekkenbunnsmuskulatur → henvises fysioterapi</li>
+<li>Uøm bekkenbunnsmuskulatur → henvises smertepoliklinikk</li>
+</ol>
+
+<div class="callout amber"><b>Dosering Sarotex (amitriptylin)</b>10 mg vesper. Opptrapping med 10 mg annenhver uke til maksdose 75 mg fordelt på 1–3 doser.</div>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Chronic Pelvic Pain, uroweb.org</li>
+<li><strong>Ahus urologisk poliklinikk</strong> — internt undervisningsmateriale «LUTS og bekkensmerter, ark til leger» (lokal prosedyre, sist endret sept. 2024)</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Legemiddeldosering må alltid dobbeltsjekkes mot gjeldende Felleskatalog/lokal prosedyre.</div>
+`};
+
+CONTENT_MAP['urinrorsstriktur'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Urinrørsstriktur behandles trinnvis: intern uretrotomi er førstevalg ved kort primærstriktur. Ved residiv vurderes medikamentavgivende ballongdilatasjon (Optilume) som mellomsteg før åpen uretraplastikk, forutsatt kort bulbær striktur.</div>
+
+<h2>Etiologi</h2>
+<p>Idiopatisk, iatrogen (etter transuretral kirurgi, langvarig/gjentatt kateterisering, stråling), traumatisk (bekkenfraktur, «straddle injury»), inflammatorisk (lichen sclerosus/BXO — særlig meatal/penil striktur), eller postinfeksiøs.</p>
+
+<h2>Klassifikasjon</h2>
+<p>Beskrives etter lokalisasjon (meatal, penil, bulbær, membranøs/sfinkternær, prostatisk) og lengde — begge avgjørende for valg av behandling. Bulbære strikturer er vanligst og har generelt best prognose ved endoskopisk/minimalinvasiv behandling.</p>
+
+<h2>Utredning</h2>
+<ul>
+<li>Anamnese og flowmetri/resturin (karakteristisk platådannet flowkurve)</li>
+<li>Retrograd uretrografi (± mikjsonsuretrografi) for lokalisasjon og lengde</li>
+<li>Cystoskopi — vurderer om strikturen er passabel med guidewire, viktig for behandlingsvalg</li>
+</ul>
+
+<h2>Behandlingsstige</h2>
+<ol class="steplist compact">
+<li><strong>Intern uretrotomi</strong> — førstevalg ved kort primærstriktur (se Operasjonsteknikker)</li>
+<li><strong>Ved residiv etter første uretrotomi:</strong> vurder <strong>Optilume</strong> (medikamentavgivende ballongdilatasjon) som alternativ til ny uretrotomi eller direkte henvisning til åpen kirurgi — forutsetter kort (&lt;3 cm) bulbær striktur, passabel med guidewire ved poliklinisk cystoskopi (se Operasjonsteknikker)</li>
+<li><strong>Ved fortsatt residiv, lang/kompleks striktur, eller striktur uegnet for endoskopisk behandling:</strong> henvisning til åpen uretraplastikk</li>
+</ol>
+
+<div class="callout internal"><b>Ahus internt — urologisk poliklinikk</b>Etter residiv av urinrørsstriktur følgende første intern uretrotomi kan Optilume-behandling ved DKS Ski vurderes som alternativ til ny uretrotomi eller åpen uretraplastikk, forutsatt kort (&lt;3 cm) bulbær striktur som er passabel med guidewire ved poliklinisk cystoskopi.</div>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Urethral Strictures, uroweb.org</li>
+<li><strong>Ahus urologisk poliklinikk</strong> — internt henvisnings-/forberedelsesnotat for Optilume-behandling</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid gjeldende lokal prosedyre.</div>
+`};
+
+/* ---------------- OPERASJONSTEKNIKKER (toggle) ---------------- */
+
+CONTENT_MAP['ralp'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Kirurgisk radikalbehandling ved lokalisert/lokalavansert prostatakreft der pasienten er kandidat for kurativ behandling — se risikogruppering under Prostatakreft.</div>`,
+short: `
+<h2>Preoperativt</h2>
+<ol class="steplist compact">
+<li>Bekreft indikasjon/risikogruppe i MDT; informert samtykke inkl. risiko for inkontinens/ED</li>
+<li>Vurder nervesparing basert på MR + biopsikart og preoperativ potens</li>
+<li>Vurder utvidet lymfeknutedisseksjon ved økt residivrisiko</li>
+<li>Antibiotikaprofylakse, tromboseprofylakse</li>
+</ol>
+<h2>Operative steg</h2>
+<ol class="steplist">
+<li>Trendelenburg-leie, robotdokking, portplassering</li>
+<li>Åpning av Retzius' rom / bakre tilgang</li>
+<li>Incisjon av endopelvin fascie bilateralt</li>
+<li>Ligering/deling av dorsal venekompleks</li>
+<li>Deling av blærehals — bevar ureterostier</li>
+<li>Disseksjon/deling av vasa deferentia og vesiculae seminales</li>
+<li>Deling av Denonvilliers' fascie</li>
+<li>Prostatapedikkel-disseksjon — nervesparende der indisert</li>
+<li>Apikal disseksjon og deling av uretra</li>
+<li>Ekstraksjon av preparat, ev. lymfeknutedisseksjon</li>
+<li>Vesikouretral anastomose (løpende sutur)</li>
+<li>Lekkasjetest, ev. dren, lukking</li>
+</ol>
+<h2>Postoperativt</h2>
+<ul>
+<li>Kateter 5–10 dager, cystografi ved tvil</li>
+<li>Tidlig mobilisering, tromboseprofylakse</li>
+<li>PSA-kontroll — se Prostatakreft</li>
+<li>Bekkenbunnstrening fra tidlig fase</li>
+</ul>
+`,
+detailed: `
+<h2>Preoperativ vurdering</h2>
+<div class="stepblock"><span class="stepnum">1</span><h3>Indikasjon og MDT</h3><div class="body"><p>Beslutning tas i MDT basert på risikogruppering. RALP er hovedvalg ved høyrisiko lokalisert sykdom, likeverdig alternativ ved intermediær risiko. Ved lokalavansert sykdom må pasienten informeres om høy sannsynlighet (~40 %) for postoperativ tilleggsbehandling.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Nervesparing</h3><div class="body"><p>Grad av nervesparing veies mot onkologisk risiko for positive render, basert på MR-funn, biopsilokalisasjon og preoperativ erektil funksjon.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Lymfeknutedisseksjon</h3><div class="body"><p>Utvidet bilateral bekken-lymfeknutedisseksjon vurderes ved forhøyet risiko for spredning (nomogrambasert), gir viktig stadieinformasjon.</p></div></div>
+<h2>Operative steg</h2>
+<div class="stepblock"><span class="stepnum">1</span><h3>Leiring og portplassering</h3><div class="body"><p>Steil Trendelenburg (20–25°), transperitoneal tilgang med 5–6 porter, pneumoperitoneum 12–15 mmHg.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Tilgang til Retzius' rom</h3><div class="body"><p>Preperitoneale rommet utvikles ned mot endopelvin fascie. Bakre (Montsouris) tilgang som alternativ, særlig etter tidligere hernieplastikk med mesh.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Endopelvin fascie og DVC</h3><div class="body"><p>Åpnes bilateralt for å eksponere apex. Dorsal venekompleks ligeres for tidlig blødningskontroll.</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Blærehalsdisseksjon</h3><div class="body"><p>Ureterostier identifiseres og skånes, spesielt ved median lapp-hypertrofi.</p></div></div>
+<div class="stepblock"><span class="stepnum">5</span><h3>Vasa og vesiculae seminales</h3><div class="body"><p>Vid margin ved mistanke om T3b-innvekst.</p></div></div>
+<div class="stepblock"><span class="stepnum">6</span><h3>Denonvilliers' fascie og pedikler</h3><div class="body"><p>Grad av nervesparing avgjøres her — "athermal" teknikk minimerer nervetermoskade.</p></div></div>
+<div class="stepblock"><span class="stepnum">7</span><h3>Apikal disseksjon</h3><div class="body"><p>Mest kritiske steg for margin og kontinens. Uretra deles skarpt nær prostata uten å etterlate vev eller skade ytre sfinkter.</p></div></div>
+<div class="stepblock"><span class="stepnum">8</span><h3>Ekstraksjon og lymfeknuter</h3><div class="body"><p>Preparat i endobag. Utvidet lymfeknutedisseksjon før/etter etter operatørs preferanse.</p></div></div>
+<div class="stepblock"><span class="stepnum">9</span><h3>Vesikouretral anastomose</h3><div class="body"><p>Løpende dobbel-armert sutur (van Velthoven). Lekkasjetest før avslutning.</p></div></div>
+<div class="stepblock"><span class="stepnum">10</span><h3>Avslutning</h3><div class="body"><p>Ev. bekkendren ved utvidet lymfeknutedisseksjon (reduserer symptomatisk lymfocele).</p></div></div>
+<h2>Postoperativ oppfølging</h2>
+<div class="stepblock"><span class="stepnum">1</span><h3>Kateter</h3><div class="body"><p>5–10 dager, cystografi ved usikker anastomose.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Komplikasjoner</h3><div class="body"><ul>
+<li>Anastomoselekkasje/urinom, lymfocele</li>
+<li>Rektumskade (sjelden)</li>
+<li>Positiv reseksjonsmargin — se PSA-residiv under Prostatakreft</li>
+<li>Stressinkontinens — bedres gradvis over 3–12 mnd</li>
+<li>Erektil dysfunksjon — avhenger av nervesparingsgrad</li>
+</ul></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Onkologisk oppfølging</h3><div class="body"><p>PSA postoperativt — se Prostatakreft. Patologisvar styrer ev. adjuvant/tidlig salvage-stråling.</p></div></div>
+<div class="sources"><h4>Kilder</h4><ul>
+<li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/prostatakreft-handlingsprogram/behandling-med-kurativ-intensjon" target="_blank">Handlingsprogram for prostatakreft, kap. 8</a></li>
+<li>EAU Guidelines — Prostate Cancer, kirurgisk kapittel, uroweb.org</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen.</div>
+`};
+
+CONTENT_MAP['turp'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>BPH med LUTS refraktær mot medikamenter, residiverende retensjon/UVI/hematuri/blæresten, eller obstruktiv nyresvikt. Se BPH.</div>`,
+short: `
+<h2>Preoperativt</h2>
+<ol class="steplist compact">
+<li>Bekreft obstruktive LUTS tross medikamentell behandling, pasient motivert for kirurgi</li>
+<li>Informer om komplikasjoner: retrograd ejakulasjon, persisterende hematuri, infeksjon, behov for reTURP, sfinkterskade og mulig inkontinens</li>
+</ol>
+<h2>Operative steg</h2>
+<ol class="steplist compact">
+<li>Leie: litotomi</li>
+<li>Cystoskopi, vurdering av prostatakonfigurasjon og blæretilstand</li>
+<li>Reseksjon av prostatavev med diatermislynge/evaporisator i systematiske kvadranter, fra blærehals til verumontanum (colliculus)</li>
+<li>Hemostase underveis</li>
+<li>Skylling og fjerning av reseksjonsspon</li>
+<li>3-veis kateter, kontinuerlig skylling postoperativt</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Indikasjon og samtykke</h3><div class="body"><p>Obstruktiv LUTS til tross for medikamentell behandling, der pasienten er motivert for kirurgisk behandling. Pasienten informeres grundig om inngrepets art og mulige bivirkninger/komplikasjoner: retrograd ejakulasjon (svært vanlig), persisterende hematuri, infeksjon, behov for reTURP, sfinkterskade og mulig inkontinens.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Reseksjonsteknikk</h3><div class="body"><p>Systematisk reseksjon i kvadranter fra blærehals mot verumontanum (colliculus), med fortløpende hemostase av blødende kar for å bevare oversikt. Målet er en jevn kavitet hele veien ned til colliculus — viktig landemerke for å unngå sfinkterskade distalt.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Komplikasjoner</h3><div class="body"><ul>
+<li>Blødning, ev. transfusjonsbehov</li>
+<li>Retrograd ejakulasjon — svært vanlig, viktig å informere om preoperativt</li>
+<li>Sjeldnere: inkontinens, uretra-/blærehalsstriktur</li>
+</ul>
+<p class="footnote">Fotnote: TUR-syndrom (hyponatremi/væskeoverbelastning pga. absorpsjon av hypoton skyllevæske gjennom åpne vener i reseksjonssåret) er historisk en fryktet komplikasjon ved <strong>monopolar</strong> teknikk med glycinskylling. Ved bipolar teknikk med saltvannsskylling — som er standard ved Ahus — foreligger denne risikoen ikke, siden saltvann er isoton og ledende. Tatt med her kun som generell bakgrunnskunnskap, ikke som reell lokal risiko.</p>
+</div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Postoperativt</h3><div class="body"><ul>
+<li>Kontinuerlig blæreskylling til klar urin</li>
+<li>Ikke indikasjon for rutinemessig tromboseprofylakse eller videre antibiotika ved ukomplisert forløp</li>
+<li>Preparat sendes til histologisk undersøkelse</li>
+<li>Kateter seponeres når urinen er klar, typisk dag 1–3</li>
+<li>Kontroll med flow og resturinmåling på urologisk poliklinikk 3 måneder postoperativt</li>
+</ul></div></div>
+
+<h2>Ahus internt — eksempel på operasjonsnotat</h2>
+<div class="callout internal"><b>Ahus internt — urologisk avdeling</b>Under er et faktisk operasjonsnotat/frasemal slik prosedyren dokumenteres ved Ahus, som eksempel på hvordan de generelle prinsippene over omsettes i praksis.</div>
+<div class="callout" style="background:var(--card);border-left:3px solid var(--line-strong);font-size:13.5px;line-height:1.7;">
+<b style="color:var(--ink-soft)">N40 Benign prostataobstruksjon</b>
+Obstruktiv LUTS tross medikamenter. Motivert for kirurgi og søkt inn for TUR-P. Grundig informert om inngrepets art og mulige bivirkninger og komplikasjoner som retrograd ejakulasjon, persisterende hematuri, infeksjon, behov for reTUR-P, sfinkterskade og mulig inkontinens. Samtykker.<br><br>
+I narkose og med pasientens informerte samtykke utføres:<br>
+<strong>KED22</strong> Transurethral reseksjon av prostata<br><br>
+Trygg kirurgi. Xylocaingel. Visuell obturator til blære. Steil blærehals og prominent midtlapp som beskrevet i henvisning. Orienterende cystoskopi uten anmerkning, begge ostier visualiseres med urinjet. Anvender resektoskop og evaporisator for reseksjon på både midt- og sidelapper til muskelvev i dypet. Etterlater jevn og akseptabel kavitet hele veien ned til colliculus. Hemostase med evaporisator. Anlegger 3-veisskyll Ch 20. Akseptabel farge på urinsvar.<br><br>
+<em>Umiddelbart forløp:</em> Ukomplisert.<br>
+<em>Videre:</em> Skyll full fart første timen, deretter etter farge. Ikke indikasjon for tromboseprofylakse eller videre antibiotika. Preparat til histologi. Kateter seponeres når urinen er klar. Kontroll med flow og urinmåling på urologisk poliklinikk 3 måneder postoperativt.
+</div>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Management of Non-neurogenic Male LUTS, uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KED22 Transurethral reseksjon av prostata)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemalen er lokal Ahus-praksis — generelle prinsipper over gjelder bredere.</div>
+`};
+
+CONTENT_MAP['turbt'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Diagnostikk og behandling av blæretumor — både initial reseksjon og re-TURB ved høyrisiko NMIBC. Se Blærekreft.</div>`,
+short: `
+<h2>Preoperativt</h2>
+<ol class="steplist compact">
+<li>Leie: litotomi, cystoskopi/kartlegging av alle lesjoner</li>
+<li>Informer om bivirkninger (blødning, dysuri, pollakisuri) og komplikasjoner (perforasjon, protrahert blødning, evt. nefrostomibehov ved reseksjon over ostium, infeksjon)</li>
+</ol>
+<h2>Operative steg</h2>
+<ol class="steplist compact">
+<li>Reseksjon av tumor i lag — til detrusormuskulatur er synlig</li>
+<li>Separate biopsier av tumorbunn og mistenkelige slimhinneområder</li>
+<li>Hemostase</li>
+<li>Enkelt postoperativ instillasjon av mitomycin innen 24t (ved lavrisiko-mistanke, ikke ved mistanke om perforasjon)</li>
+<li>Kort postoperativ kateterisering</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Reseksjonsdybde</h3><div class="body"><p>Å inkludere detrusormuskel i preparatet er avgjørende for adekvat T-staging — utilstrekkelig dybde gir risiko for understaging.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Fluorescensveiledet inspeksjon</h3><div class="body"><p>Visuell inspeksjon i både hvitt og blått lys (fotodynamisk/fluorescerende substans) øker sensitiviteten for å avdekke CIS-suspekte forandringer som lett kan overses i hvitt lys alene.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Re-TURB</h3><div class="body"><p>Anbefalt innen 2–6 uker ved T1 eller høygradig tumor, eller ved ufullstendig initial reseksjon.</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Komplikasjoner — obturatorrefleks</h3><div class="body"><p>Ved lateral veggtumor er det økt risiko for blæreperforasjon pga. obturatorrefleks (ufrivillig adduksjon av lår ved stimulering av n. obturatorius gjennom blæreveggen) — kan reduseres med obturatorblokade eller sikker full muskelrelaksasjon under prosedyren.</p></div></div>
+
+<h2>Ahus internt — eksempel på operasjonsnotat</h2>
+<div class="callout internal"><b>Ahus internt — urologisk avdeling</b>Under er et faktisk operasjonsnotat/frasemal slik prosedyren dokumenteres ved Ahus, som eksempel på hvordan de generelle prinsippene over omsettes i praksis.</div>
+<div class="callout" style="background:var(--card);border-left:3px solid var(--line-strong);font-size:13.5px;line-height:1.7;">
+Pasienten informeres om prosedyre og bivirkninger som blødning, dysuri og pollakisuri, samt mulige komplikasjoner som perforasjon, protrahert blødning, behov for nefrostomi ved reseksjon over ostium og infeksjon. Samtykker.<br><br>
+Med pasientens informerte samtykke og i generell narkose utføres:<br>
+<strong>KCD02</strong> Transurethral reseksjon av blæretumor<br>
+<strong>ZXM40</strong> Intraoperativ bruk av fluorescerende substans<br>
+<strong>KCX20</strong> Blærekateterisering<br><br>
+Pasient i narkose. Muskelrelaks. Trygg kirurgi. Visuell inspeksjon i hvitt og blått lys. Ser tumor lokalisert til aktuelt sted. Vurderer ev. CIS-suspekte forandringer og øvrig blæreslimhinne — ingen andre sikre lesjoner. Gjør reseksjon av tumor til adekvat dybde. Ev. kalde biopsier fra CIS-suspekt slimhinne. Koagulerer over reseksjonskanter og biopsitomt, god hemostase. Ellik — ingen resterende vevsbiter. Anlegger avslutningsvis 20 Ch skyllekateter, 20 ml i ballong og akseptabel farge på urinsvar.<br><br>
+<em>Umiddelbart forløp:</em> Ukomplisert.<br>
+<em>Videre:</em> Preparat til histologi. Skyll full fart første timen, deretter etter farge. Seponeres før utreise. Vurder mitomycin. Telefontime om 2–3 uker med histologisvar og plan videre.
+</div>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>Helsedirektoratet — Blærekreft-handlingsprogram; EAU Guidelines — NMIBC/MIBC, uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KCD02 Transurethral reseksjon av blæretumor, ZXM40 Intraoperativ bruk av fluorescerende substans, KCX20 Blærekateterisering)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemalen er lokal Ahus-praksis — generelle prinsipper over gjelder bredere.</div>
+`};
+
+CONTENT_MAP['nefrektomi'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Nyrecellekarsinom iht. stadium — se Nyrekreft. Partiell (nefronsparende) foretrekkes der teknisk mulig.</div>`,
+short: `
+<h3>Radikal nefrektomi</h3>
+<ol class="steplist compact">
+<li>Leie: lateral decubitus</li>
+<li>Laparoskopisk/robotassistert tilgang</li>
+<li>Kontroll av nyrekar (arterie før vene)</li>
+<li>Mobilisering utenfor Gerotas fascie</li>
+<li>Ureterdeling, ekstraksjon i endobag</li>
+</ol>
+<h3>Partiell nefrektomi</h3>
+<ol class="steplist compact">
+<li>Identifikasjon av tumor og nyrekar</li>
+<li>Ev. klemming av nyrearterie (minimere varm iskemitid)</li>
+<li>Enukleasjon/eksisjon med margin</li>
+<li>Rekonstruksjon (renorafi)</li>
+<li>Slipp klemme, kontroll hemostase</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Valg av teknikk</h3><div class="body"><p>Nefronsparende (partiell) kirurgi foretrekkes der teknisk gjennomførbart for å bevare nyrefunksjon, spesielt ved liten tumor eller bilateral sykdom.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Iskemitid ved partiell nefrektomi</h3><div class="body"><p>Varm iskemitid bør minimeres — praktisk mål er &lt;25–30 min. "Zero ischemia"-teknikker uten karklemming finnes ved gunstig tumorlokalisasjon.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Komplikasjoner</h3><div class="body"><p>Blødning, urinlekkasje fra samlesystemet, nedsatt nyrefunksjon. Konvertering til radikal nefrektomi kan bli nødvendig ved utilstrekkelig hemostase eller margin.</p></div></div>
+<div class="sources"><h4>Kilder</h4><ul><li>Helsedirektoratet — Nyrekreft-handlingsprogram; EAU Guidelines — Renal Cell Carcinoma, uroweb.org</li></ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen.</div>
+`};
+
+CONTENT_MAP['rirs'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Ureterstein, nyrebekkenstein &lt;2 cm, samt diagnostikk/behandling av øvre urotelial tumor.</div>`,
+short: `
+<h2>Preoperativt</h2>
+<ol class="steplist compact">
+<li>Leie: litotomi</li>
+<li>Cystoskopi, retrograd innføring av guidewire i ureter</li>
+<li>Ev. preoperativ JJ-stent ved trang ureter (staged prosedyre)</li>
+</ol>
+<h2>Operative steg</h2>
+<ol class="steplist compact">
+<li>Innføring av semirigid (ureter) eller fleksibelt (nyrebekken) skop</li>
+<li>Lasersteinknusing og fragmentekstraksjon med basket</li>
+<li>JJ-stent postoperativt ved behov</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Skopvalg</h3><div class="body"><p>Fleksibelt ureterorenoskop gir tilgang til øvre og nedre polcalyces i nyren, ikke bare rett ureter/nyrebekken.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Steinstrategi</h3><div class="body"><p>Laserdusting (pulverisering til fint støv) versus fragmentering med ekstraksjon er begge anerkjente strategier — valg avhenger av steinstørrelse/-sammensetning og operatørpreferanse.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Komplikasjoner</h3><div class="body"><ul>
+<li>Ureterskade/-perforasjon</li>
+<li>Ureterstriktur (sjelden)</li>
+<li>Urosepsis ved infisert stein — preoperativ urindyrkning og antibiotika er viktig sikkerhetsnett</li>
+<li>Stent-relaterte plager postoperativt (viktig å forvarsle pasienten)</li>
+</ul></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Variant: diagnostisk URS ved mistanke om øvre urotelial tumor</h3><div class="body">
+<p>Samme grunnteknikk brukes diagnostisk ved mistanke om øvre urotelial malignitet (se Øvre urotelial kreft), med noen tillegg: cytologi sikres fra både blæreurin og nyrebekkenurin, og alle calyces/hele ureter skoperes systematisk på vei ut med henblikk på malignitetssuspekte forandringer fremfor steinsøk. Ved trang/fysiologisk stenotisk ureter kan ballongdilatasjon under gjennomlysning være nødvendig før innleggelse av access sheath.</p>
+</div></div>
+
+<h2>Ahus internt — eksempel på operasjonsnotat</h2>
+<div class="callout internal"><b>Ahus internt — urologisk avdeling</b>Under er faktiske operasjonsnotater/frasemaler slik prosedyren dokumenteres ved Ahus, som eksempel på hvordan prinsippene over omsettes i praksis.</div>
+
+<h3>Stenekstraksjon</h3>
+<div class="callout" style="background:var(--card);border-left:3px solid var(--line-strong);font-size:13.5px;line-height:1.7;">
+<b style="color:var(--ink-soft)">N20.1 Sten i urinleder</b>
+Pasient med proksimal ureterstein påvist på CT, søkt inn til elektiv stensanering. Informert om inngrepets art, mulige komplikasjoner som blødning, infeksjon og skade på urinveier, samt forventet postoperativt forløp med stent. Samtykker.<br><br>
+Med pasientens informerte samtykke, Bactrimprofylakse og i narkose utføres:<br>
+<strong>KBE12</strong> Transluminal endoskopisk ekstraksjon av ureterstein<br>
+<strong>KBV02</strong> Transurethral innleggelse av ureterstent<br><br>
+Semi-rigid skop gjennom uretra til blære. Finner aktuelt ureterostium som entres med guidewire. Normalkalibrert ureter entres til man treffer fastsatt sten. Legger opp access sheath 10/12, bytter til fleksibelt skop. Skopi gjennom ureter til nyre. Gjør laserlitotripsi hvor konkrementet fragmenteres i flere biter som deretter ekstraheres med basket. Ser gjennom nyre og ureter uten funn av ytterligere sten. Tømmer blære via access sheath. Legger J-stent til øvre calyx under gjennomlysning, distale del krøller seg fint i blæren. Endoskopisk bedømt steinfri ved inngrepets slutt.<br><br>
+<em>Videre:</em> J-stent med tråd, pasienten autoseponerer 5 dager postoperativt. Sten til analyse. CT-kontroll om 3 mnd. Informert om viktighet av drikkeprofylakse.
+</div>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Urolithiasis; Upper Tract Urothelial Carcinoma, uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KBE12 Transluminal endoskopisk ekstraksjon av ureterstein, KBV02 Transurethral innleggelse av ureterstent; diagnostisk variant: KUA02 Retrograd ureterorenoskopi, KUC02 Cystoskopi, KBH62 Transluminal endoskopisk dilatasjon av ureter)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemalen er lokal Ahus-praksis — generelle prinsipper over gjelder bredere.</div>
+`};
+
+CONTENT_MAP['pcnl'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Store nyresteiner (&gt;2 cm), komplekse steinbyrder (koralsteiner), eller steiner uegnet for RIRS/ESWL.</div>`,
+short: `
+<ol class="steplist compact">
+<li>Leie: prone (ev. supine ved noen sentra)</li>
+<li>Retrograd oppfylling av samlesystem for punksjonsveiledning</li>
+<li>Perkutan punksjon av ønsket calyx under fluoroskopi/UL</li>
+<li>Dilatasjon av kanal til nefroskop</li>
+<li>Fragmentering (laser/pneumatisk/ultralyd) og ekstraksjon</li>
+<li>Nefrostomikateter eller "tubeless" avslutning</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Punksjonsteknikk</h3><div class="body"><p>Punksjon via Brödel's avaskulære linje minimerer blødningsrisiko — det viktigste sikkerhetsprinsippet i prosedyren.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Risiko ved øvre polpunksjon</h3><div class="body"><p>Punksjon over 11. ribbe øker risiko for pleuraskade/pneumothorax — krever spesiell oppmerksomhet og ofte postoperativ røntgen thorax.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Komplikasjoner</h3><div class="body"><p>Blødning med transfusjonsbehov er den viktigste komplikasjonen (høyere enn ved RIRS). Steinfri-rate vurderes postoperativt med lavdose CT.</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Avslutning</h3><div class="body"><p>"Tubeless"/"totally tubeless" teknikk (uten nefrostomi/med kun indre stent) reduserer smerte og liggetid hos selekterte pasienter med ukomplisert forløp.</p></div></div>
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Urolithiasis, uroweb.org</li></ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen.</div>
+`};
+
+CONTENT_MAP['cystektomi'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Muskelinvasiv blærekreft (MIBC), BCG-refraktær høyrisiko NMIBC, eller andre bekkenmaligniteter med blæreinnvekst.</div>`,
+short: `
+<ol class="steplist compact">
+<li>Leie: ryggleie, robotassistert eller åpen tilgang</li>
+<li>Radikal cystektomi (+ prostatektomi hos menn) med bilateral bekken-lymfeknutedisseksjon</li>
+<li>Valg av urinavledning: ileal konduitt vs. kontinent avledning (ortotopisk nyblære/kateteriserbar pouch)</li>
+<li>Konstruksjon av avledning</li>
+<li>Dren, lukking</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Neoadjuvant behandling</h3><div class="body"><p>Neoadjuvant cisplatinbasert kjemoterapi bør vurderes før cystektomi ved MIBC uten kontraindikasjon — bedrer overlevelse.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Valg av urinavledning</h3><div class="body"><p>Avhenger av nyrefunksjon, pasientens motivasjon/kognitive funksjon/manuelle ferdighet (kontinent avledning krever egenomsorg med kateterisering), og onkologisk sikkerhet — frys-snitt av uretral margin vurderes ved ortotopisk nyblære hos menn.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Komplikasjoner</h3><div class="body"><ul>
+<li>Tarmanastomoselekkasje, ileus</li>
+<li>Uretero-intestinal anastomosestriktur</li>
+<li>Metabolsk acidose (tarmsegment eksponert for urin)</li>
+<li>Pyelonefritt</li>
+</ul></div></div>
+<div class="sources"><h4>Kilder</h4><ul><li>Helsedirektoratet — Blærekreft-handlingsprogram; EAU Guidelines — MIBC, uroweb.org</li></ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen.</div>
+`};
+
+CONTENT_MAP['sirkumsisjon'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Patologisk fimose (BXO/lichen sclerosus, arrdannelse), residiverende balanitt/parafimose. Religiøs/kulturell ønske er en vanlig henvisningsårsak. Alternativ til full sirkumsisjon er dorsal spalting — begge alternativ bør presenteres for pasienten.</div>`,
+short: `
+<h2>Preoperativt</h2>
+<ol class="steplist compact">
+<li>Redegjør for alternativene dorsal spalting vs. full sirkumsisjon — pasienten velger</li>
+<li>Ledningsanestesi (lokal) eller generell anestesi avhengig av alder</li>
+</ol>
+<h2>Operative steg</h2>
+<ol class="steplist compact">
+<li>Marker snittlinje, del ytre blad, deretter indre blad</li>
+<li>Full sirkumsisjon med saks og diatermi, fortløpende hemostase</li>
+<li>Madrassutur i frenulum, deretter enkeltstående sutur i hele circumferensen med resorberbar tråd</li>
+<li>Salve og kompress</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Reseksjonsmengde</h3><div class="body"><p>Viktig å unngå for aggressiv reseksjon — risiko for stram/smertefull ereksjon senere.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Histologi</h3><div class="body"><p>Ved mistanke om BXO bør preparatet sendes til histologisk vurdering.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Komplikasjoner</h3><div class="body"><p>Blødning, infeksjon, meatusstenose (særlig hos små barn), kosmetisk asymmetri.</p></div></div>
+
+<h2>Ahus internt — eksempel på operasjonsnotat</h2>
+<div class="callout internal"><b>Ahus internt — urologisk avdeling</b>Under er et faktisk operasjonsnotat/frasemal slik prosedyren dokumenteres ved Ahus, som eksempel på hvordan de generelle prinsippene over omsettes i praksis.</div>
+<div class="callout" style="background:var(--card);border-left:3px solid var(--line-strong);font-size:13.5px;line-height:1.7;">
+Redegjør for alternativ med dorsal spalting eller full sirkumsisjon. Pasient ønsker sistnevnte. Informeres om komplikasjoner som blødning og infeksjon, samt vanlig postoperativt forløp. Samtykker.<br><br>
+I ledningsanestesi med Marcain og Lidocain utføres:<br>
+<strong>KGH10</strong> Circumcisio<br><br>
+Tegner opp. Gjennom forhud med hhv. crushing og saks dorsalt til markering. Skjærer først ytre, deretter indre blad. Full sirkumsisjon med saks og diatermi. Hemostase med diatermi i sårflaten. Madrassutur i frenulum, deretter enkeltstående i hele circumferensen med resorberbar sutur. Bacimycinsalve og kompress.<br><br>
+<em>Videre oppfølging:</em> Ukomplisert sirkumsisjon. Kan dusje neste morgen, holdes rent og tørt. Bacimycinsalve morgen og kveld til tom tube. Skal unngå seksuell aktivitet i 6 uker. Kan gå på jobb neste dag. Ved blødning: kompresjon. Ingen kontroll avtalt.
+</div>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Paediatric Urology, uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KGH10 Circumcisio)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemalen er lokal Ahus-praksis — generelle prinsipper over gjelder bredere.</div>
+`};
+
+CONTENT_MAP['vasektomi'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Permanent, elektiv mannlig sterilisering.</div>`,
+short: `
+<ol class="steplist compact">
+<li>Lokalbedøvelse skrotum</li>
+<li>Identifikasjon og fiksering av vas deferens gjennom huden</li>
+<li>Liten skrotal incisjon (eller "no-scalpel"-teknikk)</li>
+<li>Deling av vas deferens bilateralt, ev. fascieinterposisjon</li>
+<li>Hemostase, lukking</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Teknikkvalg</h3><div class="body"><p>"No-scalpel"-teknikk reduserer blødnings- og infeksjonsrisiko sammenlignet med tradisjonell skalpell-incisjon.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Bekreftelse av sterilitet</h3><div class="body"><p>Postoperativ sæddyrkning (spermiogram) må bekrefte azoospermi før pasienten kan anses som steril — typisk etter ca. 12 uker eller 20 ejakulasjoner. Prevensjon må fortsette inntil dette er dokumentert.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Senkomplikasjoner</h3><div class="body"><p>Post-vasektomi smertesyndrom (sjeldent, men viktig å informere om). Reverserbarhet avtar med tid siden inngrepet.</p></div></div>
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Sexual and Reproductive Health, uroweb.org</li></ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen.</div>
+`};
+
+CONTENT_MAP['orkidopeksi'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Retentio testis (udescendert testikkel) hos gutt, eller fiksasjon etter detorkvering ved testistorsjon (da bilateralt, se Epididymitt/akutt skrotum og Operasjonsteknikker — Detorkvering).</div>`,
+short: `
+<h2>Preoperativt</h2>
+<ol class="steplist compact">
+<li>Undersøk pasienten i narkose — bekreft ikke-palpabel/ektopisk beliggende testikkel og operasjonsindikasjon</li>
+</ol>
+<h2>Operative steg</h2>
+<ol class="steplist compact">
+<li>Skarpt gjennom hud i lysken, stumpt/delvis skarpt gjennom Scarpas fascie</li>
+<li>Identifiser testikkel, luksér ut</li>
+<li>Mobiliser funikkel og testikkelkar, del gubernaculum med diatermi for god lengde</li>
+<li>Lag stump kanal ned til skrotum, liten incisjon, preparer subdartos-lomme</li>
+<li>Trekk testikkel ned, fikser medialt og lateralt med resorberbar sutur</li>
+<li>Lukk lyske i lag, intrakutan sutur i hud</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Tidspunkt ved retentio testis</h3><div class="body"><p>Anbefalt operasjonsalder er typisk 6–18 måneder — tidlig kirurgi gir best fertilitetspotensiale og reduserer langtidsrisiko for malignitetsutvikling i testikkelen.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Ikke-palpabel testikkel</h3><div class="body"><p>Diagnostisk laparoskopi kan være nødvendig for å avklare om testikkelen er intraabdominal eller «vanishing» (atrofisk/fraværende).</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Ved testistorsjon</h3><div class="body"><p>Kontralateral orkidopeksi gjøres samtidig som profylakse, siden den underliggende anatomiske disposisjonen («bell-clapper»-deformitet) ofte er bilateral.</p></div></div>
+
+<h2>Ahus internt — eksempel på operasjonsnotat</h2>
+<div class="callout internal"><b>Ahus internt — urologisk avdeling</b>Under er et faktisk operasjonsnotat/frasemal slik prosedyren dokumenteres ved Ahus, som eksempel på hvordan de generelle prinsippene over omsettes i praksis.</div>
+<div class="callout" style="background:var(--card);border-left:3px solid var(--line-strong);font-size:13.5px;line-height:1.7;">
+<b style="color:var(--ink-soft)">Q53.1 Ikke-descendert testikkel, unilateral</b>
+Gutt med retentio testis. Foresatte grundig informert om inngrep og mulige komplikasjoner som blødning, infeksjon, skrotal/inguinal hevelse, smerter og skade på øvrige strukturer. Samtykker.<br><br>
+I generell anestesi utføres:<br>
+<strong>KFH10</strong> Orkiopeksi<br><br>
+Gutten undersøkes først i narkose. Aktuell testikkel palperes ikke i skrotum — operasjonsindikasjon bekreftet. Skarpt gjennom hud i lysken. Stumpt og delvis skarpt gjennom Scarpas fascie. Identifiserer en ektopisk beliggende testis som lukseres ut. Mobiliserer funikkelen og testikkelkarene og deler gubernakelet med diatermi. Får god lengde på funikkelen. Fortløpende hemostase med diatermi. Lager stump kanal ned til skrotum og deretter liten incisjon på skrotum. Preparerer Dartos-lomme og trekker testikkelen ned. Sørger for riktig leie. Fikserer testikkelen medialt og lateralt med Novosyn 3-0. Monosyn quick enkeltstående i skrotalhud. Kryssutur i fascien i lysken med Novosyn 3-0, adapterer subcutis med et par avbrutte suturer og avslutningsvis intrakutane suturer i hud.<br><br>
+<em>Videre:</em> Kan utskrives i løpet av dagen. Ingen suturfjerning. Milde analgetika po etter vekt. Foresatte informert om mulige komplikasjoner som blødning, infeksjon o.l. Ingen avtale om kontroll.
+</div>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Paediatric Urology, uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KFH10 Orkiopeksi)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemalen er lokal Ahus-praksis — generelle prinsipper over gjelder bredere.</div>
+`};
+
+CONTENT_MAP['botox-blare'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>OAB (med/uten lekkasje) uten adekvat effekt av full peroral blæredempende behandling, eller uakseptable bivirkninger. Også aktuelt ved smertefullt blæresyndrom (PBS) uten Hunnerske sår og manglende effekt av instillasjon/medikamenter — se Bekkensmerter.</div>
+<div class="callout internal"><b>Ahus internt — urologisk poliklinikk</b>Doser og oppfølgingsrutine under er lokal prosedyre ved Ahus (internt undervisningsmateriale, sist endret sept. 2024).</div>`,
+short: `
+<ol class="steplist compact">
+<li>Alle pasienter henvises RIK-opplæring og må mestre dette før behandling (ca. 7 % får retensjon)</li>
+<li>Ikke-nevrologiske pasienter: 100 E botox fordelt på 10 supratrigonale injeksjoner</li>
+<li>Nevrologiske pasienter: 200 E botox fordelt på 20 supratrigonale injeksjoner</li>
+<li>Ved PBS uten Hunnerske sår: injeksjon i trigonum, samme dose som ved ikke-nevrogen OAB</li>
+<li>Pasienten tar kontakt når effekten avtar — ny injeksjon tidligst etter 3 mnd</li>
+<li>Ved manglende effekt: øk dose til 200 E (maksdose 400 E)</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Forutsetning: RIK-mestring</h3><div class="body"><p>Siden botulinumtoksin kan gi detrusor-underaktivitet/retensjon (ca. 7 %), må alle pasienter kunne utføre ren intermitterende kateterisering før behandling gis.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Dosering og injeksjonsteknikk</h3><div class="body"><p>Injeksjonene settes supratrigonalt ved ikke-nevrogen/nevrogen OAB (reduserer refluksrisiko), men i selve trigonum ved PBS-indikasjon. Startdose er lavere hos ikke-nevrologiske (100 E/10 injeksjoner) enn nevrologiske pasienter (200 E/20 injeksjoner), som ofte har mer uttalt detrusoroveraktivitet.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Reinjeksjon og doseeskalering</h3><div class="body"><p>Reinjeksjon skjer på pasientens initiativ når effekten avtar, tidligst etter 3 måneder. Ved utilstrekkelig effekt økes dosen til 200 E, med 400 E som praktisk maksdose.</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Samtidig botox på annen indikasjon</h3><div class="body"><p>Får pasienten samtidig botox på annen indikasjon (f.eks. migrene, spastisitet), bør blærebehandlingen gis samme døgn — ellers må man vente minst 3 måneder fra forrige dose, av hensyn til total toksinbelastning og antistoffrisiko.</p></div></div>
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Non-neurogenic/Neurogenic LUTS, uroweb.org</li>
+<li><strong>Ahus urologisk poliklinikk</strong> — internt undervisningsmateriale «LUTS og bekkensmerter, ark til leger» (lokal prosedyre, sist endret sept. 2024)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon. Doser er lokal Ahus-praksis — sjekk alltid mot gjeldende lokal prosedyre.</div>
+`};
+
+CONTENT_MAP['snm'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>OAB med/uten lekkasje uten adekvat effekt av full peroral blæredempende behandling, eller uakseptable bivirkninger.</div>
+<div class="callout high"><b>Kontraindikasjoner</b>Manglende compliance, høy alder, interstitiell cystitt/smertefullt blæresyndrom, progressiv nevrologisk lidelse (relativ), diabetes (relativ). Compliance vurderes strengt: kognisjon, samarbeidsevne og språk (tolk aksepteres hvis dette fungerer godt).</div>
+<div class="callout internal"><b>Ahus internt — urologisk poliklinikk</b>Prosedyren under er lokal praksis ved Ahus (internt undervisningsmateriale, sist endret sept. 2024).</div>`,
+short: `
+<ol class="steplist compact">
+<li>To seanser: SNM del I (testelektrode) og SNM del II (permanent implantat), med tre ukers testperiode mellom</li>
+<li>Ekstern pacemaker brukes i testperioden, programmert av uroterapeut</li>
+<li>Miksjonslister føres gjennom hele testperioden</li>
+<li>Positiv test = &gt;50 % reduksjon av symptomer → gå videre til del II</li>
+<li>Strenge hygiene-/aktivitetsregler i testperioden (ikke dusje, unngå store bevegelsesutslag i rygg/hofter)</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>SNM del I (testelektrode)</h3><div class="body"><p>Mageleie, narkose, Keflin-profylakse, gjennomlysningsveiledet plassering av testelektrode. Grønnskjema for del I og del II fylles ut samtidig ved oppstart.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Testperiode</h3><div class="body"><p>Tre ukers testperiode med ekstern pacemaker. Uroterapeut programmerer enheten. Pasienten fører miksjonslister gjennom hele perioden som dokumentasjon av effekt. Strenge restriksjoner: dusjing ikke tillatt, og fysisk aktivitet med store bevegelsesutslag i rygg/hofter skal unngås (risiko for elektrodeforskyvning).</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Evaluering</h3><div class="body"><p>Positiv test defineres som &gt;50 % reduksjon i symptomer sammenlignet med baseline miksjonslister. Kun ved positiv test går man videre til permanent implantasjon (del II).</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>SNM del II (permanent implantat)</h3><div class="body"><p>Mageleie, narkose eller lokalanestesi, Keflin-profylakse, bruk av Collatamp (antibiotikaimpregnert kollagensvamp) i implantatlomme for å redusere infeksjonsrisiko.</p></div></div>
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Non-neurogenic/Neurogenic LUTS, uroweb.org</li>
+<li><strong>Ahus urologisk poliklinikk</strong> — internt undervisningsmateriale «LUTS og bekkensmerter, ark til leger» (lokal prosedyre, sist endret sept. 2024)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon. Prosedyredetaljer er lokal Ahus-praksis — sjekk alltid mot gjeldende lokal prosedyre.</div>
+`};
+
+CONTENT_MAP['optilume'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Residiv urinrørsstriktur i bulbære uretra, verifisert &lt;3 cm og passabel med guidewire ved poliklinisk cystoskopi — som alternativ til ny intern uretrotomi eller åpen uretraplastikk etter residiv av første intern uretrotomi. Se Urinrørsstriktur.</div>
+<div class="callout internal"><b>Ahus internt</b>Utføres ved DKS Ski. Grønnskjema: operasjonskode «U Optilume», behandlingssted Ski sykehus.</div>`,
+short: `
+<h2>Poliklinisk forberedelse</h2>
+<ol class="steplist compact">
+<li>Bekreft residiv, tidspunkt for forrige intern uretrotomi, og aktuelle vannlatingsplager</li>
+<li>Verifiser at strikturen er passabel med guidewire ved poliklinisk cystoskopi</li>
+<li>Rtg. uretragrafi for lokalisasjon/lengde</li>
+<li>Informer om prosedyre, forventet forløp og komplikasjoner (hematuri, dysuri, residivrisiko)</li>
+<li>Informer om postoperative restriksjoner (se under)</li>
+<li>Fyll ut grønnskjema, vurder anestesipoliklinikk</li>
+</ol>
+<h2>Operative steg</h2>
+<ol class="steplist">
+<li>Ryggleie (med benholdere hvis strikturen ikke er passabel med guidewire — da forutgås prosedyren av intern uretrotomi)</li>
+<li>Bactrimprofylakse (2 tabletter)</li>
+<li>Engangscystoskopi til konsentrisk striktur i bulbære uretra</li>
+<li>Bekreft strikturens beliggenhet/lengde med kontrast og gjennomlysning</li>
+<li>Før guidewire til blære, verifiser med gjennomlysning</li>
+<li>Blokker uretra med uretrabougie Ch 8–12–16–20</li>
+<li>Før Optilume-ballong over guidewire, verifiser korrekt beliggenhet i begge ender med skop og gjennomlysning</li>
+<li>Blås opp ballong til 10 atm i 7 minutter</li>
+<li>Bekreft tom ballong med gjennomlysning før seponering</li>
+<li>Legg kateter Ch 14 over guidewire</li>
+</ol>
+<h2>Postoperativt</h2>
+<ul>
+<li>Kateter i 2 dager — pasienten seponerer selv etter instruksjon</li>
+<li>Rekontakt ved infeksjonstegn</li>
+<li>Kontroll med flow/resturin ca. 3 mnd på urologisk poliklinikk</li>
+<li>Ingen seksuell aktivitet i 2 uker, beskyttet samleie, ingen reproduksjon i 6 mnd (paklitaksel på ballongen)</li>
+</ul>
+`,
+detailed: `
+<h2>Bakgrunn</h2>
+<p>Optilume er en medikamentavgivende høytrykksballong (paklitaksel) som kombinerer mekanisk dilatasjon av strikturen med lokal antifibrotisk medikamentavgivelse, med mål om å redusere residivraten sammenlignet med ren uretrotomi/ballongdilatasjon uten medikament. Brukes som mellomsteg i behandlingsstigen — se Urinrørsstriktur.</p>
+<div class="stepblock"><span class="stepnum">1</span><h3>Poliklinisk forberedelse</h3><div class="body"><p>Journalopptak avklarer residivstriktur, tidspunkt for forrige intern uretrotomi, vannlatingsplager, og om strikturen er passabel med guidewire ved poliklinisk cystoskopi — avgjørende for om benholdere/samtidig uretrotomi må planlegges. Rtg. uretragrafi kartlegger lokalisasjon og lengde. Pasienten informeres grundig om prosedyren, forventet forløp og risiko for hematuri, dysuri og residiv.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Grønnskjema</h3><div class="body"><ul>
+<li>Operasjonskode: «U Optilume», behandlingssted Ski sykehus</li>
+<li>Leie: ryggleie (med benholdere hvis ikke-passabel striktur med guidewire, mtp. intern uretrotomi forut for prosedyren)</li>
+<li>Utstyr: fleksibelt engangsskop/Optilume-utstyr, ev. gjennomlysning</li>
+<li>Antibiotikaprofylakse: 2 tabletter Bactrim</li>
+</ul></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Klargjøring og skopi</h3><div class="body"><p>Optilume-systemet klargjøres og tømmes for luft før prosedyrestart. Engangscystoskopi føres gjennom normalkalibrert uretra frem til konsentrisk striktur i bulbære del.</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Lokalisering og guidewire</h3><div class="body"><p>Strikturens beliggenhet og lengde bekreftes med kontrast og gjennomlysning. Guidewire føres forbi strikturen til blæren, med verifisering under gjennomlysning.</p></div></div>
+<div class="stepblock"><span class="stepnum">5</span><h3>Predilatasjon</h3><div class="body"><p>Uretra blokkes trinnvis med uretrabougie Ch 8–12–16–20 før ballongen føres inn.</p></div></div>
+<div class="stepblock"><span class="stepnum">6</span><h3>Ballongplassering og -inflasjon</h3><div class="body"><p>Optilume-ballongen føres over guidewiren og korrekt beliggenhet visualiseres — strikturen skal overlappes i begge ender, bekreftet både med engangscystoskop og gjennomlysning. Ballongen blåses opp til 10 atm i 7 minutter, deretter bekreftes tom ballong med gjennomlysning før seponering.</p></div></div>
+<div class="stepblock"><span class="stepnum">7</span><h3>Avslutning</h3><div class="body"><p>Kateter Ch 14 legges over guidewire med 10 ml i ballongen. Urinsvar ved avslutning er typisk lyst blodig, forenlig med forventet postoperativt bilde.</p></div></div>
+<div class="stepblock"><span class="stepnum">8</span><h3>Postoperativ instruks</h3><div class="body">
+<ul>
+<li>Kateter i 2 dager, pasienten instrueres i selvseponering før avreise</li>
+<li>Rekontakt med helsevesenet ved infeksjonstegn</li>
+<li>Kontroll med flow/resturin ca. 3 mnd på urologisk poliklinikk</li>
+<li>Ingen seksuell aktivitet i 2 uker, beskyttet samleie, og ingen reproduksjon i 6 måneder (pga. paklitaksel på ballongen)</li>
+</ul>
+<div class="callout amber"><b>NB — avklar lokal instruks</b>Kildedokumentene angir noe ulik varighet for beskyttet samleie (8 uker i poliklinikkens forberedelsesnotat vs. 2 måneder i operasjonsnotatet). Avklar gjeldende instruks før pasienten informeres.</div>
+</div></div>
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Urethral Strictures, uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt henvisnings-/forberedelsesnotat og operasjonsnotat (KDH62 Transurethral rekanalisering av urethra, KUD02 Urethroskopi, ZTX0EJ/L01CD01 Optilume DCB medikamentgivende ballongblokking med paklitaksel)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemal er lokal Ahus-praksis.</div>
+`};
+
+CONTENT_MAP['cystolitotripsi'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Symptomgivende eller tilfeldig påvist blærestein.</div>`,
+short: `
+<ol class="steplist compact">
+<li>Informer om inngrepets art og risiko (kateterbehov, infeksjon, hematuri, urinveisskade, mulig konvertering til åpen kirurgi eller manglende symptomeffekt)</li>
+<li>Narkose, Xylocaingel, innføring av skop til blæren</li>
+<li>Orienterende cystoskopi og bekreftelse av blæresten</li>
+<li>Knusing av stein med mekanisk/energibasert litotriptor til mindre fragmenter</li>
+<li>Ekstraksjon av større fragmenter manuelt, skylling ut av mindre</li>
+<li>Kontroll for resterende konkrementer</li>
+<li>3-veis skyllekateter, kontroll av urinfarge</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Forberedelse og samtykke</h3><div class="body"><p>Pasienten informeres om inngrepets art og mulige bivirkninger/komplikasjoner: behov for kateter, infeksjon, hematuri, perioperativ skade på urinveier, samt mulighet for konvertering til åpen kirurgi eller manglende effekt på symptomer.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Tilgang</h3><div class="body"><p>Xylocaingel appliseres. Skop føres til blæren. Orienterende cystoskopi bekrefter tidligere beskrevet blæresten uten andre anmerkninger.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Steinknusing</h3><div class="body"><p>Steinen dustes og knuses trinnvis til mindre fragmenter med mekanisk litotriptor. Kraftigere/større steinbyrde kan supplere med energibasert system (f.eks. ShockPulse) ved behov.</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Ekstraksjon</h3><div class="body"><p>Større fragmenter hentes ut manuelt. Mindre fragmenter fjernes med skylling (Ellik-evakuator). Blæren kontrolleres avslutningsvis for resterende konkrementer.</p></div></div>
+<div class="stepblock"><span class="stepnum">5</span><h3>Avslutning</h3><div class="body"><p>3-veis skyllekateter (Ch 20) legges inn. Urinfargen bekreftes akseptabel før avslutning. Kompress- og instrumenttelling stemmer.</p></div></div>
+<div class="stepblock"><span class="stepnum">6</span><h3>Postoperativt</h3><div class="body"><ul>
+<li>Skylles etter urinfarge</li>
+<li>Ikke indikasjon for rutinemessig tromboseprofylakse eller videre antibiotika ved ukomplisert forløp</li>
+<li>Steinfragment sendes til dyrkning og steinanalyse</li>
+<li>Kateter seponeres når urinen er klar — pasienten kan reise samme dag hvis ønskelig</li>
+<li>Anbefalt kontroll av steinbyrde hos fastlege om 2 år, med henvisning til sanering ved vekst</li>
+</ul></div></div>
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Urolithiasis, uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KCE02 Transurethral ekstraksjon av blærestein)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemal er lokal Ahus-praksis.</div>
+`};
+
+CONTENT_MAP['hydrocelectomi'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Symptomgivende hydrocele og pasientens ønske om operasjon. Se Hydrocele og varikocele for utredning.</div>`,
+short: `
+<ol class="steplist compact">
+<li>Bekreft klinisk funn på operasjonsdagen, informer om inngrep og komplikasjoner (hematocele hos opptil 1/3, blødning, infeksjon, residiv)</li>
+<li>Generell narkose, horisontalt snitt over skrotum</li>
+<li>Skarp/stump disseksjon gjennom lagene til hydrocelesekken, fortløpende hemostase</li>
+<li>Hydrocele frigjøres, tas ut og punkteres</li>
+<li>Sekken inverteres, testis orienteres tilbake i skrotum</li>
+<li>Lukking i lag (tunica, dartos, hud), lokalbedøvelse, kompresjonsbandasje</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Preoperativ bekreftelse</h3><div class="body"><p>Ved klinisk undersøkelse på operasjonsdagen bekreftes funnene fra poliklinisk vurdering/ultralyd. Pasienten informeres grundig om inngrepets art, vanlig postoperativt forløp og mulige komplikasjoner — hematocele forekommer hos opptil en tredjedel, i tillegg til blødning, infeksjon og residiv.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Tilgang</h3><div class="body"><p>Horisontalt snitt over skrotum ventralt, skarpt gjennom raphe. Saks og diatermi brukes gjennom lagene ned til hydrocelesekken, med fortløpende hemostase.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Frigjøring av hydrocelesekken</h3><div class="body"><p>Hydrocelesekken frigjøres stumpt fra skrotum, tas ut og frigjøres ytterligere. Punkteres for å tømme innholdet (typisk stråblig, klar væske).</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Inversjon (ad modum Winkelmann)</h3><div class="body"><p>Snittet i sekken utvides i vertikal retning, og sekken inverteres bak funikkelen — selve prinsippet i Winkelmann-teknikken, som forhindrer residiv ved å fjerne det serøse rommet som hydrocelevæsken samlet seg i.</p></div></div>
+<div class="stepblock"><span class="stepnum">5</span><h3>Lukking</h3><div class="body"><p>Sekken sutureres fortløpende med resorberbar tråd (Novosyn 3-0/2-0) til akseptabelt resultat med tilfredsstillende plass for funikkelen. Testis orienteres tilbake i skrotum. Grundig hemostase med diatermi. Dartos lukkes fortløpende, lokalbedøvelse (Marcain) deponeres i sårområdet, og huden lukkes med enkeltstående resorberbare suturer.</p></div></div>
+<div class="stepblock"><span class="stepnum">6</span><h3>Postoperativt</h3><div class="body"><ul>
+<li>Strips, Mepore og kompresjonsbandasje</li>
+<li>Reiser samme dag i velbefinnende, ingen suturfjerning</li>
+<li>Forsiktig med aktivitet og tunge løft, spesielt første uken</li>
+<li>Ingen rutinemessig kontroll avtalt</li>
+<li>Ved økende skrotal hevelse: oppsøke helsevesenet for vurdering (mistanke om hematocele/infeksjon)</li>
+</ul></div></div>
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Sexual and Reproductive Health, uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KFD20 Eksisjon hydrocele ad modum Winkelmann)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemal er lokal Ahus-praksis.</div>
+`};
+
+CONTENT_MAP['orkiektomi'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Malignitetssuspekt testistumor. Se Testikkelkreft for utredning — markører (AFP, hCG, LD), skrotal UL og CT thorax/abdomen/bekken skal foreligge, og sædbanking skal være tilbudt <strong>før</strong> operasjon.</div>`,
+short: `
+<ol class="steplist compact">
+<li>Bekreft utredning: tumormarkører, UL scrotum, CT thorax/abdomen/bekken, sædbanking utført</li>
+<li>Klinisk undersøkelse — palpér begge testikler</li>
+<li>Informer om inngrepet, komplikasjoner og tilbud om testisprotese</li>
+<li>Inguinal tilgang — <strong>aldri transskrotal</strong></li>
+<li>Løft funikkel, klem av, trekk testis opp til lyske</li>
+<li>Del og ligér gubernaculum, omstikk funikkel × 2, del distalt</li>
+<li>Lukking i lag</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Forutgående utredning</h3><div class="body"><p>Skrotal UL har vist malignitetssuspekt tumor. Tumormarkører (hCG, AFP, LD) er tatt før operasjon — avgjørende for senere stadieinndeling og responsvurdering. CT thorax/abdomen/bekken har ikke vist tegn til metastaser. Pasienten har fått tilbud om og gjennomført sædbanking før inngrepet.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Klinisk undersøkelse</h3><div class="body"><p>Begge testikler palperes ved inspeksjon — den affiserte siden viser typisk en øm, palpabel, hard kul i testikkelen, mens kontralateral side er upåfallende.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Samtykke</h3><div class="body"><p>Pasienten informeres om inngrepet, inkludert risiko for blødning og infeksjon, samt muligheten for testisprotese — noe pasienten kan takke ja eller nei til.</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Tilgang</h3><div class="body"><p><strong>Inguinal tilgang er obligatorisk</strong> — aldri transskrotal biopsi/kirurgi, da dette gir risiko for endret lymfedrenasje og lokal tumorspredning (se Testikkelkreft). Snitt gjennom hud i lysken, disseksjon ned gjennom subcutis, med ligering av vener ved behov.</p></div></div>
+<div class="stepblock"><span class="stepnum">5</span><h3>Fridissekering og fjerning</h3><div class="body"><p>Gjennom fascien ned til funikkelen, som løftes opp og klemmes av med peang før videre disseksjon — dette hindrer tumorspredning via manipulasjon. Testis trekkes opp til lysken. Gubernaculum deles og ligeres. Funikkelen omstikkes to ganger og deles distalt for dette, med kontroll for at det ikke er blødning fra stumpen.</p></div></div>
+<div class="stepblock"><span class="stepnum">6</span><h3>Lukking</h3><div class="body"><p>Fascien sutureres fortløpende (Novosyn 3-0), subcutis med enkeltstående suturer (Novosyn 3-0), og avsluttes med intrakutan sutur (Monosyn 4-0). Lokal infiltrasjonsanestesi (Marcain 5 mg/mL uten adrenalin) suppleres i sårområdet.</p></div></div>
+<div class="stepblock"><span class="stepnum">7</span><h3>Postoperativt og videre forløp</h3><div class="body"><ul>
+<li>Ingen suturfjerning nødvendig</li>
+<li>Telefonkonsultasjon avtales for histologisvar (typisk ca. 2 uker)</li>
+<li>Nye tumormarkører kontrolleres postoperativt (typisk etter 1 uke) — viktig for stadieinndeling</li>
+<li>Henvises onkologisk behandling for videre stadieinndeling og behandling</li>
+<li>Preparatet sendes til histologisk undersøkelse, svar ettersendes</li>
+</ul></div></div>
+<div class="sources"><h4>Kilder</h4><ul>
+<li>Helsedirektoratet — Testikkelkreft-handlingsprogram; EAU Guidelines — Testicular Cancer, uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KFC00 Unilateral orkiektomi)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemal er lokal Ahus-praksis.</div>
+`};
+
+CONTENT_MAP['penisplastikk'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Peyronies sykdom (induratio penis plastica) med signifikant krumning som hindrer samleie, i stabil fase av sykdommen.</div>
+<div class="callout amber"><b>Viktig forventningsavklaring</b>Pasienten må informeres om at fullstendig korreksjon av feilstillingen ikke kan loves — målet er tilstrekkelig retting til å muliggjøre samleie, samt at inngrepet kan gi noe forkortning av penis.</div>`,
+short: `
+<ol class="steplist compact">
+<li>Informer om inngrep, risiko (blødning, infeksjon, postoperativ smerte, penisforkortning) og realistisk forventet resultat</li>
+<li>Generell anestesi, ledningsanestesi med Marcain</li>
+<li>Induser kunstig ereksjon (saltvannsinjeksjon i corpora, strikk ved penisrot)</li>
+<li>Marker kurvatur og midtlinje, midtlinjesnitt ventralt over kurvaturen</li>
+<li>Disseker til tunica albuginea, sett korreksjonssuturer (Nesbit-prinsipp)</li>
+<li>Kontroller rettstilling med ny saltvannsinjeksjon</li>
+<li>Lukking i lag</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Samtykke og forventningsavklaring</h3><div class="body"><p>Pasienten informeres grundig om inngrepet, inkludert risiko for blødning, infeksjon, postoperativ smerte og forkortning av penis som følge av korreksjonen. Det presiseres at fullstendig retting ikke kan garanteres, men at målet er tilstrekkelig korreksjon til å muliggjøre samleie.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Anestesi</h3><div class="body"><p>Generell anestesi. Ledningsanestesi med Marcain 5 mg/mL uten adrenalin.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Kunstig ereksjon</h3><div class="body"><p>Saltvann injiseres i corpus cavernosum bilateralt for å oppnå ereksjon, og strikk legges rundt penisroten for å opprettholde ereksjonen under kartlegging og korreksjon av kurvaturen.</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Kartlegging og snitt</h3><div class="body"><p>Nivå for kurvatur og midtlinje tegnes opp. Langsgående snitt legges i midtlinjen ventralt over kurvaturen, med disseksjon ned til tunica albuginea.</p></div></div>
+<div class="stepblock"><span class="stepnum">5</span><h3>Korreksjon</h3><div class="body"><p>Nivå for korreksjon markeres. Suturer (f.eks. PremiChron 2-0) settes på hver side av uretra og supplerende på konkav/konveks side etter behov, etter Nesbit-prinsippet (plikering på siden motsatt krumningen). Saltvann injiseres på nytt for å kontrollere at penis er tilstrekkelig rett til å muliggjøre samleie.</p></div></div>
+<div class="stepblock"><span class="stepnum">6</span><h3>Lukking</h3><div class="body"><p>Subcutant lukkes fortløpende i to lag (Novosyn 4-0), og hud lukkes med enkeltstående suturer (Monosyn Rapid 4-0).</p></div></div>
+<div class="stepblock"><span class="stepnum">7</span><h3>Postoperativ instruks</h3><div class="body"><ul>
+<li>Hold sårområdet tørt — ved våt bandasje: la området lufttørke og legg på ny tørr bandasje</li>
+<li>Unngå seksuell aktivitet i første måned postoperativt</li>
+<li>Informeres om at spontan vannlating kan være smertefull den første tiden</li>
+<li>Ved sårblødning: dekk penis med ren klut og komprimer i 12–15 min — kontakt lege ved fortsatt blødning</li>
+<li>Smertestillende: paracetamol 500 mg og ibuprofen 200 mg × 3 daglig i 2–3 dager, deretter ved behov</li>
+<li>Behandlingskontroll hos operatør etter 3–4 måneder</li>
+</ul></div></div>
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Sexual and Reproductive Health (Peyronie's Disease), uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KGH20 Korreksjon av indurasjon eller krumning av penis)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemal er lokal Ahus-praksis.</div>
+`};
+
+CONTENT_MAP['intern-uretrotomi'] = {type:'toggle',
+intro: `<div class="callout"><b>Indikasjon</b>Skopiverifisert, primær kort urinrørsstriktur. Førstevalg i behandlingsstigen — se Urinrørsstriktur for videre forløp ved residiv (Optilume/åpen uretraplastikk).</div>`,
+short: `
+<ol class="steplist compact">
+<li>Bekreft skopiverifisert striktur, supplerende uretragrafi ved behov</li>
+<li>Informer om inngrep, forløp og komplikasjoner (blødning, infeksjon, kateterbehov, urinrørsskade, mulig behov for gjentatt prosedyre)</li>
+<li>Narkose, Bactrimprofylakse</li>
+<li>Xylocaingel, visuell obturator til strikturen</li>
+<li>Spalting av strikturen kl. 12</li>
+<li>Adekvat passasje til blæren, orienterende cystoskopi</li>
+<li>Kateter over access sheath</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Forberedelse</h3><div class="body"><p>Strikturen er skopiverifisert, ev. supplert med retrograd uretragrafi for lokalisasjon/lengde. Pasienten informeres om inngrepet, vanlig postoperativt forløp og mulige komplikasjoner: blødning, infeksjon, kateterbehov, urinrørsskade, og mulig behov for å gjenta prosedyren ved residiv.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Tilgang</h3><div class="body"><p>I generell anestesi og med Bactrimprofylakse appliseres xylocaingel, og visuell obturator føres til det trange partiet.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Spalting</h3><div class="body"><p>Strikturen spaltes klokken 12 — standard snittretning som holder seg unna corpus spongiosums mest vaskulariserte områder og reduserer blødningsrisiko. Vanligvis lite blødning fra spaltestedet.</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Kontroll og kateter</h3><div class="body"><p>Adekvat passasje inn i blæren oppnås. Orienterende cystoskopi gjøres uten anmerkning, med visualisering av begge ostier med urinjet. Kateter (Ch 14) legges via access sheath.</p></div></div>
+<div class="stepblock"><span class="stepnum">5</span><h3>Postoperativt</h3><div class="body"><ul>
+<li>Kateter kan seponeres på postoperativ avdeling</li>
+<li>Ved UVI-symptomer: urinprøve til fastlege for vurdering av antibiotikabehandling</li>
+<li>Kontroll med flow/resturin på urologisk poliklinikk om 3 mnd</li>
+</ul></div></div>
+<div class="callout amber"><b>Ved residiv</b>Se Urinrørsstriktur og Optilume for videre behandlingsstige — Optilume vurderes som alternativ til ny uretrotomi eller åpen uretraplastikk ved kort (&lt;3 cm) bulbær residivstriktur.</div>
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Urethral Strictures, uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KDV12 Transurethral intern urethrotomi, KCX20 Blærekateterisering)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemal er lokal Ahus-praksis.</div>
+`};
+
+CONTENT_MAP['testistorsjon-op'] = {type:'toggle',
+intro: `<div class="callout high"><b>Akutt kirurgisk emergency</b>Ved klinisk mistanke om testistorsjon skal eksplorasjon ikke forsinkes av bildediagnostikk. Se Epididymitt/akutt skrotum for differensialdiagnostikk.</div>`,
+short: `
+<ol class="steplist compact">
+<li>Bekreft anamnese (akutt debut, smerte ± kvalme/oppkast) og klinisk mistanke om torsjon</li>
+<li>Informer pasient/foresatte om sannsynlig detorkvering og bilateral fiksasjon, samt komplikasjoner (hematocele, infeksjon, mulig fjerning ved avital testis)</li>
+<li>Generell anestesi, skarpt snitt over affisert side</li>
+<li>Luksér testikkel, detorkver, legg i vått kompress for observasjon av reperfusjon</li>
+<li>Tilsvarende snitt kontralateralt — profylaktisk fiksasjon</li>
+<li>Fikser begge testikler medialt og lateralt, lukk i lag</li>
+</ol>
+`,
+detailed: `
+<div class="stepblock"><span class="stepnum">1</span><h3>Klinisk vurdering</h3><div class="body"><p>Akutt ensidig skrotal smerte, ofte med kvalme/oppkast, gir klinisk mistanke om testistorsjon. Pasient (og foresatte ved mindreårig) informeres grundig om inngrepets art — sannsynlig detorkvering og fiksering av testis bilateralt — samt komplikasjoner som hematocele, infeksjon, og risiko for fjerning av testikkelen dersom den viser seg avital.</p></div></div>
+<div class="stepblock"><span class="stepnum">2</span><h3>Eksplorasjon av affisert side</h3><div class="body"><p>Skarpt snitt gjennom skrotalhud over affisert testikkel. Saks og diatermi ned til kapsel. Torkvert testikkel er typisk blålig og luksérs ut, detorkveres, og legges i vått kompress mens man observerer reperfusjon/fargeendring.</p></div></div>
+<div class="stepblock"><span class="stepnum">3</span><h3>Kontralateral eksplorasjon</h3><div class="body"><p>Tilsvarende skarpt snitt gjøres over kontralateral testikkel, som luksérs ut for inspeksjon (normalt utseende forventes). Hemostase sikres med diatermi bilateralt i skrotalsekken.</p></div></div>
+<div class="stepblock"><span class="stepnum">4</span><h3>Fiksasjon</h3><div class="body"><p>Kontralateral (uaffisert) testikkel fikseres først, medialt og lateralt med resorberbar sutur (Novosyn 3-0), og tunica vaginalis lukkes fortløpende. Deretter fjernes kompresset fra den detorkverte testikkelen — ved normal farge vurderes den vital, orienteres i riktig leie, og fikseres på samme måte medialt og lateralt.</p></div></div>
+<div class="stepblock"><span class="stepnum">5</span><h3>Lukking</h3><div class="body"><p>Tunica vaginalis lukkes fortløpende med resorberbar sutur på begge sider. Skrotalhud lukkes med enkeltstående suturer bilateralt.</p></div></div>
+<div class="stepblock"><span class="stepnum">6</span><h3>Postoperativt</h3><div class="body"><ul>
+<li>Ingen suturfjerning, ingen rutinemessig kontroll</li>
+<li>Ingen hard fysisk aktivitet i 3 uker</li>
+<li>Paracetamol og ibuprofen for smerter</li>
+<li>Kan reise i vellykket forløp samme dag ved adekvat smertelindring og igangsatt vannlating</li>
+</ul></div></div>
+<div class="callout"><b>Tidsvindu</b>Sjansen for testikkelviabilitet faller raskt med tid fra symptomdebut — irreversibel iskemisk skade øker betydelig etter ca. 6 timer, men testikler kan være vitale også noe lenger, som i eksempelet her (~4 timer).</div>
+<div class="sources"><h4>Kilder</h4><ul>
+<li>EAU Guidelines — Paediatric Urology; Urological Trauma, uroweb.org</li>
+<li><strong>Ahus urologisk avdeling</strong> — internt operasjonsnotat/frasemal (KFH20 Detorkvering av funikkel og fiksasjon av testikkel, KFH10 Orkiopeksi kontralateralt)</li>
+</ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Frasemal er lokal Ahus-praksis.</div>
+`};
+
+/* ---------------- HENVISNINGSVURDERING ---------------- */
+
+CONTENT_MAP['henvisningsvurdering'] = {type:'simple', html: `
+<div class="callout internal"><b>Ahus internt — urologisk poliklinikk</b>Praktisk oppslag brukt ved vurdering av henvisninger: hvilke begreper som skal brukes i «Admin.merknad»-feltet, hva de innebærer, og forslag til prioritet (frist). Ikke en nasjonal retningslinje.</div>
+
+<div class="callout amber"><b>Merk</b>Tabellen er transkribert fra et fotografert oppslagsark. Et klarere, rettvendt bilde har bekreftet de fleste prioritetsverdiene under — noen få celler har fortsatt ingen lesbar verdi på arket (merket «—») fremfor at det er gjettet på en verdi.</div>
+
+<h2>Pakkeforløp</h2>
+<table class="datatable">
+<tr><th>Diagnosegruppe</th><th>Admin.merknad</th><th>Innebærer</th><th>Kommentar</th><th>Prioritet</th></tr>
+<tr><td>Pakkeforløp nyre</td><td class="mono">PAKKE nyre</td><td>Samtale</td><td>—</td><td>—</td></tr>
+<tr><td>Pakkeforløp testis</td><td class="mono">PAKKE testis</td><td>Samtale etter UL</td><td>—</td><td>—</td></tr>
+<tr><td rowspan="2">Pakkeforløp blære</td><td class="mono">PAKKE blære</td><td>Cysto og CT</td><td>CT 3-fase skal være tatt</td><td>2 uker</td></tr>
+<tr><td class="mono">PAKKE blære uten CT</td><td>Cysto</td><td>Bestill UL og evt. CT</td><td>2 uker</td></tr>
+<tr><td rowspan="2">Pakkeforløp prostata</td><td class="mono">PAKKE prostata</td><td>MR og koelis</td><td>Inntak bestiller CT</td><td>3 uker</td></tr>
+<tr><td class="mono">PAKKE prostata uten MR</td><td>Koelis</td><td>Inntak bestiller MR</td><td>4 uker</td></tr>
+</table>
+
+<h2>PSA og vannlatingsplager</h2>
+<table class="datatable">
+<tr><th>Diagnosegruppe</th><th>Admin.merknad</th><th>Innebærer</th><th>Kommentar</th><th>Prioritet</th></tr>
+<tr><td>Forhøyet PSA</td><td class="mono">PSA</td><td>Vurdere utredning</td><td>—</td><td>6 uker</td></tr>
+<tr><td>Vannlatingsplager — treg stråle</td><td class="mono">TRUL, LUTS</td><td>—</td><td>LUTS = uroflow/rest + ML</td><td>6 mnd</td></tr>
+<tr><td>Vannlatingsplager — urgency, pollakisuri</td><td class="mono">Cysto, LUTS</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>Vannlatingsplager — urgency med lekkasje</td><td class="mono">Cysto, LUTS, bleieveiing</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>Seponere kateter</td><td class="mono">Sep.kat. spl / lege</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>Bekkensmerter</td><td class="mono">Cysto, LUTS, innhent journal</td><td>—</td><td>Vurdere legetime ved resturin</td><td>6 uker</td></tr>
+<tr><td>Urinveisinfeksjoner</td><td class="mono">Cysto, uroflow/rest</td><td>—</td><td>—</td><td>6 mnd</td></tr>
+<tr><td>Mikrohematuri</td><td class="mono">Cysto</td><td>—</td><td>—</td><td>12 uker</td></tr>
+</table>
+
+<h2>Stein</h2>
+<table class="datatable">
+<tr><th>Diagnosegruppe</th><th>Admin.merknad</th><th>Innebærer</th><th>Kommentar</th><th>Prioritet</th></tr>
+<tr><td>Stein — med behandlingsindikasjon</td><td class="mono">Vurd</td><td>—</td><td>CT skal være tatt</td><td>4 uker</td></tr>
+<tr><td>Stein — uten behandlingsindikasjon</td><td class="mono">Vurd</td><td>—</td><td>—</td><td>12 uker</td></tr>
+</table>
+
+<h2>Skrotum, fimose og retentio testis</h2>
+<table class="datatable">
+<tr><th>Diagnosegruppe</th><th>Admin.merknad</th><th>Innebærer</th><th>Kommentar</th><th>Prioritet</th></tr>
+<tr><td rowspan="2">Skrotum/fimose hos voksne</td><td class="mono">OPL</td><td>Direkte til OPL</td><td>—</td><td>1 år</td></tr>
+<tr><td class="mono">Vurd</td><td>—</td><td>—</td><td>6 mnd</td></tr>
+<tr><td>Fimose hos barn</td><td class="mono">Vurd</td><td>—</td><td>—</td><td>12 uker</td></tr>
+<tr><td>Retentio testis</td><td class="mono">Vurd</td><td>—</td><td>—</td><td>6 mnd</td></tr>
+</table>
+
+<div class="sources"><h4>Kilder</h4><ul>
+<li><strong>Ahus urologisk poliklinikk</strong> — internt oppslagsark «Begrepsbruk ved vurdering av henvisninger» (begreper til bruk i Admin.merknad-feltet og forslag til prioritet)</li>
+</ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Dette er et lokalt administrativt hjelpemiddel for henvisningsvurdering, ikke en klinisk retningslinje — sjekk alltid mot gjeldende oppslag i avdelingen.</div>
+`};
+
+/* ---------------- AKUTTUROLOGI ---------------- */
+
+CONTENT_MAP['urinretensjon-akutt'] = {type:'simple', html: `
+<div class="callout high"><b>Akutt håndtering</b>Umiddelbar avlastning med kateter er alltid førstetiltak — utredning av årsak kan vente.</div>
+
+<h2>Årsaker</h2>
+<p>BPH er vanligste årsak hos menn. Andre: postoperativ retensjon (etter anestesi/kirurgi, spesielt bekkenkirurgi), medikamenter (antikolinergika, opioider, alfaagonister), obstipasjon, akutt prostatitt/UVI, urinrørsstriktur, blæretamponade (se egen side), nevrogene årsaker, og postpartum-retensjon hos kvinner.</p>
+
+<h2>Håndtering</h2>
+<ol>
+<li>Umiddelbar transuretral kateterisering. Ved vanskelig/mislykket kateterisering — mistenk striktur/via falsa (se egen side); ikke bruk kraft, tilkall urolog</li>
+<li>Noter tappet volum. Ved &gt;1000 mL: økt risiko for postobstruktiv diurese — følg væskebalanse og elektrolytter de neste døgnene</li>
+<li>Vurder årsak: DRE, anamnese på medikamenter/kirurgi, urinstiks</li>
+<li>Alfablokker oppstartes ofte før forsøk på fjerning av kateter — bedrer sjansen for vellykket spontan vannlating («trial without catheter», TWOC)</li>
+</ol>
+
+<h2>Videre oppfølging</h2>
+<p>Ved gjentatt retensjon eller mislykket TWOC henvises urologisk poliklinikk for utredning av underliggende obstruksjon og vurdering av definitiv behandling (se BPH og TURP).</p>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Management of Non-neurogenic Male LUTS, uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+CONTENT_MAP['priapisme'] = {type:'simple', html: `
+<div class="callout high"><b>Akutt urologisk emergency</b>Ischemisk priapisme &gt;4 timer krever akutt behandling — risiko for permanent erektil dysfunksjon øker med varighet.</div>
+
+<h2>To hovedtyper</h2>
+<table class="datatable">
+<tr><th>Ischemisk (lavflow)</th><th>Non-ischemisk (høyflow)</th></tr>
+<tr><td>Vanligst. Smertefull. Kompartmentsyndrom-lignende — akutt emergency</td><td>Sjelden. Ofte traumeindusert (AV-fistel). Vanligvis smertefri, ikke akutt emergency på samme måte</td></tr>
+</table>
+
+<h2>Årsaker (ischemisk)</h2>
+<p>Idiopatisk, sigdcelleanemi, intrakavernøs injeksjonsbehandling for ereksjonssvikt, enkelte medikamenter (antipsykotika, antikoagulantia), og maligne infiltrasjoner.</p>
+
+<h2>Diagnostikk</h2>
+<p>Blodgassanalyse fra corpus cavernosum skiller typene: ischemisk gir lav pO2/høy pCO2/acidose (venøst preget), non-ischemisk gir arterielt preget blodgass. Doppler-ultralyd kan supplere.</p>
+
+<h2>Behandling</h2>
+<p><strong>Ischemisk:</strong> aspirasjon av blod fra corpus cavernosum kombinert med intrakavernøs fenylefrin-injeksjon er førstelinje. Kirurgisk shunt vurderes ved manglende respons.</p>
+<p><strong>Non-ischemisk:</strong> ofte observasjon eller embolisering — ikke samme tidspress som ischemisk type.</p>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Sexual and Reproductive Health (Priapism), uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+CONTENT_MAP['penisfraktur'] = {type:'simple', html: `
+<div class="callout high"><b>Akutt kirurgisk tilstand</b>Akutt eksplorasjon og sutur (helst innen 24t) gir bedre resultat enn konservativ behandling.</div>
+
+<h2>Presentasjon</h2>
+<p>Ruptur av tunica albuginea under ereksjon, oftest ved samleie. Klassisk anamnese: hørbar «snap»/knekklyd, umiddelbar smerte og detumescens, raskt tiltagende hematom («aubergine sign» — penis blir mørk, hoven og bøyd mot den skadde siden).</p>
+
+<h2>Utredning</h2>
+<p>Diagnosen er ofte klinisk ut fra typisk anamnese og funn. Ultralyd penis kan bekrefte lokalisasjon ved uklart bilde. <strong>Vurder samtidig uretraskade</strong> — blod ved meatus eller hematuri bør medføre uretrografi/cystoskopi <em>før</em> eventuell kateterisering forsøkes.</p>
+
+<h2>Behandling</h2>
+<p>Akutt kirurgisk eksplorasjon med sutur av tunica albuginea-defekten er standardbehandling og gir vesentlig bedre resultat enn konservativ tilnærming.</p>
+
+<h2>Komplikasjoner ved forsinket/manglende behandling</h2>
+<p>Erektil dysfunksjon, penil krumning (Peyronie-lignende deformitet — se Penisplastikk), og fisteldannelse.</p>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Urological Trauma, uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+CONTENT_MAP['fourniers-gangren'] = {type:'simple', html: `
+<div class="callout high"><b>Kirurgisk akuttemergency</b>Bred debridement uten forsinkelse er avgjørende — mortalitet er betydelig ved forsinket behandling.</div>
+
+<h2>Definisjon</h2>
+<p>Nekrotiserende fasciitt i perineum/genitalia. Polymikrobiell infeksjon med rask progresjon.</p>
+
+<h2>Risikofaktorer</h2>
+<p>Diabetes mellitus, immunsuppresjon, alkoholmisbruk, fedme, nylig lokalt traume eller kirurgi (perianalt, urogenitalt).</p>
+
+<h2>Kliniske kjennetegn</h2>
+<ul>
+<li><strong>Uforholdsmessig sterk smerte</strong> i forhold til synlige hudfunn tidlig i forløpet — viktig varseltegn</li>
+<li>Raskt progredierende erytem og ødem</li>
+<li>Krepitasjon (gassdannende bakterier)</li>
+<li>Systemisk sepsisbilde kan utvikles raskt</li>
+</ul>
+
+<h2>Behandling</h2>
+<ol>
+<li>Bred kirurgisk debridement <strong>uten forsinkelse</strong> — hjørnestein i behandlingen</li>
+<li>Bredspektret intravenøs antibiotika</li>
+<li>Intensivstøtte ved sepsis</li>
+<li>Gjentatte revisjoner ofte nødvendig før endelig sårlukking/rekonstruksjon</li>
+</ol>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Urological Infections, uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+CONTENT_MAP['blaretamponade'] = {type:'simple', html: `
+<div class="callout high"><b>Akutt håndtering</b>Stort kateter og aktiv skylling for å evakuere koagler — utsett ikke ved økende smerte/utspilt blære.</div>
+
+<h2>Årsaker</h2>
+<p>Blæreobstruksjon pga. blodkoagler, oftest etter kraftig hematuri — postoperativt (TURP/TURBT), spontan blødning fra blæretumor, eller ved antikoagulasjonsbehandling.</p>
+
+<h2>Håndtering</h2>
+<ol>
+<li>Legg stort kateter, helst 3-veis (Ch 22–24)</li>
+<li>Manuell sprøyteskylling for å evakuere koagler</li>
+<li>Kontinuerlig blæreskylling (CBI) for å forebygge nye koagler</li>
+<li>Ved utilstrekkelig manuell skylling: cystoskopisk koagelevakuering i narkose</li>
+</ol>
+
+<h2>Videre utredning</h2>
+<p>Når akuttsituasjonen er stabilisert, utredes underliggende årsak dersom denne ikke allerede er kjent — cystoskopi, ev. CT ved mistanke om tumor eller annen strukturell patologi.</p>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Non-muscle-invasive Bladder Cancer (blødningskomplikasjoner), uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+CONTENT_MAP['via-falsa'] = {type:'simple', html: `
+<div class="callout high"><b>Stopp gjentatte forsøk</b>Ved motstand under kateterisering — ikke bruk kraft. Gjentatte blinde forsøk øker risiko for skade og forverrer situasjonen.</div>
+
+<h2>Definisjon</h2>
+<p>Iatrogen falsk kanal i uretraveggen, oppstått ved traumatisk eller vanskelig kateterisering.</p>
+
+<h2>Risikofaktorer</h2>
+<p>BPH, urinrørsstriktur, uerfaren kateteriserende personell, og bruk av kraft ved motstand.</p>
+
+<h2>Kliniske tegn</h2>
+<ul>
+<li>Blod ved meatus</li>
+<li>Smerte under prosedyren</li>
+<li>Manglende urinretur til tross for tilsynelatende korrekt plassert kateter</li>
+<li>Kateteret lar seg ikke føre inn til tross for gjentatte forsøk</li>
+</ul>
+
+<h2>Håndtering</h2>
+<p>Gjentatte blinde forsøk skal stoppes. Urologisk tilsyn med <strong>fleksibel cystoskopi</strong> for visualisert innføring av guidewire/kateter er tryggeste metode. Suprapubisk kateter vurderes som midlertidig avlastning dersom uretra ikke kan passeres trygt.</p>
+
+<h2>Forebygging</h2>
+<p>Rikelig glidemiddel, skånsom teknikk uten kraftbruk, og lav terskel for å tilkalle urolog ved vanskelig kateterisering fremfor å gjøre gjentatte forsøk selv.</p>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Urological Trauma, uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+/* ---------------- STRESSINKONTINENS ---------------- */
+
+CONTENT_MAP['stressinkontinens'] = {type:'simple', html: `
+<div class="callout"><b>Kjapt sammendrag</b>Ufrivillig urinlekkasje ved økt intraabdominalt trykk (host, host, løft, anstrengelse), pga. svekket uretral lukkefunksjon. Hos menn er årsaken nesten alltid iatrogen — se RALP.</div>
+
+<h2>Årsaker</h2>
+<p><strong>Kvinner:</strong> fødsler, postmenopausal østrogenmangel, bekkenbunnssvekkelse, tidligere bekkenkirurgi.</p>
+<p><strong>Menn:</strong> nesten alltid iatrogen — etter radikal prostatektomi (skade på ytre sfinkter under apikal disseksjon, se RALP) eller etter TURP.</p>
+
+<h2>Utredning</h2>
+<p>Anamnese og miksjonslister. Stresstest (hostetest med full blære) kan objektivisere lekkasjen. Urodynamisk undersøkelse ved diagnostisk usikkerhet eller før kirurgisk behandling, for å utelukke samtidig detrusoroveraktivitet.</p>
+
+<h2>Behandling — trinnvis</h2>
+<ol>
+<li>Bekkenbunnstrening — førstelinje, spesielt hos kvinner og tidlig etter RALP hos menn</li>
+<li>Vektreduksjon og livsstilstiltak ved overvekt</li>
+<li>Pessar (kvinner) som mekanisk støtte ved samtidig prolaps</li>
+<li>Kirurgi ved manglende effekt av konservativ behandling — se Operasjonsteknikker: Midturetral slynge og kunstig urinsfinkter</li>
+</ol>
+<p>Medikamentell behandling har begrenset plass ved ren stressinkontinens sammenlignet med kirurgisk korreksjon.</p>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Urinary Incontinence, uroweb.org</li></ul></div>
+<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>
+`};
+
+/* ---------------- INKONTINENSKIRURGI ---------------- */
+
+CONTENT_MAP['inkontinenskirurgi'] = {type:'simple', html: `
+<div class="callout"><b>Indikasjon</b>Stressinkontinens uten tilfredsstillende effekt av konservativ behandling — se Stressinkontinens.</div>
+
+<h2>Midturetral slynge (TVT/TOT)</h2>
+<p>Hovedvalg ved kvinnelig stressinkontinens. En syntetisk stripe legges under midtre uretra og gir mekanisk støtte ved anstrengelse/hoste.</p>
+<h3>Teknikk</h3>
+<ul>
+<li><strong>Retropubisk (TVT):</strong> vaginalt snitt, trokar føres retropubisk opp mot bukveggen bilateralt</li>
+<li><strong>Transobturatorisk (TOT):</strong> trokar føres gjennom foramen obturatorium — lavere risiko for blæreperforasjon enn TVT</li>
+</ul>
+<h3>Komplikasjoner</h3>
+<ul>
+<li>Blæreperforasjon (spesielt ved TVT — cystoskopisk kontroll under prosedyren er derfor standard)</li>
+<li>Erosjon av slyngemateriale</li>
+<li>De novo urgency</li>
+<li>Tømmingsvansker/retensjon</li>
+<li>Smerte, spesielt i lyske/lår ved TOT</li>
+</ul>
+
+<h2>Kunstig urinsfinkter (AUS)</h2>
+<p>Aktuelt ved moderat til alvorlig stressinkontinens hos menn etter prostatektomi, der slynge ikke er tilstrekkelig eller egnet.</p>
+<h3>Prinsipp</h3>
+<p>Oppblåsbar mansjett («cuff») legges rundt bulbær uretra, koblet til en trykkregulerende ballong (reservoir) i det retropubiske rom og en kontrollpumpe plassert i skrotum. Pasienten aktiverer pumpen manuelt for å late vannet, hvorpå mansjetten på nytt fylles automatisk og gjenoppretter lukketrykket.</p>
+<h3>Komplikasjoner</h3>
+<ul>
+<li>Mekanisk svikt — krever reoperasjon</li>
+<li>Erosjon</li>
+<li>Infeksjon — økt risiko ved reoperasjon</li>
+<li>Uretral atrofi over tid, som kan gi redusert effekt og behov for justering/reoperasjon</li>
+</ul>
+
+<div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — Urinary Incontinence, uroweb.org</li></ul></div>
+<div class="disclaimer">Erstatter ikke opplæring under supervisjon på operasjonsstuen. Ingen Ahus-spesifikk frasemal er lagt inn her ennå — send gjerne inn hvis tilgjengelig.</div>
+`};
+
+/* ---------------- OM SIDEN ---------------- */
+CONTENT_MAP['om-siden'] = {type:'simple', html: `
+<p>UroOppslag er et internt oppslagsverk laget for leger i spesialisering (LIS) i urologi i Norge. Målet er raske, pålitelige oppslag på benigne og maligne urologiske tilstander samt operasjonsteknikk for inngrepene som inngår i det felles urologiske læreplan-/læringsmålsettet.</p>
+<h2>Kildeprinsipp</h2>
+<ul>
+<li><strong>Primærkilde:</strong> Helsedirektoratets nasjonale faglige retningslinjer og handlingsprogram (helsedirektoratet.no)</li>
+<li><strong>Supplerende kilde:</strong> EAU Guidelines (uroweb.org), særlig der norsk retningslinje mangler (f.eks. peniskreft, benigne tilstander, operativ teknikk), eller der norske retningslinjer selv viser til EAU</li>
+<li><strong>Lokal kilde — <span class="tag tag-internal" style="padding:1px 8px;">Ahus internt</span>:</strong> enkelte sider inneholder egne avsnitt merket med lilla «Ahus internt»-bokser. Dette er lokal poliklinisk praksis og operasjonsnotater/frasemaler fra Ahus urologisk avdeling — ikke nasjonale eller europeiske retningslinjer.</li>
+</ul>
+<h2>ICD-10 og NCSP-koder</h2>
+<p>Sidene viser diagnose- (ICD-10) og prosedyrekoder (NCSP) som grå «kodemerker» øverst der dette er relevant. <strong>NCSP-koder vises kun der de er direkte bekreftet</strong> mot ekte Ahus-dokumentasjon (operasjonsnotater/grønnskjema) — for operasjonsteknikker uten slik bekreftelse er ingen NCSP-kode oppgitt, og koding må gjøres etter lokalt kodeverk/DIPS. ICD-10-koder er oppgitt etter beste kjennskap, men bør alltid dobbeltsjekkes mot gjeldende kodeverk før bruk i journal.</p>
+<h2>Status</h2>
+<p>Alle planlagte hovedtema er nå bygget ut: benigne tilstander, maligne tilstander og operasjonsteknikker. Innholdet oppdateres fortløpende etter hvert som retningslinjene endres.</p>
+<div class="disclaimer">Dette er et faglig hjelpemiddel, ikke en erstatning for gjeldende retningslinjer. Ved klinisk beslutning: sjekk alltid siste versjon direkte på helsedirektoratet.no og uroweb.org. Siden inneholder ingen pasientinformasjon og er ikke et journalsystem.</div>
+`};
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+
+let currentId = 'home';
+
+function renderSidebar(){
+  const sb = document.getElementById('sidebar');
+  let html = '';
+  CATEGORIES.forEach(cat=>{
+    const items = TOPICS.filter(t=>t.cat===cat.id);
+    if(!items.length) return;
+    html += `<h3 class="groupname"><span class="swatch ${cat.swatch}"></span>${cat.label}</h3><ul class="navlist">`;
+    items.forEach(t=>{
+      const activeClass = (t.id===currentId) ? 'active' : '';
+      if(t.status==='ferdig'){
+        html += `<li><a href="#" class="${activeClass}" onclick="navigate('${t.id}');return false;">${t.title}</a></li>`;
+      } else {
+        html += `<li><a href="#" class="disabled">${t.title} <span class="pill">planlagt</span></a></li>`;
+      }
+    });
+    html += `</ul>`;
+  });
+  sb.innerHTML = html;
+}
+
+function renderHome(){
+  const done = TOPICS.filter(t=>t.status==='ferdig' && t.cat!=='om');
+  let cards = done.map(t=>{
+    const clsMap = {benigne:'', maligne:'malign', kirurgi:'kirurgi'};
+    return `<div class="home-card ${clsMap[t.cat]}">
+      <h3>${t.title}</h3>
+      <p>${TAGLABEL[t.cat]} — fullt utbygd oppslag med kilder fra Helsedirektoratet${t.cat==='kirurgi' || t.id==='peniskreft' ? ' og EAU' : ''}.</p>
+      <a href="#" onclick="navigate('${t.id}');return false;">Åpne oppslag →</a>
+    </div>`;
+  }).join('');
+
+  document.getElementById('main').innerHTML = `
+    <div class="home-hero">
+      <h1>Klinisk oppslagsverk for urologi</h1>
+      <p>Bygget for leger i spesialisering i Norge. Rask oppslag på benigne og maligne tilstander, behandlingsvalg og operasjonsteknikk — basert på Helsedirektoratets retningslinjer, supplert med EAU Guidelines der det er relevant.</p>
+    </div>
+    <h2 style="border:none;margin-top:0;">Alle oppslag</h2>
+    <div class="home-grid">${cards}</div>
+  `;
+}
+
+function renderTopic(topic){
+  const main = document.getElementById('main');
+  const data = CONTENT_MAP[topic.id];
+  let bodyHtml = '';
+
+  if(!data){
+    bodyHtml = `<div class="placeholder"><div class="icon">🚧</div><p>Dette oppslaget er ikke bygget ut ennå.</p></div>`;
+  } else if(data.type === 'toggle'){
+    bodyHtml = (data.intro||'') + `
+      <div class="viewtoggle">
+        <button id="btnKort" class="active" onclick="setView('kort')">KORT (sjekkliste)</button>
+        <button id="btnDetalj" onclick="setView('detaljert')">DETALJERT</button>
+      </div>
+      <div id="viewKort" class="viewpane active">${data.short}</div>
+      <div id="viewDetaljert" class="viewpane">${data.detailed}</div>
+    `;
+  } else {
+    bodyHtml = (data.intro||'') + data.html;
+  }
+
+  const catLabel = CATEGORIES.find(c=>c.id===topic.cat).label;
+
+  main.innerHTML = `
+    <div class="crumb"><a href="#" onclick="navigate('home');return false;">UroOppslag</a> / ${catLabel}</div>
+    <h1 class="pagetitle">${topic.title}</h1>
+    <div class="tagrow">
+      <span class="tag ${TAGCLASS[topic.cat] || ''}">${TAGLABEL[topic.cat] || ''}</span>
+      ${topic.icd ? `<span class="tag tag-code">ICD-10: ${topic.icd}</span>` : ''}
+      ${topic.ncsp ? `<span class="tag tag-code">NCSP: ${topic.ncsp}</span>` : ''}
+    </div>
+    <div class="content">${bodyHtml}</div>
+  `;
+}
+
+function setView(view){
+  const kort = document.getElementById('viewKort');
+  const detalj = document.getElementById('viewDetaljert');
+  const btnKort = document.getElementById('btnKort');
+  const btnDetalj = document.getElementById('btnDetalj');
+  if(view==='kort'){
+    kort.classList.add('active'); detalj.classList.remove('active');
+    btnKort.classList.add('active'); btnDetalj.classList.remove('active');
+  } else {
+    detalj.classList.add('active'); kort.classList.remove('active');
+    btnDetalj.classList.add('active'); btnKort.classList.remove('active');
+  }
+}
+
+function navigate(id){
+  currentId = id;
+  closeSidebarMobile();
+  if(id==='home'){
+    renderHome();
+  } else {
+    const topic = TOPICS.find(t=>t.id===id);
+    if(topic) renderTopic(topic);
+  }
+  renderSidebar();
+  window.scrollTo({top:0, behavior:'instant'});
+  document.getElementById('searchResults').classList.remove('show');
+  document.getElementById('searchInput').value='';
+}
+
+document.getElementById('searchInput').addEventListener('input', (e)=>{
+  const q = e.target.value.trim().toLowerCase();
+  const box = document.getElementById('searchResults');
+  if(!q){ box.classList.remove('show'); box.innerHTML=''; return; }
+  const matches = TOPICS.filter(t=> t.status==='ferdig' && t.title.toLowerCase().includes(q));
+  if(!matches.length){
+    box.innerHTML = `<div style="padding:12px 14px;font-size:13px;color:var(--ink-soft)">Ingen treff.</div>`;
+  } else {
+    box.innerHTML = matches.map(t=>`<a href="#" onclick="navigate('${t.id}');return false;">${t.title}<br><span class="cat">${CATEGORIES.find(c=>c.id===t.cat).label}</span></a>`).join('');
+  }
+  box.classList.add('show');
+});
+document.addEventListener('click',(e)=>{
+  if(!e.target.closest('.searchwrap')) document.getElementById('searchResults').classList.remove('show');
+});
+
+function closeSidebarMobile(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+document.getElementById('hamburgerBtn').addEventListener('click', ()=>{
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+});
+document.getElementById('overlay').addEventListener('click', closeSidebarMobile);
+
+renderSidebar();
+renderHome();
+</script>
+</body>
+</html>
