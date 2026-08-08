@@ -1,0 +1,14 @@
+@import "@uro-info/ui/globals.css";
+@import "../styles/content.css";
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: var(--amber-tint);
+}
+
+a {
+  color: var(--steel);
+}

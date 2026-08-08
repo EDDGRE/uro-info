@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/*
+ * Tailwind v4's automatic content detection does not follow the pnpm-symlinked
+ * @uro-info/ui package from apps/web, so classes used only in this package's own
+ * component source (e.g. data-[state=active]:bg-primary in tabs.tsx) would otherwise
+ * never be generated. Declare this package's own source explicitly.
+ */
+@source "./components/**/*.{ts,tsx}";
+@source "./lib/**/*.{ts,tsx}";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * The original design tokens (--paper, --ink, --steel, --amber, --low/--mid/--high,
+ * --internal, --mono/--sans/--display, ...) are kept as the canonical custom properties.
+ * The 45 migrated clinical HTML fragments in @uro-info/content reference these exact
+ * variable names inline (e.g. style="color:var(--ink-soft)") — renaming them would mean
+ * touching every one of those files, so shadcn's semantic tokens (--background,
+ * --foreground, --primary, ...) are defined as aliases on top instead.
+ */
+:root {
+  --radius: 0.375rem;
+
+  --paper: #f5f4ef;
+  --paper-dim: #ecead2;
+  --card: #ffffff;
+  --ink: #1c2430;
+  --ink-soft: #5b6472;
+  --line: #dad5c8;
+  --line-strong: #c7c1b2;
+  --steel: #2c4a6e;
+  --steel-deep: #16283c;
+  --steel-tint: #e8eef4;
+  --amber: #a9711f;
+  --amber-tint: #f5ead7;
+  --low: #3c7a5c;
+  --low-tint: #e3f0e9;
+  --mid: #a9741f;
+  --mid-tint: #f6eeda;
+  --high: #a8453b;
+  --high-tint: #f5e3e1;
+  --internal: #6b4e8c;
+  --internal-tint: #efe9f5;
+  --akutt: #c4451f;
+  --akutt-tint: #f5e1d8;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
+  --display: "Space Grotesk", system-ui, sans-serif;
+
+  /*
+   * --steel-deep is a *background* color (topbar, home-hero — stays near-black in both
+   * themes by design). --heading is the matching *text* color used for headings/strong
+   * text on the page background, which must flip to something light in dark mode instead
+   * of inheriting steel-deep's near-black value.
+   */
+  --heading: var(--steel-deep);
+
+  /* shadcn semantic aliases */
+  --background: var(--paper);
+  --background-dim: var(--paper-dim);
+  --foreground: var(--ink);
+  --card-foreground: var(--ink);
+  --popover: var(--card);
+  --popover-foreground: var(--ink);
+  --muted: var(--paper-dim);
+  --muted-foreground: var(--ink-soft);
+  --border: var(--line);
+  --border-strong: var(--line-strong);
+  --input: var(--line);
+  --ring: var(--steel);
+  --primary: var(--steel);
+  --primary-foreground: #ffffff;
+  --primary-deep: var(--steel-deep);
+  --primary-tint: var(--steel-tint);
+  --secondary: var(--paper-dim);
+  --secondary-foreground: var(--ink);
+  --accent: var(--steel-tint);
+  --accent-foreground: var(--heading);
+  --destructive: var(--high);
+  --destructive-foreground: #ffffff;
+}
+
+.dark {
+  --paper: #12161d;
+  --paper-dim: #171c24;
+  --card: #191f28;
+  --ink: #e7e9ec;
+  --ink-soft: #97a2b0;
+  --line: #2a323e;
+  --line-strong: #384153;
+  --steel: #6f9bc7;
+  --steel-deep: #0b1420;
+  --steel-tint: #1c2b3d;
+  --amber: #d19a4a;
+  --amber-tint: #2c2415;
+  --low: #62b18c;
+  --low-tint: #16261f;
+  --mid: #d1a34a;
+  --mid-tint: #2b2415;
+  --high: #e08277;
+  --high-tint: #2e1a18;
+  --internal: #ab8bd1;
+  --internal-tint: #241c30;
+  --akutt: #e0764a;
+  --akutt-tint: #2c1c14;
+
+  --heading: var(--steel);
+  --primary-foreground: #0b1420;
+  --destructive-foreground: #2e1a18;
+}
+
+@theme inline {
+  --font-sans: var(--sans);
+  --font-display: var(--display);
+  --font-mono: var(--mono);
+
+  --color-background: var(--background);
+  --color-background-dim: var(--background-dim);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-deep: var(--primary-deep);
+  --color-primary-tint: var(--primary-tint);
+  --color-heading: var(--heading);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-amber: var(--amber);
+  --color-amber-tint: var(--amber-tint);
+  --color-low: var(--low);
+  --color-low-tint: var(--low-tint);
+  --color-mid: var(--mid);
+  --color-mid-tint: var(--mid-tint);
+  --color-high: var(--high);
+  --color-high-tint: var(--high-tint);
+  --color-internal: var(--internal);
+  --color-internal-tint: var(--internal-tint);
+  --color-akutt: var(--akutt);
+  --color-akutt-tint: var(--akutt-tint);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}
