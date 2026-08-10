@@ -67,6 +67,24 @@ export const TOPICS: Topic[] = [
     summary: "Falsk kanal dannet ved feilaktig kateterinnføring gjennom urinrørsveggen.",
   },
   {
+    id: "testistorsjon",
+    cat: "akutt",
+    title: "Testistorsjon",
+    status: "ferdig",
+    contentType: "simple",
+    summary:
+      "Torsjon av spermatstrengen med avklemt blodforsyning — tidskritisk kirurgisk emergency.",
+  },
+  {
+    id: "urosepsis",
+    cat: "akutt",
+    title: "Urosepsis / obstruktiv pyelonefritt",
+    status: "ferdig",
+    contentType: "simple",
+    summary:
+      "Sepsis fra en obstruert, infisert urinvei — krever akutt avlastning i tillegg til antibiotika.",
+  },
+  {
     id: "bph",
     cat: "benigne",
     title: "Benign prostatahyperplasi (BPH)",
@@ -199,12 +217,48 @@ export const TOPICS: Topic[] = [
     summary: "Innsnevring av urinrøret som gir obstruktiv vannlating.",
   },
   {
+    id: "residiverende-uvi",
+    cat: "benigne",
+    title: "Residiverende urinveisinfeksjon",
+    status: "ferdig",
+    contentType: "simple",
+    summary:
+      "≥2 UVI på 6 mnd eller ≥3 på 12 mnd — hos menn alltid å regne som komplisert og bør utredes.",
+  },
+  {
+    id: "nyrecyster",
+    cat: "benigne",
+    title: "Nyrecyster (Bosniak-klassifisering)",
+    status: "ferdig",
+    contentType: "simple",
+    summary:
+      "Vanlig insidentalfunn — Bosniak I-IV stratifiserer malignitetsrisiko og styrer oppfølging.",
+  },
+  {
+    id: "urodynamikk",
+    cat: "benigne",
+    title: "Urodynamikk",
+    status: "ferdig",
+    contentType: "simple",
+    summary:
+      "Trykk-/strømningsmåling av blære og uretra for å objektivere årsak til LUTS/inkontinens.",
+  },
+  {
     id: "prostatakreft",
     cat: "maligne",
     title: "Prostatakreft",
     status: "ferdig",
     icd: "C61",
-    contentType: "simple",
+    contentType: "tabs",
+    tabs: [
+      { id: "utredning", label: "Utredning" },
+      { id: "behandlingsvalg", label: "Behandlingsvalg" },
+      { id: "oppfolging", label: "Oppfølging" },
+    ],
+    indication:
+      '<div class="callout"><b>Kjapt sammendrag</b>Prostatakreft er den vanligste kreftformen hos menn i Norge. De fleste tilfeller er lokalisert og langsomtvoksende. Utredning bygger på PSA → mpMR prostata → målrettet + systematisk biopsi. Risikogruppering (EAU-modellen) styrer valg mellom aktiv overvåking, kirurgi, stråling og eventuell hormonbehandling.</div>',
+    outro:
+      '<div class="sources"><h4>Kilder</h4><ul>\n<li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/prostatakreft-handlingsprogram" target="_blank">Nasjonalt handlingsprogram for prostatakreft</a>, kap. 5.3 «Bruk av PSA», kap. 5.4 «PSA og arvelig prostatakreft», kap. «Risikoinndeling»/«Bildediagnostisk utredning», og kap. 12.2 «Oppfølgning etter RALP» (sist oppdatert 15. juli 2025)</li>\n<li>EAU Guidelines — Prostate Cancer, uroweb.org</li>\n<li>Internt undervisningsmateriale/presentasjon — «Koelis prosedyre» (biopsibeslutning PSA-tetthet/PI-RADS) og «Kontroll etter prostatektomi»</li>\n<li>Internt MDT-undervisningsmateriale — «Faktorer ved ca prost som diskuteres og dokumenteres på MDT» (AS/WW-kriterier, SPCG15/SPCG19/prePSMA, gentesting)</li>\n<li>Ahus/healthtalk.no/NRK — omtale av Ahus\' pilotprosjekt for prostatakreftscreening (2026–2027)</li>\n</ul></div>\n<div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no og uroweb.org. Biopsi-, kontroll- og MDT-tabellene er transkribert fra fotograferte presentasjonslysbilder/oppslagsark — kontroller mot originalkilde ved operativ bruk.</div>',
     summary: "Den vanligste kreftformen hos menn i Norge, oftest lokalisert og langsomtvoksende.",
   },
   {
@@ -592,6 +646,65 @@ export const TOPICS: Topic[] = [
     icd: "N39.3",
     contentType: "simple",
     summary: "Kirurgisk behandling av stressinkontinens med slynge eller kunstig lukkemuskel.",
+  },
+  {
+    id: "adrenalektomi",
+    cat: "kirurgi",
+    title: "Adrenalektomi",
+    status: "ferdig",
+    contentType: "simple",
+    summary: "Kirurgisk fjerning av binyren ved hormonelt aktiv eller malignitetssuspekt tumor.",
+  },
+  {
+    id: "nefroureterektomi",
+    cat: "kirurgi",
+    title: "Nefroureterektomi",
+    status: "ferdig",
+    contentType: "simple",
+    summary:
+      "Fjerning av nyre og hele ureter inkl. blæremansjett, ved høyrisiko øvre urotelial kreft.",
+  },
+  {
+    id: "ureteropyeloplastikk",
+    cat: "kirurgi",
+    title: "Ureteropyeloplastikk",
+    status: "ferdig",
+    contentType: "simple",
+    summary: "Kirurgisk korreksjon av ureteropelvin overgangsstenose (UPJ-stenose).",
+  },
+  {
+    id: "ureterreimplantasjon",
+    cat: "kirurgi",
+    title: "Reimplantasjon av ureter",
+    status: "ferdig",
+    contentType: "simple",
+    summary: "Ny innfesting av ureter i blæren ved distal striktur, skade eller refluks.",
+  },
+  {
+    id: "transvesikal-prostatektomi",
+    cat: "kirurgi",
+    title: "Transvesikal prostatektomi",
+    status: "ferdig",
+    contentType: "simple",
+    summary: "Åpen/robotassistert enukleasjon av svært store, benigne prostataadenomer.",
+  },
+  {
+    id: "kryoablasjon",
+    cat: "kirurgi",
+    title: "Kryoablasjon (nyre)",
+    status: "ferdig",
+    contentType: "simple",
+    summary:
+      "Fryseablasjon av liten nyretumor, som alternativ til reseksjon hos selekterte pasienter.",
+  },
+  {
+    id: "prostataembolisering",
+    cat: "kirurgi",
+    title: "Embolisering av prostata (PAE)",
+    status: "ferdig",
+    contentType: "simple",
+    summary:
+      "Kateterbasert embolisering av arteria prostatica ved BPH, som alternativ til kirurgi.",
   },
   {
     id: "antibiotikaprofylakse",

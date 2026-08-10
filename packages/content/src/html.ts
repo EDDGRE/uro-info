@@ -19,3 +19,7 @@ export function getTopicShortHtml(id: string): string {
 export function getTopicDetailedHtml(id: string): string {
   return readFileSync(path.join(topicsDir, `${id}.detailed.html`), "utf8");
 }
+
+export function getTopicTabHtml(id: string, tabId: string): string {
+  return readFileSync(path.join(topicsDir, `${id}.${tabId}.html`), "utf8");
+}

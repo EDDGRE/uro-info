@@ -1,7 +1,7 @@
 import { getPublishedTopics } from "./queries";
-import { getTopicHtml, getTopicShortHtml, getTopicDetailedHtml } from "./html";
+import { getTopicHtml, getTopicShortHtml, getTopicDetailedHtml, getTopicTabHtml } from "./html";
 import { stripHtmlTags } from "./search-utils";
-import type { CategoryId } from "./schema";
+import type { CategoryId, Topic } from "./schema";
 
 export interface SearchEntry {
   id: string;
@@ -13,12 +13,20 @@ export interface SearchEntry {
   bodyText: string;
 }
 
+function getTopicRawHtml(topic: Topic): string {
+  const intro = topic.indication ?? "";
+  const outro = topic.outro ?? "";
+  if (topic.contentType === "simple") return intro + getTopicHtml(topic.id) + outro;
+  if (topic.contentType === "toggle") {
+    return intro + getTopicShortHtml(topic.id) + getTopicDetailedHtml(topic.id) + outro;
+  }
+  const tabsHtml = (topic.tabs ?? []).map((t) => getTopicTabHtml(topic.id, t.id)).join(" ");
+  return intro + tabsHtml + outro;
+}
+
 export function buildSearchIndex(): SearchEntry[] {
   return getPublishedTopics().map((topic) => {
-    const raw =
-      topic.contentType === "simple"
-        ? getTopicHtml(topic.id)
-        : (topic.indication ?? "") + getTopicShortHtml(topic.id) + getTopicDetailedHtml(topic.id);
+    const raw = getTopicRawHtml(topic);
 
     return {
       id: topic.id,

@@ -8,10 +8,12 @@ import {
   getTopicDetailedHtml,
   getTopicHtml,
   getTopicShortHtml,
+  getTopicTabHtml,
 } from "@uro-info/content";
 
 import { CompetencyTable } from "@/components/topic/competency-table";
 import { ViewToggle } from "@/components/topic/view-toggle";
+import { TabbedContent } from "@/components/topic/tabbed-content";
 import { FavoriteButton } from "@/components/topic/favorite-button";
 import { RecordVisit } from "@/components/topic/record-visit";
 import { TAG_CLASS } from "@/lib/tag-class";
@@ -65,11 +67,19 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
 
       {topic.indication && <div dangerouslySetInnerHTML={{ __html: topic.indication }} />}
 
-      {topic.contentType === "simple" ? (
+      {topic.contentType === "simple" && (
         <div className="content" dangerouslySetInnerHTML={{ __html: getTopicHtml(topic.id) }} />
-      ) : (
+      )}
+      {topic.contentType === "toggle" && (
         <ViewToggle short={getTopicShortHtml(topic.id)} detailed={getTopicDetailedHtml(topic.id)} />
       )}
+      {topic.contentType === "tabs" && topic.tabs && (
+        <TabbedContent
+          tabs={topic.tabs.map((t) => ({ ...t, html: getTopicTabHtml(topic.id, t.id) }))}
+        />
+      )}
+
+      {topic.outro && <div dangerouslySetInnerHTML={{ __html: topic.outro }} />}
     </>
   );
 }
