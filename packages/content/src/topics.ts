@@ -594,6 +594,14 @@ export const TOPICS: Topic[] = [
     summary: "Kirurgisk behandling av stressinkontinens med slynge eller kunstig lukkemuskel.",
   },
   {
+    id: "antibiotikaprofylakse",
+    cat: "kirurgi",
+    title: "Antibiotikaprofylakse ved kirurgi",
+    status: "ferdig",
+    contentType: "simple",
+    summary: "Anbefalt antibiotikaprofylakse per inngrepstype ved urologisk kirurgi.",
+  },
+  {
     id: "henvisningsvurdering",
     cat: "admin",
     title: "Prioritering av henvisninger",
