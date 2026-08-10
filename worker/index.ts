@@ -1,16 +1,18 @@
 /**
- * Cloudflare Pages Function — password-gates the entire uro-info site behind a single
- * shared password, unlike Cloudflare Access it never redirects to a third-party login
- * page, which is what makes it work cleanly as an iOS "Add to Home Screen" PWA: log in
- * once, get a long-lived signed cookie, and the app opens straight in afterwards.
+ * Cloudflare Worker in front of the static Next.js export (served via the `ASSETS`
+ * binding, see wrangler.jsonc) — password-gates the whole site behind a single shared
+ * password. Unlike Cloudflare Access it never redirects to a third-party login page,
+ * which is what makes it work cleanly as an iOS "Add to Home Screen" PWA: log in once,
+ * get a long-lived signed cookie, and the app opens straight in afterwards.
  *
- * Required Cloudflare Pages environment variables (set as *encrypted* secrets in the
- * dashboard — never commit these):
+ * Required environment variables (set as *encrypted* secrets in the Cloudflare
+ * dashboard, or via `wrangler secret put` — never commit these):
  *   SITE_PASSWORD  the shared password
- *   AUTH_SECRET    random string used to sign the auth cookie (see README notes)
+ *   AUTH_SECRET    random string used to sign the auth cookie
  */
 
-interface Env {
+export interface Env {
+  ASSETS: Fetcher;
   SITE_PASSWORD: string;
   AUTH_SECRET: string;
 }
@@ -114,31 +116,33 @@ function loginPage(options: { error?: boolean; redirectTo: string }): Response {
   });
 }
 
-export const onRequest: PagesFunction<Env> = async ({ request, env, next }) => {
-  const url = new URL(request.url);
+export default {
+  async fetch(request, env): Promise<Response> {
+    const url = new URL(request.url);
 
-  if (url.pathname === AUTH_PATH && request.method === "POST") {
-    const form = await request.formData();
-    const password = form.get("password");
-    const redirectTo = form.get("redirect")?.toString() || "/";
+    if (url.pathname === AUTH_PATH && request.method === "POST") {
+      const form = await request.formData();
+      const password = form.get("password");
+      const redirectTo = form.get("redirect")?.toString() || "/";
 
-    if (password === env.SITE_PASSWORD) {
-      const token = await makeToken(env.AUTH_SECRET);
-      return new Response(null, {
-        status: 303,
-        headers: {
-          Location: redirectTo,
-          "Set-Cookie": `${COOKIE_NAME}=${token}; Path=/; Max-Age=${SESSION_SECONDS}; HttpOnly; Secure; SameSite=Lax`,
-        },
-      });
+      if (password === env.SITE_PASSWORD) {
+        const token = await makeToken(env.AUTH_SECRET);
+        return new Response(null, {
+          status: 303,
+          headers: {
+            Location: redirectTo,
+            "Set-Cookie": `${COOKIE_NAME}=${token}; Path=/; Max-Age=${SESSION_SECONDS}; HttpOnly; Secure; SameSite=Lax`,
+          },
+        });
+      }
+      return loginPage({ error: true, redirectTo });
     }
-    return loginPage({ error: true, redirectTo });
-  }
 
-  const cookie = readCookie(request, COOKIE_NAME);
-  if (cookie && (await isValidToken(cookie, env.AUTH_SECRET))) {
-    return next();
-  }
+    const cookie = readCookie(request, COOKIE_NAME);
+    if (cookie && (await isValidToken(cookie, env.AUTH_SECRET))) {
+      return env.ASSETS.fetch(request);
+    }
 
-  return loginPage({ redirectTo: url.pathname + url.search });
-};
+    return loginPage({ redirectTo: url.pathname + url.search });
+  },
+} satisfies ExportedHandler<Env>;

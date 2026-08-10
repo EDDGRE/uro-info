@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "uro-info",
+  "compatibility_date": "2025-01-01",
+  "main": "worker/index.ts",
+  "assets": {
+    "directory": "apps/web/out",
+    "binding": "ASSETS",
+    // Without this, Cloudflare serves matching static files directly and never runs the
+    // Worker at all — which would silently skip the password check for every real page.
+    "run_worker_first": true,
+  },
+}
