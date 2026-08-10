@@ -4,8 +4,8 @@ export const dynamic = "force-static";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "UroOppslag — Klinisk oppslagsverk for LIS i urologi",
-    short_name: "UroOppslag",
+    name: "Uro Info — Klinisk oppslagsverk for LIS i urologi",
+    short_name: "Uro Info",
     description:
       "Klinisk oppslagsverk for leger i spesialisering i urologi, med oppslag på benigne og maligne tilstander, behandlingsvalg og operasjonsteknikk.",
     start_url: "/",

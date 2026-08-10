@@ -15,6 +15,8 @@ export const TOPICS: Topic[] = [
       },
     ],
     contentType: "simple",
+    summary:
+      "Plutselig, smertefull manglende evne til å tømme blæren — krever umiddelbar avlastning med kateter.",
   },
   {
     id: "priapisme",
@@ -23,6 +25,8 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N48.3",
     contentType: "simple",
+    summary:
+      "Vedvarende, uønsket ereksjon uten seksuell stimulering — ved ischemisk type en akutt urologisk nødsituasjon.",
   },
   {
     id: "penisfraktur",
@@ -31,6 +35,8 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "S39.848 / N48.8",
     contentType: "simple",
+    summary:
+      "Ruptur av tunica albuginea i corpus cavernosum, oftest under samleie, med akutt smerte og hevelse.",
   },
   {
     id: "fourniers-gangren",
@@ -39,6 +45,8 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N49.3",
     contentType: "simple",
+    summary:
+      "Raskt progredierende, nekrotiserende bløtvevsinfeksjon i genitalia/perineum med høy mortalitet ubehandlet.",
   },
   {
     id: "blaretamponade",
@@ -47,6 +55,7 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N32.8 / R31.9",
     contentType: "simple",
+    summary: "Blæren fylles av koagler etter kraftig blødning, slik at urinen ikke kommer ut.",
   },
   {
     id: "via-falsa",
@@ -55,6 +64,7 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N99.8 / T83.5",
     contentType: "simple",
+    summary: "Falsk kanal dannet ved feilaktig kateterinnføring gjennom urinrørsveggen.",
   },
   {
     id: "bph",
@@ -63,6 +73,8 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N40",
     contentType: "simple",
+    summary:
+      "Godartet forstørrelse av prostata som kan gi obstruktive og irritative vannlatingsplager.",
   },
   {
     id: "nyrestein",
@@ -77,6 +89,7 @@ export const TOPICS: Topic[] = [
       },
     ],
     contentType: "simple",
+    summary: "Steindannelse i urinveiene som kan gi kolikksmerter, obstruksjon og infeksjon.",
   },
   {
     id: "oab",
@@ -95,6 +108,7 @@ export const TOPICS: Topic[] = [
       },
     ],
     contentType: "simple",
+    summary: "Symptomkompleks med hyppig og/eller presserende vannlating, med eller uten lekkasje.",
   },
   {
     id: "fimose",
@@ -103,6 +117,8 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N47 / N48.1",
     contentType: "simple",
+    summary:
+      "Trang forhud som ikke lar seg retrahere, ofte kombinert med betennelse i glans/forhud.",
   },
   {
     id: "hydrocele",
@@ -111,6 +127,7 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N43.3 / I86.1",
     contentType: "simple",
+    summary: "Væskeansamling rundt testikkelen, eller utvidede vener i pungen (varikocele).",
   },
   {
     id: "epididymitt",
@@ -119,6 +136,8 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N45 / N44",
     contentType: "simple",
+    summary:
+      "Betennelse i bitestikkelen — en viktig differensialdiagnose til testistorsjon ved akutte skrotalsmerter.",
   },
   {
     id: "ed",
@@ -127,6 +146,8 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N48.4",
     contentType: "simple",
+    summary:
+      "Vedvarende manglende evne til å oppnå eller opprettholde ereksjon tilstrekkelig for samleie.",
   },
   {
     id: "nevrogen",
@@ -135,6 +156,7 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N31",
     contentType: "simple",
+    summary: "Blærefunksjonsforstyrrelse forårsaket av skade eller sykdom i nervesystemet.",
   },
   {
     id: "bekkensmerter",
@@ -149,6 +171,7 @@ export const TOPICS: Topic[] = [
       },
     ],
     contentType: "simple",
+    summary: "Kronisk bekkensmerte assosiert med blæren, uten påvisbar infeksjon.",
   },
   {
     id: "stressinkontinens",
@@ -157,6 +180,8 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N39.3",
     contentType: "simple",
+    summary:
+      "Ufrivillig urinlekkasje ved fysisk anstrengelse, hoste eller nysing, grunnet svekket lukkemekanisme.",
   },
   {
     id: "urinrorsstriktur",
@@ -171,6 +196,7 @@ export const TOPICS: Topic[] = [
       },
     ],
     contentType: "simple",
+    summary: "Innsnevring av urinrøret som gir obstruktiv vannlating.",
   },
   {
     id: "prostatakreft",
@@ -179,6 +205,7 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "C61",
     contentType: "simple",
+    summary: "Den vanligste kreftformen hos menn i Norge, oftest lokalisert og langsomtvoksende.",
   },
   {
     id: "blarekreft",
@@ -187,6 +214,7 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "C67",
     contentType: "simple",
+    summary: "Kreft utgått fra urotelet i blæreveggen, ofte debuterende med smertefri hematuri.",
   },
   {
     id: "nyrekreft",
@@ -195,6 +223,7 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "C64",
     contentType: "simple",
+    summary: "Nyrecellekarsinom, ofte tilfeldig oppdaget ved bildediagnostikk av andre årsaker.",
   },
   {
     id: "testikkelkreft",
@@ -203,6 +232,8 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "C62",
     contentType: "simple",
+    summary:
+      "Den vanligste kreftformen hos unge menn, som oftest debuterer med en palpabel testikkelknute.",
   },
   {
     id: "peniskreft",
@@ -211,6 +242,7 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "C60",
     contentType: "simple",
+    summary: "Sjelden kreftform i penis, ofte assosiert med fimose og HPV.",
   },
   {
     id: "ovreurotelial",
@@ -219,6 +251,7 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "C65 / C66",
     contentType: "simple",
+    summary: "Kreft i urotelet i nyrebekken eller ureter.",
   },
   {
     id: "ralp",
@@ -234,6 +267,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Kirurgisk radikalbehandling ved lokalisert/lokalavansert prostatakreft der pasienten er kandidat for kurativ behandling — se risikogruppering under Prostatakreft.</div>',
+    summary: "Robotassistert laparoskopisk radikal prostatektomi ved lokalisert prostatakreft.",
   },
   {
     id: "turp",
@@ -251,6 +285,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>BPH med LUTS refraktær mot medikamenter, residiverende retensjon/UVI/hematuri/blæresten, eller obstruktiv nyresvikt. Se BPH.</div>',
+    summary: "Transuretral reseksjon av prostata — gullstandard kirurgisk behandling av BPH.",
   },
   {
     id: "turbt",
@@ -268,6 +303,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Diagnostikk og behandling av blæretumor — både initial reseksjon og re-TURB ved høyrisiko NMIBC. Se Blærekreft.</div>',
+    summary: "Transuretral reseksjon av blæretumor, for diagnostikk og behandling av blærekreft.",
   },
   {
     id: "nefrektomi",
@@ -291,6 +327,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Nyrecellekarsinom iht. stadium — se Nyrekreft. Partiell (nefronsparende) foretrekkes der teknisk mulig.</div>',
+    summary: "Kirurgisk fjerning av hele eller deler av en nyre, oftest ved nyrekreft.",
   },
   {
     id: "rirs",
@@ -316,6 +353,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Ureterstein, nyrebekkenstein &lt;2 cm, samt diagnostikk/behandling av øvre urotelial tumor.</div>',
+    summary: "Fleksibel skopisk stein- og tumorbehandling via urinrøret opp til nyrebekkenet.",
   },
   {
     id: "pcnl",
@@ -331,6 +369,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Store nyresteiner (&gt;2 cm), komplekse steinbyrder (koralsteiner), eller steiner uegnet for RIRS/ESWL.</div>',
+    summary: "Steinknusning via en kanal direkte inn i nyren, for store steinbyrder.",
   },
   {
     id: "cystektomi",
@@ -346,6 +385,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Muskelinvasiv blærekreft (MIBC), BCG-refraktær høyrisiko NMIBC, eller andre bekkenmaligniteter med blæreinnvekst.</div>',
+    summary: "Kirurgisk fjerning av blæren med urinavledning, ved muskelinvasiv blærekreft.",
   },
   {
     id: "sirkumsisjon",
@@ -363,6 +403,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Patologisk fimose (BXO/lichen sclerosus, arrdannelse), residiverende balanitt/parafimose. Religiøs/kulturell ønske er en vanlig henvisningsårsak. Alternativ til full sirkumsisjon er dorsal spalting — begge alternativ bør presenteres for pasienten.</div>',
+    summary: "Kirurgisk fjerning av forhuden, oftest ved fimose.",
   },
   {
     id: "vasektomi",
@@ -378,6 +419,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Permanent, elektiv mannlig sterilisering.</div>',
+    summary: "Kirurgisk avbrytelse av sædlederne for permanent mannlig sterilisering.",
   },
   {
     id: "orkidopeksi",
@@ -395,6 +437,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Retentio testis (udescendert testikkel) hos gutt, eller fiksasjon etter detorkvering ved testistorsjon (da bilateralt, se Epididymitt/akutt skrotum og Operasjonsteknikker — Detorkvering).</div>',
+    summary: "Kirurgisk nedflytting og fiksasjon av en udescendert testikkel.",
   },
   {
     id: "testistorsjon-op",
@@ -413,6 +456,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout high"><b>Akutt kirurgisk emergency</b>Ved klinisk mistanke om testistorsjon skal eksplorasjon ikke forsinkes av bildediagnostikk. Se Epididymitt/akutt skrotum for differensialdiagnostikk.</div>',
+    summary: "Akutt kirurgisk oppretting og fiksering av en vridd testikkel.",
   },
   {
     id: "intern-uretrotomi",
@@ -430,6 +474,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Skopiverifisert, primær kort urinrørsstriktur. Førstevalg i behandlingsstigen — se Urinrørsstriktur for videre forløp ved residiv (Optilume/åpen uretraplastikk).</div>',
+    summary: "Skopisk kløyving av en urinrørsstriktur.",
   },
   {
     id: "botox-blare",
@@ -439,6 +484,8 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>OAB (med/uten lekkasje) uten adekvat effekt av full peroral blæredempende behandling, eller uakseptable bivirkninger. Også aktuelt ved smertefullt blæresyndrom (PBS) uten Hunnerske sår og manglende effekt av instillasjon/medikamenter — se Bekkensmerter.</div>\n<div class="callout internal"><b>Ahus internt — urologisk poliklinikk</b>Doser og oppfølgingsrutine under er lokal prosedyre ved Ahus (internt undervisningsmateriale, sist endret sept. 2024).</div>',
+    summary:
+      "Injeksjon av botulinumtoksin i blæreveggen ved overaktiv blære som ikke svarer på medikamenter.",
   },
   {
     id: "snm",
@@ -448,6 +495,8 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>OAB med/uten lekkasje uten adekvat effekt av full peroral blæredempende behandling, eller uakseptable bivirkninger.</div>\n<div class="callout high"><b>Kontraindikasjoner</b>Manglende compliance, høy alder, interstitiell cystitt/smertefullt blæresyndrom, progressiv nevrologisk lidelse (relativ), diabetes (relativ). Compliance vurderes strengt: kognisjon, samarbeidsevne og språk (tolk aksepteres hvis dette fungerer godt).</div>\n<div class="callout internal"><b>Ahus internt — urologisk poliklinikk</b>Prosedyren under er lokal praksis ved Ahus (internt undervisningsmateriale, sist endret sept. 2024).</div>',
+    summary:
+      "Implantert nervestimulator som modulerer blærefunksjon ved refraktær overaktiv blære.",
   },
   {
     id: "optilume",
@@ -459,6 +508,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Residiv urinrørsstriktur i bulbære uretra, verifisert &lt;3 cm og passabel med guidewire ved poliklinisk cystoskopi — som alternativ til ny intern uretrotomi eller åpen uretraplastikk etter residiv av første intern uretrotomi. Se Urinrørsstriktur.</div>\n<div class="callout internal"><b>Ahus internt</b>Utføres ved DKS Ski. Grønnskjema: operasjonskode «U Optilume», behandlingssted Ski sykehus.</div>',
+    summary: "Medikamentavgivende ballongdilatasjon av korte urinrørsstrikturer.",
   },
   {
     id: "cystolitotripsi",
@@ -480,6 +530,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Symptomgivende eller tilfeldig påvist blærestein.</div>',
+    summary: "Skopisk knusning av blærestein.",
   },
   {
     id: "hydrocelectomi",
@@ -501,6 +552,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Symptomgivende hydrocele og pasientens ønske om operasjon. Se Hydrocele og varikocele for utredning.</div>',
+    summary: "Kirurgisk fjerning av hydrocele.",
   },
   {
     id: "orkiektomi",
@@ -518,6 +570,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Malignitetssuspekt testistumor. Se Testikkelkreft for utredning — markører (AFP, hCG, LD), skrotal UL og CT thorax/abdomen/bekken skal foreligge, og sædbanking skal være tilbudt <strong>før</strong> operasjon.</div>',
+    summary: "Kirurgisk fjerning av en testikkel, oftest ved mistenkt eller påvist testikkelkreft.",
   },
   {
     id: "penisplastikk",
@@ -529,6 +582,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     indication:
       '<div class="callout"><b>Indikasjon</b>Peyronies sykdom (induratio penis plastica) med signifikant krumning som hindrer samleie, i stabil fase av sykdommen.</div>\n<div class="callout amber"><b>Viktig forventningsavklaring</b>Pasienten må informeres om at fullstendig korreksjon av feilstillingen ikke kan loves — målet er tilstrekkelig retting til å muliggjøre samleie, samt at inngrepet kan gi noe forkortning av penis.</div>',
+    summary: "Kirurgisk korreksjon av penil krumning ved Peyronies sykdom.",
   },
   {
     id: "inkontinenskirurgi",
@@ -537,6 +591,7 @@ export const TOPICS: Topic[] = [
     status: "ferdig",
     icd: "N39.3",
     contentType: "simple",
+    summary: "Kirurgisk behandling av stressinkontinens med slynge eller kunstig lukkemuskel.",
   },
   {
     id: "henvisningsvurdering",
@@ -544,6 +599,7 @@ export const TOPICS: Topic[] = [
     title: "Prioritering av henvisninger",
     status: "ferdig",
     contentType: "simple",
+    summary: "Veiledning for vurdering og prioritering av henvisninger til urologisk poliklinikk.",
   },
   {
     id: "om-siden",
@@ -551,5 +607,6 @@ export const TOPICS: Topic[] = [
     title: "Om siden og kilder",
     status: "ferdig",
     contentType: "simple",
+    summary: "Informasjon om formålet med og kildegrunnlaget for dette oppslagsverket.",
   },
 ];

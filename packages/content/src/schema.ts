@@ -36,5 +36,7 @@ export const topicSchema = z.object({
   komp: z.array(competencyItemSchema).optional(),
   /** Rendered as a fixed "Indikasjon" callout above kort/detaljert-toggle. Trusted, author-controlled HTML. */
   indication: z.string().optional(),
+  /** One-sentence plain-text definition, shown on the home page topic cards. */
+  summary: z.string().optional(),
 });
 export type Topic = z.infer<typeof topicSchema>;

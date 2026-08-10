@@ -2,8 +2,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getCategories, getTopics } from "@uro-info/content";
 
+import { TAG_CLASS } from "@/lib/tag-class";
+
 export const metadata: Metadata = {
-  title: "UroOppslag — Klinisk oppslagsverk for LIS i urologi",
+  title: "Uro Info — Klinisk oppslagsverk for LIS i urologi",
 };
 
 const HOME_CARD_CLASS: Record<string, string> = {
@@ -14,7 +16,7 @@ const HOME_CARD_CLASS: Record<string, string> = {
 export default function HomePage() {
   const categories = getCategories();
   const topics = getTopics().filter((t) => t.status === "ferdig" && t.cat !== "om");
-  const labelByCategory = new Map(categories.map((c) => [c.id, c.badgeLabel]));
+  const categoryById = new Map(categories.map((c) => [c.id, c]));
 
   return (
     <>
@@ -26,20 +28,23 @@ export default function HomePage() {
           supplert med EAU Guidelines der det er relevant.
         </p>
       </div>
-      <h2 className="font-display text-heading mb-4 mt-0 text-[19px] font-bold">
-        Alle oppslag
-      </h2>
+      <h2 className="font-display text-heading mb-4 mt-0 text-[19px] font-bold">Alle oppslag</h2>
       <div className="home-grid">
-        {topics.map((t) => (
-          <div key={t.id} className={`home-card ${HOME_CARD_CLASS[t.cat] ?? ""}`.trim()}>
-            <h3>{t.title}</h3>
-            <p>
-              {labelByCategory.get(t.cat)} — fullt utbygd oppslag med kilder fra Helsedirektoratet
-              {t.cat === "kirurgi" || t.id === "peniskreft" ? " og EAU" : ""}.
-            </p>
-            <Link href={`/${t.id}`}>Åpne oppslag →</Link>
-          </div>
-        ))}
+        {topics.map((t) => {
+          const category = categoryById.get(t.cat);
+          return (
+            <div key={t.id} className={`home-card ${HOME_CARD_CLASS[t.cat] ?? ""}`.trim()}>
+              {category && (
+                <span className={`tag ${TAG_CLASS[category.id] ?? ""} mb-2 inline-block`.trim()}>
+                  {category.badgeLabel}
+                </span>
+              )}
+              <h3>{t.title}</h3>
+              {t.summary && <p>{t.summary}</p>}
+              <Link href={`/${t.id}`}>Åpne oppslag →</Link>
+            </div>
+          );
+        })}
       </div>
     </>
   );

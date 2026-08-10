@@ -66,7 +66,7 @@ function loginPage(options: { error?: boolean; redirectTo: string }): Response {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UroOppslag — Logg inn</title>
+<title>Uro Info — Logg inn</title>
 <style>
   :root{color-scheme:dark;}
   *{box-sizing:border-box;}
@@ -99,7 +99,7 @@ function loginPage(options: { error?: boolean; redirectTo: string }): Response {
 </head>
 <body>
   <form method="POST" action="${AUTH_PATH}">
-    <h1>UroOppslag</h1>
+    <h1>Uro Info</h1>
     <p class="sub">Klinisk oppslagsverk — passordbeskyttet</p>
     ${options.error ? '<p class="error">Feil passord — prøv igjen.</p>' : ""}
     <input type="hidden" name="redirect" value="${options.redirectTo.replace(/"/g, "&quot;")}">

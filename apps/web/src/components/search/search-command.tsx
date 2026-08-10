@@ -116,7 +116,7 @@ export function SearchCommand() {
         </kbd>
       </Button>
 
-      <CommandDialog open={open} onOpenChange={setOpen} title="Søk i UroOppslag" shouldFilter={false}>
+      <CommandDialog open={open} onOpenChange={setOpen} title="Søk i Uro Info" shouldFilter={false}>
         <CommandInput
           placeholder="Søk (f.eks. TURP, Gleason, PSA-residiv)…"
           value={query}

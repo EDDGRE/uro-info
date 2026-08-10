@@ -11,7 +11,7 @@ export function Topbar({ categories, topics }: { categories: Category[]; topics:
       <MobileNav categories={categories} topics={topics} />
       <Link href="/" className="flex shrink-0 items-baseline gap-2 whitespace-nowrap no-underline">
         <span className="font-display text-[17px] font-bold tracking-[.2px] text-white">
-          UroOppslag
+          Uro Info
         </span>
         <span className="hidden font-mono text-[11px] text-[#9fb0c4] sm:inline">
           {"// LIS-oppslagsverk i urologi"}

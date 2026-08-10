@@ -25,13 +25,13 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "UroOppslag — Klinisk oppslagsverk for LIS i urologi",
+  title: "Uro Info — Klinisk oppslagsverk for LIS i urologi",
   description:
     "Klinisk oppslagsverk for leger i spesialisering i urologi: benigne og maligne tilstander, behandlingsvalg og operasjonsteknikk.",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "UroOppslag",
+    title: "Uro Info",
   },
   icons: {
     icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],

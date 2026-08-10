@@ -14,14 +14,7 @@ import { CompetencyTable } from "@/components/topic/competency-table";
 import { ViewToggle } from "@/components/topic/view-toggle";
 import { FavoriteButton } from "@/components/topic/favorite-button";
 import { RecordVisit } from "@/components/topic/record-visit";
-
-const TAG_CLASS: Record<string, string> = {
-  benigne: "tag-benign",
-  maligne: "tag-malign",
-  kirurgi: "tag-kirurgi",
-  admin: "tag-internal",
-  akutt: "tag-akutt",
-};
+import { TAG_CLASS } from "@/lib/tag-class";
 
 export function generateStaticParams() {
   return getPublishedTopics().map((t) => ({ slug: t.id }));
@@ -35,7 +28,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const topic = getTopicById(slug);
   if (!topic) return {};
-  return { title: `${topic.title} — UroOppslag` };
+  return { title: `${topic.title} — Uro Info` };
 }
 
 export default async function TopicPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -50,7 +43,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       <RecordVisit topicId={topic.id} />
 
       <div className="crumb">
-        <Link href="/">UroOppslag</Link> / {category?.label}
+        <Link href="/">Uro Info</Link> / {category?.label}
       </div>
 
       <div className="mb-1.5 flex flex-wrap items-start justify-between gap-3">
