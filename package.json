@@ -9,11 +9,13 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck",
+    "typecheck": "turbo run typecheck && pnpm typecheck:functions",
+    "typecheck:functions": "tsc --noEmit -p functions/tsconfig.json",
     "format": "prettier --write \"**/*.{ts,tsx,js,mdx,md,json,css}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,mdx,md,json,css}\" --cache"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250109.0",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "turbo": "^2.3.3",
