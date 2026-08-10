@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getCategories, getTopics } from "@uro-info/content";
 
 import { TAG_CLASS } from "@/lib/tag-class";
+import { KubIcon } from "@/components/icons/kub-icon";
 
 export const metadata: Metadata = {
   title: "Uro Info — Klinisk oppslagsverk for LIS i urologi",
@@ -21,7 +22,10 @@ export default function HomePage() {
   return (
     <>
       <div className="home-hero">
-        <h1>Klinisk oppslagsverk for LIS i urologi</h1>
+        <h1 className="flex items-center gap-3">
+          <KubIcon className="h-8 w-8 shrink-0 text-white" />
+          Klinisk oppslagsverk for LIS i urologi
+        </h1>
         <p>
           Bygger på Helsedirektoratets retningslinjer, Ahus&rsquo; interne prosedyrer og EAU
           Guidelines — samlet ett sted for rask oppslag i klinisk hverdag.
