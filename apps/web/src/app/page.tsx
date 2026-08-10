@@ -21,11 +21,10 @@ export default function HomePage() {
   return (
     <>
       <div className="home-hero">
-        <h1>Klinisk oppslagsverk for urologi</h1>
+        <h1>Klinisk oppslagsverk for LIS i urologi</h1>
         <p>
-          Bygget for leger i spesialisering i Norge. Rask oppslag på benigne og maligne tilstander,
-          behandlingsvalg og operasjonsteknikk — basert på Helsedirektoratets retningslinjer,
-          supplert med EAU Guidelines der det er relevant.
+          Bygger på Helsedirektoratets retningslinjer, Ahus&rsquo; interne prosedyrer og EAU
+          Guidelines — samlet ett sted for rask oppslag i klinisk hverdag.
         </p>
       </div>
       <h2 className="font-display text-heading mb-4 mt-0 text-[19px] font-bold">Alle oppslag</h2>
