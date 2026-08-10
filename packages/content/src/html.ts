@@ -23,3 +23,7 @@ export function getTopicDetailedHtml(id: string): string {
 export function getTopicTabHtml(id: string, tabId: string): string {
   return readFileSync(path.join(topicsDir, `${id}.${tabId}.html`), "utf8");
 }
+
+export function getTopicChecklistHtml(id: string): string {
+  return readFileSync(path.join(topicsDir, `${id}.checklist.html`), "utf8");
+}

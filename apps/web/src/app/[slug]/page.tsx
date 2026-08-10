@@ -5,6 +5,7 @@ import {
   getCategoryById,
   getPublishedTopics,
   getTopicById,
+  getTopicChecklistHtml,
   getTopicDetailedHtml,
   getTopicHtml,
   getTopicShortHtml,
@@ -12,10 +13,11 @@ import {
 } from "@uro-info/content";
 
 import { CompetencyTable } from "@/components/topic/competency-table";
-import { ViewToggle } from "@/components/topic/view-toggle";
 import { TabbedContent } from "@/components/topic/tabbed-content";
 import { FavoriteButton } from "@/components/topic/favorite-button";
 import { RecordVisit } from "@/components/topic/record-visit";
+import { PsadCalculator } from "@/components/topic/psad-calculator";
+import { KidneyGrowthCalculator } from "@/components/topic/kidney-growth-calculator";
 import { TAG_CLASS } from "@/lib/tag-class";
 
 export function generateStaticParams() {
@@ -67,15 +69,54 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
 
       {topic.indication && <div dangerouslySetInnerHTML={{ __html: topic.indication }} />}
 
-      {topic.contentType === "simple" && (
-        <div className="content" dangerouslySetInnerHTML={{ __html: getTopicHtml(topic.id) }} />
+      {topic.contentType === "simple" && !topic.hasChecklist && (
+        <>
+          <div className="content" dangerouslySetInnerHTML={{ __html: getTopicHtml(topic.id) }} />
+          {topic.id === "nyrekreft" && <KidneyGrowthCalculator />}
+        </>
+      )}
+      {topic.contentType === "simple" && topic.hasChecklist && (
+        <TabbedContent
+          tabs={[
+            { id: "info", label: "Info", html: getTopicHtml(topic.id) },
+            {
+              id: "checklist",
+              label: "Preop. sjekkliste",
+              html: getTopicChecklistHtml(topic.id),
+            },
+          ]}
+        />
       )}
       {topic.contentType === "toggle" && (
-        <ViewToggle short={getTopicShortHtml(topic.id)} detailed={getTopicDetailedHtml(topic.id)} />
+        <TabbedContent
+          tabs={[
+            { id: "kort", label: "KORT (sjekkliste)", html: getTopicShortHtml(topic.id) },
+            { id: "detaljert", label: "DETALJERT", html: getTopicDetailedHtml(topic.id) },
+            ...(topic.hasChecklist
+              ? [
+                  {
+                    id: "checklist",
+                    label: "Preop. sjekkliste",
+                    html: getTopicChecklistHtml(topic.id),
+                  },
+                ]
+              : []),
+          ]}
+        />
       )}
       {topic.contentType === "tabs" && topic.tabs && (
         <TabbedContent
-          tabs={topic.tabs.map((t) => ({ ...t, html: getTopicTabHtml(topic.id, t.id) }))}
+          tabs={topic.tabs.map((t) => {
+            const isProstatakreftUtredning = topic.id === "prostatakreft" && t.id === "utredning";
+            return {
+              ...t,
+              html: getTopicTabHtml(topic.id, t.id),
+              extra: isProstatakreftUtredning ? <PsadCalculator /> : undefined,
+              htmlAfter: isProstatakreftUtredning
+                ? getTopicTabHtml(topic.id, "utredning-tail")
+                : undefined,
+            };
+          })}
         />
       )}
 

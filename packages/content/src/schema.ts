@@ -49,5 +49,7 @@ export const topicSchema = z.object({
   tabs: z.array(tabDefSchema).optional(),
   /** Shown once below the tab/toggle content regardless of active tab (sources/disclaimer). Trusted HTML. */
   outro: z.string().optional(),
+  /** When true, an extra "Preop. sjekkliste" tab is rendered, content from topics/<id>.checklist.html */
+  hasChecklist: z.boolean().optional(),
 });
 export type Topic = z.infer<typeof topicSchema>;
