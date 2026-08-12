@@ -8,13 +8,11 @@ export const TOPICS: Topic[] = [
     title: "Akutt urinretensjon",
     status: "ferdig",
     icd: "R33.9",
-    komp: [
-      {
-        label: "SPK",
-        count: 10,
-      },
+    contentType: "tabs",
+    tabs: [
+      { id: "retensjon", label: "Urinretensjon" },
+      { id: "via-falsa", label: "Via falsa" },
     ],
-    contentType: "simple",
     summary:
       "Plutselig, smertefull manglende evne til å tømme blæren — krever umiddelbar avlastning med kateter.",
   },
@@ -56,15 +54,6 @@ export const TOPICS: Topic[] = [
     icd: "N32.8 / R31.9",
     contentType: "simple",
     summary: "Blæren fylles av koagler etter kraftig blødning, slik at urinen ikke kommer ut.",
-  },
-  {
-    id: "via-falsa",
-    cat: "akutt",
-    title: "Via falsa (falsk urinrørskanal)",
-    status: "ferdig",
-    icd: "N99.8 / T83.5",
-    contentType: "simple",
-    summary: "Falsk kanal dannet ved feilaktig kateterinnføring gjennom urinrørsveggen.",
   },
   {
     id: "testistorsjon",
@@ -150,7 +139,7 @@ export const TOPICS: Topic[] = [
   {
     id: "epididymitt",
     cat: "benigne",
-    title: "Epididymitt / akutt skrotum",
+    title: "Epididymitt",
     status: "ferdig",
     icd: "N45 / N44",
     contentType: "simple",
@@ -267,7 +256,15 @@ export const TOPICS: Topic[] = [
     title: "Blærekreft (urotelialt karsinom)",
     status: "ferdig",
     icd: "C67",
-    contentType: "simple",
+    contentType: "tabs",
+    tabs: [
+      { id: "oversikt", label: "Oversikt" },
+      { id: "bcg", label: "BCG-behandling" },
+    ],
+    indication:
+      '<div class="callout"><b>Kjapt sammendrag</b>Over 95 % er urotelialt karsinom. Smertefri makrohematuri er kardinalsymptom. Skillet mellom ikke-muskelinvasiv (NMIBC) og muskelinvasiv (MIBC) sykdom styrer hele behandlingsløpet.</div>',
+    outro:
+      '<div class="sources"><h4>Kilder</h4><ul><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/blaerekreft-handlingsprogram/oppfolging/oppfolging-av-ikke-muskelinfiltrerende-blaerekreft" target="_blank">Nasjonalt handlingsprogram for blære- og urotelkreft, kap. 10.2: Oppfølging av ikke-muskelinfiltrerende blærekreft</a> (sist oppdatert 24. april 2026)</li><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/blaerekreft-handlingsprogram/initial-behandling-og-behandling-av-nmibc/instillasjonsbehandling-av-nmibc" target="_blank">Nasjonalt handlingsprogram for blære- og urotelkreft, kap. 7.5: Instillasjonsbehandling av NMIBC (BCG)</a> (sist oppdatert 24. april 2026)</li><li>Felleskatalogen — BCG-medac (SPC): virkningsmekanisme, kontraindikasjoner og bivirkninger</li><li>EAU Guidelines — Non-muscle-invasive og Muscle-invasive Bladder Cancer, uroweb.org</li></ul></div><div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>',
     summary: "Kreft utgått fra urotelet i blæreveggen, ofte debuterende med smertefri hematuri.",
   },
   {
@@ -464,7 +461,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     hasChecklist: true,
     indication:
-      '<div class="callout"><b>Indikasjon</b>Patologisk fimose (BXO/lichen sclerosus, arrdannelse), residiverende balanitt/parafimose. Religiøs/kulturell ønske er en vanlig henvisningsårsak. Alternativ til full sirkumsisjon er dorsal spalting — begge alternativ bør presenteres for pasienten.</div>',
+      '<div class="callout"><b>Indikasjon</b>Patologisk fimose (BXO/lichen sclerosus, arrdannelse), residiverende balanitt/parafimose. Religiøs/kulturell ønske er en vanlig henvisningsårsak. Alternativer til full sirkumsisjon — dorsal spalting, eller ved egnede tilfeller frenulektomi (ved isolert stram frenulum) eller forhudsplastikk (bevarende plastikk der fimosen ikke er uttalt) — bør presenteres for pasienten.</div>',
     summary: "Kirurgisk fjerning av forhuden, oftest ved fimose.",
   },
   {
@@ -500,7 +497,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     hasChecklist: true,
     indication:
-      '<div class="callout"><b>Indikasjon</b>Retentio testis (udescendert testikkel) hos gutt, eller fiksasjon etter detorkvering ved testistorsjon (da bilateralt, se Epididymitt/akutt skrotum og Operasjonsteknikker — Detorkvering).</div>',
+      '<div class="callout"><b>Indikasjon</b>Retentio testis (udescendert testikkel) hos gutt, eller fiksasjon etter detorkvering ved testistorsjon (da bilateralt, se Epididymitt og Operasjonsteknikker — Detorkvering).</div>',
     summary: "Kirurgisk nedflytting og fiksasjon av en udescendert testikkel.",
   },
   {
@@ -520,7 +517,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     hasChecklist: true,
     indication:
-      '<div class="callout high"><b>Akutt kirurgisk emergency</b>Ved klinisk mistanke om testistorsjon skal eksplorasjon ikke forsinkes av bildediagnostikk. Se Epididymitt/akutt skrotum for differensialdiagnostikk.</div>',
+      '<div class="callout high"><b>Akutt kirurgisk emergency</b>Ved klinisk mistanke om testistorsjon skal eksplorasjon ikke forsinkes av bildediagnostikk. Se Epididymitt for differensialdiagnostikk.</div>',
     summary: "Akutt kirurgisk oppretting og fiksering av en vridd testikkel.",
   },
   {
@@ -643,6 +640,23 @@ export const TOPICS: Topic[] = [
     indication:
       '<div class="callout"><b>Indikasjon</b>Malignitetssuspekt testistumor. Se Testikkelkreft for utredning — markører (AFP, hCG, LD), skrotal UL og CT thorax/abdomen/bekken skal foreligge, og sædbanking skal være tilbudt <strong>før</strong> operasjon.</div>',
     summary: "Kirurgisk fjerning av en testikkel, oftest ved mistenkt eller påvist testikkelkreft.",
+  },
+  {
+    id: "spk-innleggelse",
+    cat: "kirurgi",
+    title: "Suprapubisk kateter (SPK)",
+    status: "ferdig",
+    komp: [
+      {
+        label: "SPK",
+        count: 10,
+      },
+    ],
+    contentType: "toggle",
+    hasChecklist: true,
+    indication:
+      '<div class="callout"><b>Indikasjon</b>Mislykket eller kontraindisert transuretral kateterisering (urinrørsstriktur, via falsa/falsk kanal, betydelig BPH-obstruksjon), eller planlagt langvarig avlastning uten transuretralt kateter. Se Akutt urinretensjon.</div>',
+    summary: "Ultralydveiledet perkutan blæredrenasje når transuretral kateterisering ikke lykkes.",
   },
   {
     id: "penisplastikk",
