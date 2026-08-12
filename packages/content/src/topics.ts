@@ -74,6 +74,26 @@ export const TOPICS: Topic[] = [
       "Sepsis fra en obstruert, infisert urinvei — krever akutt avlastning i tillegg til antibiotika.",
   },
   {
+    id: "nyretraume",
+    cat: "akutt",
+    title: "Traumatisk nyreblødning (nyretraume)",
+    status: "ferdig",
+    icd: "S37.0",
+    contentType: "simple",
+    summary:
+      "Nyreskade etter buk-/flanketraume, gradert med AAST — hemodynamisk stabilitet styrer håndteringen, ikke skadegrad alene.",
+  },
+  {
+    id: "urinom",
+    cat: "akutt",
+    title: "Urinom (postoperativt/traumatisk)",
+    status: "ferdig",
+    icd: "N28.8",
+    contentType: "simple",
+    summary:
+      "Urinsamling utenfor urinveiene etter skade på samlesystemet — kirurgisk eller traumatisk.",
+  },
+  {
     id: "bph",
     cat: "benigne",
     title: "Benign prostatahyperplasi (BPH)",
