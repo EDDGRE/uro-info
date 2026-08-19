@@ -262,6 +262,7 @@ export const TOPICS: Topic[] = [
     tabs: [
       { id: "utredning", label: "Utredning" },
       { id: "behandlingsvalg", label: "Behandlingsvalg" },
+      { id: "adt", label: "ADT" },
       { id: "oppfolging", label: "Oppfølging" },
     ],
     indication:
