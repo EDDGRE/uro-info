@@ -142,6 +142,7 @@ export const TOPICS: Topic[] = [
     tabs: [
       { id: "oab", label: "OAB / Urge" },
       { id: "boo", label: "BOO / BPH" },
+      { id: "urodynamikk", label: "Urodynamikk" },
     ],
     indication:
       '<div class="callout"><b>Kjapt sammendrag</b>LUTS (lower urinary tract symptoms) deles i lagrings- og tømmingssymptomer. Overaktiv blære (OAB/urge) er en klinisk diagnose satt etter at andre årsaker er utelukket. Blæreutløpsobstruksjon (BOO), oftest sekundært til benign prostatahyperplasi (BPH), er den vanligste årsaken til tømmingssymptomer hos menn. Symptombildet og resturin/flowmetri styrer behandlingsvalg — ikke prostatastørrelse alene.</div>',
@@ -265,15 +266,6 @@ export const TOPICS: Topic[] = [
     contentType: "simple",
     summary:
       "Vanlig insidentalfunn — Bosniak I-IV stratifiserer malignitetsrisiko og styrer oppfølging.",
-  },
-  {
-    id: "urodynamikk",
-    cat: "benigne",
-    title: "Urodynamikk",
-    status: "ferdig",
-    contentType: "simple",
-    summary:
-      "Trykk-/strømningsmåling av blære og uretra for å objektivere årsak til LUTS/inkontinens.",
   },
   {
     id: "prostatakreft",
