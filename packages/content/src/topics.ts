@@ -245,6 +245,10 @@ export const TOPICS: Topic[] = [
         label: "Diureserenografi",
         count: 1,
       },
+      {
+        label: "Intern uretrotomi",
+        count: 10,
+      },
     ],
     contentType: "simple",
     summary: "Innsnevring av urinrøret som gir obstruktiv vannlating.",
