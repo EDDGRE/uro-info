@@ -4,15 +4,15 @@ export function KubIcon({ className }: { className?: string }) {
       <defs>
         <mask id="kub-mask-l">
           <rect x="0" y="0" width="100" height="100" fill="white" />
-          <circle cx="37" cy="21" r="12" fill="black" />
+          <circle cx="34" cy="24" r="9" fill="black" />
         </mask>
         <mask id="kub-mask-r">
           <rect x="0" y="0" width="100" height="100" fill="white" />
-          <circle cx="63" cy="21" r="12" fill="black" />
+          <circle cx="66" cy="24" r="9" fill="black" />
         </mask>
       </defs>
-      <circle cx="25" cy="24" r="14" fill="currentColor" mask="url(#kub-mask-l)" />
-      <circle cx="75" cy="24" r="14" fill="currentColor" mask="url(#kub-mask-r)" />
+      <ellipse cx="25" cy="24" rx="13" ry="17" fill="currentColor" mask="url(#kub-mask-l)" />
+      <ellipse cx="75" cy="24" rx="13" ry="17" fill="currentColor" mask="url(#kub-mask-r)" />
       <path d="M33,63 Q33,55 50,55 Q67,55 67,63 Q67,76 50,90 Q33,76 33,63 Z" fill="currentColor" />
       <path
         d="M29,36 C25,46 27,54 38,62"
