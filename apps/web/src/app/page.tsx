@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getCategories, getTopics } from "@uro-info/content";
 
 import { TAG_CLASS } from "@/lib/tag-class";
+import { UroMark } from "@/components/icons/uro-mark";
 
 export const metadata: Metadata = {
   title: "Uro Info — Klinisk oppslagsverk for LIS i urologi",
@@ -22,8 +23,7 @@ export default function HomePage() {
     <>
       <div className="home-hero">
         <h1 className="flex items-center gap-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/icons/kub-glyph.png" alt="" className="h-8 w-auto shrink-0" />
+          <UroMark className="h-8 w-auto shrink-0 text-white" />
           Klinisk oppslagsverk for LIS i urologi
         </h1>
         <p>

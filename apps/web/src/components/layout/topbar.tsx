@@ -4,14 +4,14 @@ import type { Category, Topic } from "@uro-info/content";
 import { MobileNav } from "./mobile-nav";
 import { SearchCommand } from "@/components/search/search-command";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { UroMark } from "@/components/icons/uro-mark";
 
 export function Topbar({ categories, topics }: { categories: Category[]; topics: Topic[] }) {
   return (
     <header className="border-primary-deep bg-primary-deep sticky top-0 z-40 flex h-14 items-center gap-4 border-b px-4 text-[#edeff2]">
       <MobileNav categories={categories} topics={topics} />
       <Link href="/" className="flex shrink-0 items-center gap-2 whitespace-nowrap no-underline">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/icons/kub-glyph.png" alt="" className="h-6 w-auto" />
+        <UroMark className="h-6 w-auto text-white" />
         <span className="font-display text-[17px] font-bold tracking-[.2px] text-white">
           Uro Info
         </span>
