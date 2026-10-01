@@ -18,6 +18,7 @@ import { FavoriteButton } from "@/components/topic/favorite-button";
 import { RecordVisit } from "@/components/topic/record-visit";
 import { PsadCalculator } from "@/components/topic/psad-calculator";
 import { KidneyGrowthCalculator } from "@/components/topic/kidney-growth-calculator";
+import { LeibovichCalculator } from "@/components/topic/leibovich-calculator";
 import { TAG_CLASS } from "@/lib/tag-class";
 
 export function generateStaticParams() {
@@ -72,7 +73,12 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       {topic.contentType === "simple" && !topic.hasChecklist && (
         <>
           <div className="content" dangerouslySetInnerHTML={{ __html: getTopicHtml(topic.id) }} />
-          {topic.id === "nyrekreft" && <KidneyGrowthCalculator />}
+          {topic.id === "nyrekreft" && (
+            <>
+              <LeibovichCalculator />
+              <KidneyGrowthCalculator />
+            </>
+          )}
         </>
       )}
       {topic.contentType === "simple" && topic.hasChecklist && (

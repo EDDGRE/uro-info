@@ -460,7 +460,8 @@ table.datatable tr:hover td {
   font-size: 12px;
   color: var(--ink-soft);
 }
-.calc-field input {
+.calc-field input,
+.calc-field select {
   font-family: var(--mono);
   font-size: 13.5px;
   padding: 6px 9px;
