@@ -64,7 +64,9 @@ export function SidebarNav({
       )}
 
       {categories.map((cat) => {
-        const items = topics.filter((t) => t.cat === cat.id);
+        const items = topics
+          .filter((t) => t.cat === cat.id)
+          .sort((a, b) => a.title.localeCompare(b.title, "nb"));
         if (!items.length) return null;
         return (
           <NavGroup
