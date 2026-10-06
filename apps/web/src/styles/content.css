@@ -75,6 +75,8 @@
   margin: 34px 0 12px;
   padding-bottom: 6px;
   border-bottom: 1px solid var(--line);
+  /* clears the sticky 56px topbar (h-14) when a search result scrolls straight to this heading */
+  scroll-margin-top: 72px;
 }
 .content h3 {
   font-family: var(--sans);
