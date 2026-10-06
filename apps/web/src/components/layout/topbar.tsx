@@ -19,9 +19,12 @@ export function Topbar({ categories, topics }: { categories: Category[]; topics:
           {"// LIS-oppslagsverk i urologi"}
         </span>
       </Link>
-      <span className="ml-auto hidden shrink-0 whitespace-nowrap rounded-full border border-[#33475f] px-2.5 py-[3px] font-mono text-[11px] tracking-wide text-[#9fb0c4] lg:inline">
-        Ansvarlig: <b className="font-semibold text-[#edeff2]">EDDGRE</b>
-      </span>
+      <Link
+        href="/om-siden"
+        className="ml-auto hidden shrink-0 whitespace-nowrap rounded-full border border-[#33475f] px-2.5 py-[3px] font-mono text-[11px] tracking-wide text-[#9fb0c4] no-underline hover:border-[#4a6074] lg:inline"
+      >
+        Ansvarlig: <b className="font-semibold text-[#edeff2]">Edda Greaker</b>
+      </Link>
       <div className="ml-auto flex max-w-[420px] flex-1 items-center gap-2 lg:ml-4">
         <SearchCommand />
       </div>
