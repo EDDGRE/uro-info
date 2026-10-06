@@ -15,6 +15,8 @@ import {
   CommandList,
 } from "@uro-info/ui";
 
+import { buildHash } from "@/lib/hash-nav";
+
 const CATEGORY_LABELS: Record<string, string> = {
   akutt: "Akutturologi",
   benigne: "Benigne tilstander",
@@ -35,6 +37,11 @@ interface Match {
 // fine for short labels, but far too slow once the value includes a topic's full body
 // text (tens of KB × 45 topics). Filtering is done here instead, the same way the
 // original vanilla-JS search did it: cheap substring checks, title matches first.
+//
+// The index has one entry per *section* (per `<h2>`, per tab), not per topic, so a title
+// or code match is de-duped to the topic's first entry (its intro, before any heading —
+// so it links to the plain topic page) while body matches are kept per-section, each
+// linking straight to its own tab/heading.
 function filterEntries(entries: SearchEntry[], query: string): Match[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];
@@ -42,12 +49,20 @@ function filterEntries(entries: SearchEntry[], query: string): Match[] {
   const titleMatches: Match[] = [];
   const codeMatches: Match[] = [];
   const bodyMatches: Match[] = [];
+  const titleSeen = new Set<string>();
+  const codeSeen = new Set<string>();
 
   for (const entry of entries) {
     if (entry.title.toLowerCase().includes(q)) {
-      titleMatches.push({ entry, snippet: "" });
+      if (!titleSeen.has(entry.topicId)) {
+        titleSeen.add(entry.topicId);
+        titleMatches.push({ entry, snippet: "" });
+      }
     } else if (entry.codeText.toLowerCase().includes(q)) {
-      codeMatches.push({ entry, snippet: "" });
+      if (!codeSeen.has(entry.topicId)) {
+        codeSeen.add(entry.topicId);
+        codeMatches.push({ entry, snippet: "" });
+      }
     } else if (entry.bodyText.toLowerCase().includes(q)) {
       bodyMatches.push({ entry, snippet: snippetAround(entry.bodyText, q) });
     }
@@ -94,10 +109,22 @@ export function SearchCommand() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  function go(id: string) {
+  function go(entry: SearchEntry) {
     setOpen(false);
     setQuery("");
-    router.push(`/${id}`);
+    const hash = buildHash(entry.tabId, entry.anchor);
+    const href = hash ? `/${entry.topicId}#${hash}` : `/${entry.topicId}`;
+    const samePage = window.location.pathname === `/${entry.topicId}`;
+    router.push(href);
+    // Same-page re-search (topic already open): router.push won't remount the page, so
+    // the hash-driven scroll effects wouldn't fire on their own — dispatch one once the
+    // (unchanged) URL has the new hash. A cross-page navigation remounts fresh and picks
+    // the hash up by itself, so doing this unconditionally would race router.push and
+    // corrupt the in-flight navigation.
+    if (samePage && hash) {
+      window.location.hash = hash;
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+    }
   }
 
   return (
@@ -126,12 +153,20 @@ export function SearchCommand() {
           <CommandEmpty>{query ? "Ingen treff." : "Skriv for å søke."}</CommandEmpty>
           <CommandGroup>
             {matches.map(({ entry, snippet }) => (
-              <CommandItem key={entry.id} value={entry.id} onSelect={() => go(entry.id)}>
-                <span className="font-medium">{entry.title}</span>
-                <span className="font-mono text-[11px] text-muted-foreground">
+              <CommandItem key={entry.id} value={entry.id} onSelect={() => go(entry)}>
+                <span className="font-medium">
+                  {entry.title}
+                  {(entry.tabLabel || entry.heading) && (
+                    <span className="text-muted-foreground font-normal">
+                      {" — "}
+                      {[entry.tabLabel, entry.heading].filter(Boolean).join(" › ")}
+                    </span>
+                  )}
+                </span>
+                <span className="text-muted-foreground font-mono text-[11px]">
                   {CATEGORY_LABELS[entry.category] ?? entry.category}
                 </span>
-                {snippet && <span className="text-xs text-muted-foreground">{snippet}</span>}
+                {snippet && <span className="text-muted-foreground text-xs">{snippet}</span>}
               </CommandItem>
             ))}
           </CommandGroup>

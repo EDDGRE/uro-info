@@ -14,6 +14,7 @@ import {
 
 import { CompetencyTable } from "@/components/topic/competency-table";
 import { TabbedContent } from "@/components/topic/tabbed-content";
+import { ContentWithAnchor } from "@/components/topic/content-with-anchor";
 import { FavoriteButton } from "@/components/topic/favorite-button";
 import { RecordVisit } from "@/components/topic/record-visit";
 import { PsadCalculator } from "@/components/topic/psad-calculator";
@@ -72,7 +73,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
 
       {topic.contentType === "simple" && !topic.hasChecklist && (
         <>
-          <div className="content" dangerouslySetInnerHTML={{ __html: getTopicHtml(topic.id) }} />
+          <ContentWithAnchor html={getTopicHtml(topic.id)} />
           {topic.id === "nyrekreft" && (
             <>
               <LeibovichCalculator />

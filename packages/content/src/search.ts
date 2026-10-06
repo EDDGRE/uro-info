@@ -6,44 +6,135 @@ import {
   getTopicTabHtml,
   getTopicChecklistHtml,
 } from "./html";
-import { stripHtmlTags } from "./search-utils";
+import { stripHtmlTags, splitIntoSections } from "./search-utils";
 import type { CategoryId, Topic } from "./schema";
 
 export interface SearchEntry {
+  /** Unique across the whole index. */
   id: string;
+  topicId: string;
   title: string;
   category: CategoryId;
   /** ICD-10 / NCSP codes, space separated. */
   codeText: string;
-  /** Plain text body (HTML tags stripped) used for full-text matching + snippets. */
+  /** Which tab/variant this section lives in (undefined for untabbed topics) — the frontend
+   * activates this tab before scrolling, so the match is actually visible. */
+  tabId?: string;
+  /** Display label for `tabId` (e.g. "BCG-behandling"), shown in results for context. */
+  tabLabel?: string;
+  /** The `<h2>` heading text this section falls under, if any. */
+  heading?: string;
+  /** The heading's slug — `id` of the `<h2>` to scroll to. Undefined means "just land on
+   * the topic page" (e.g. the intro text before the first heading). */
+  anchor?: string;
+  /** Plain text of just this section, used for matching + snippets. */
   bodyText: string;
 }
 
-function getTopicRawHtml(topic: Topic): string {
-  const intro = topic.indication ?? "";
-  const outro = topic.outro ?? "";
-  const checklist = topic.hasChecklist ? getTopicChecklistHtml(topic.id) : "";
-  if (topic.contentType === "simple") return intro + getTopicHtml(topic.id) + checklist + outro;
-  if (topic.contentType === "toggle") {
-    return intro + getTopicShortHtml(topic.id) + getTopicDetailedHtml(topic.id) + checklist + outro;
-  }
-  const tailHtml = topic.id === "prostatakreft" ? getTopicTabHtml(topic.id, "utredning-tail") : "";
-  const tabsHtml = (topic.tabs ?? []).map((t) => getTopicTabHtml(topic.id, t.id)).join(" ");
-  return intro + tabsHtml + tailHtml + checklist + outro;
+interface Segment {
+  tabId?: string;
+  tabLabel?: string;
+  html: string;
 }
 
-export function buildSearchIndex(): SearchEntry[] {
-  return getPublishedTopics().map((topic) => {
-    const raw = getTopicRawHtml(topic);
+const TOGGLE_LABELS: Record<string, string> = {
+  kort: "Kort (sjekkliste)",
+  detaljert: "Detaljert",
+  checklist: "Preop. sjekkliste",
+};
 
-    return {
-      id: topic.id,
-      title: topic.title,
-      category: topic.cat,
-      codeText: [topic.icd, topic.ncsp].filter(Boolean).join(" "),
-      bodyText: stripHtmlTags(raw),
-    };
+function getTopicSegments(topic: Topic): Segment[] {
+  if (topic.contentType === "simple") {
+    const segments: Segment[] = [{ html: getTopicHtml(topic.id) }];
+    if (topic.hasChecklist) {
+      segments.push({
+        tabId: "checklist",
+        tabLabel: TOGGLE_LABELS.checklist,
+        html: getTopicChecklistHtml(topic.id),
+      });
+    }
+    return segments;
+  }
+  if (topic.contentType === "toggle") {
+    const segments: Segment[] = [
+      { tabId: "kort", tabLabel: TOGGLE_LABELS.kort, html: getTopicShortHtml(topic.id) },
+      {
+        tabId: "detaljert",
+        tabLabel: TOGGLE_LABELS.detaljert,
+        html: getTopicDetailedHtml(topic.id),
+      },
+    ];
+    if (topic.hasChecklist) {
+      segments.push({
+        tabId: "checklist",
+        tabLabel: TOGGLE_LABELS.checklist,
+        html: getTopicChecklistHtml(topic.id),
+      });
+    }
+    return segments;
+  }
+  // "tabs"
+  return (topic.tabs ?? []).map((t) => {
+    const tail =
+      topic.id === "prostatakreft" && t.id === "utredning"
+        ? getTopicTabHtml(topic.id, "utredning-tail")
+        : "";
+    return { tabId: t.id, tabLabel: t.label, html: getTopicTabHtml(topic.id, t.id) + tail };
   });
 }
 
-export { stripHtmlTags, snippetAround } from "./search-utils";
+export function buildSearchIndex(): SearchEntry[] {
+  const entries: SearchEntry[] = [];
+
+  for (const topic of getPublishedTopics()) {
+    const codeText = [topic.icd, topic.ncsp].filter(Boolean).join(" ");
+    const introExtra = stripHtmlTags(topic.indication ?? "");
+    const segments = getTopicSegments(topic);
+    let entryIndex = 0;
+
+    segments.forEach((segment, segIdx) => {
+      const sections = splitIntoSections(segment.html);
+      sections.forEach((section, secIdx) => {
+        // Fold the topic-level "indication" callout into the very first section of the
+        // very first segment, so it's searchable without needing its own fake entry.
+        const extra = segIdx === 0 && secIdx === 0 ? introExtra : "";
+        const bodyText = [extra, section.text].filter(Boolean).join(" ");
+        if (!bodyText.trim()) return;
+        entries.push({
+          id: `${topic.id}::${entryIndex++}`,
+          topicId: topic.id,
+          title: topic.title,
+          category: topic.cat,
+          codeText,
+          tabId: segment.tabId,
+          tabLabel: segment.tabLabel,
+          heading: section.heading,
+          anchor: section.anchor,
+          bodyText,
+        });
+      });
+    });
+
+    const outroText = stripHtmlTags(topic.outro ?? "");
+    if (outroText.trim()) {
+      entries.push({
+        id: `${topic.id}::${entryIndex++}`,
+        topicId: topic.id,
+        title: topic.title,
+        category: topic.cat,
+        codeText,
+        bodyText: outroText,
+      });
+    }
+  }
+
+  return entries;
+}
+
+export {
+  stripHtmlTags,
+  snippetAround,
+  slugify,
+  addHeadingIds,
+  splitIntoSections,
+} from "./search-utils";
