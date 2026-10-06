@@ -61,27 +61,23 @@ export const TOPICS: Topic[] = [
     title: "Testistorsjon",
     status: "ferdig",
     contentType: "simple",
-    summary:
-      "Torsjon av spermatstrengen med avklemt blodforsyning — tidskritisk kirurgisk emergency.",
+    summary: "Testikkelen vrir seg og mister blodtilførselen — må opereres akutt.",
   },
   {
     id: "urosepsis",
     cat: "akutt",
     title: "Urosepsis / obstruktiv pyelonefritt",
     status: "ferdig",
-    contentType: "simple",
-    summary:
-      "Sepsis fra en obstruert, infisert urinvei — krever akutt avlastning i tillegg til antibiotika.",
-  },
-  {
-    id: "ureterstein-komplisert",
-    cat: "akutt",
-    title: "Komplisert ureterstensanfall",
-    status: "ferdig",
     icd: "N13.2 / N20.1",
-    contentType: "simple",
+    contentType: "tabs",
+    tabs: [
+      { id: "urosepsis", label: "Urosepsis" },
+      { id: "ureterstein-komplisert", label: "Komplisert ureterstensanfall" },
+    ],
+    outro:
+      '<div class="callout internal"><b>Ahus internt</b>Ved begge tilstander bruker vi som regel perkutan nefrostomi (PCN) fremfor retrograd JJ-stent som akutt avlastningsmetode. På vakttid kontaktes intervensjonsradiolog for nefrostomi via vakthavende radiolog på <strong>64111</strong>.</div><div class="sources"><h4>Kilder</h4><ul><li>EAU Guidelines — <a href="https://uroweb.org/guidelines/urological-infections" target="_blank">Urological Infections</a>, uroweb.org</li><li>EAU Guidelines — <a href="https://uroweb.org/guidelines/urolithiasis" target="_blank">Urolithiasis</a>, uroweb.org</li><li><strong>Ahus urologisk avdeling</strong> — internt praksis for akutt avlastning ved obstruktiv pyelonefritt/komplisert steinanfall</li></ul></div><div class="disclaimer">Kun til bruk som internt faglig oppslagsverk.</div>',
     summary:
-      "Obstruerende ureterstein med faresignaler (infeksjon, solitær nyre, nyresvikt, intraktable smerter) — krever akutt avlastning.",
+      "Sepsis eller faresignaler ved en obstruert, infisert urinvei — krever akutt avlastning i tillegg til antibiotika.",
   },
   {
     id: "nyretraume",
