@@ -513,7 +513,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     hasChecklist: true,
     indication:
-      '<div class="callout"><b>Indikasjon</b>Patologisk fimose (BXO/lichen sclerosus, arrdannelse), residiverende balanitt/parafimose. Religiøs/kulturell ønske er en vanlig henvisningsårsak. Alternativer til full sirkumsisjon — dorsal spalting, eller ved egnede tilfeller frenulektomi (ved isolert stram frenulum) eller forhudsplastikk (bevarende plastikk der fimosen ikke er uttalt) — bør presenteres for pasienten.</div>',
+      '<div class="callout"><b>Indikasjon</b>Patologisk fimose (BXO/lichen sclerosus, arrdannelse), residiverende balanitt/parafimose. Alternativer til full sirkumsisjon — dorsal spalting, eller ved egnede tilfeller frenulektomi (ved isolert stram frenulum) eller forhudsplastikk (bevarende plastikk der fimosen ikke er uttalt) — bør presenteres for pasienten.</div><div class="callout internal"><b>Ahus internt</b>Religiøst/kulturelt ønske er en vanlig henvisningsårsak, men dette utføres generelt ikke på Ahus, til tross for at <a href="https://lovdata.no/lov/2014-06-20-40" target="_blank">«Lov om rituell omskjæring av gutter»</a> § 4 pålegger regionale helseforetak et offentlig tilbud: «Regionale helseforetak ... skal organisere spesialisthelsetjenesten slik at de som ønsker det innen helseregionen, kan få utført rituell omskjæring av gutter på en forsvarlig måte.» Slike henvisninger avvises derfor ved Ahus.</div>',
     summary: "Kirurgisk fjerning av forhuden, oftest ved fimose.",
   },
   {
