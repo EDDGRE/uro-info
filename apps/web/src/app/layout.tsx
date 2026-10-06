@@ -6,6 +6,7 @@ import { getCategories, getTopics } from "@uro-info/content";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Topbar } from "@/components/layout/topbar";
 import { Sidebar } from "@/components/layout/sidebar";
+import { SiteDisclaimer } from "@/components/layout/site-disclaimer";
 
 import "./globals.css";
 
@@ -59,7 +60,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Topbar categories={categories} topics={topics} />
           <div className="flex min-h-[calc(100vh-56px)]">
             <Sidebar categories={categories} topics={topics} />
-            <main className="min-w-0 flex-1 px-4 pb-24 pt-9 md:px-10">{children}</main>
+            <main className="min-w-0 flex-1 px-4 pb-24 pt-9 md:px-10">
+              {children}
+              <SiteDisclaimer />
+            </main>
           </div>
         </ThemeProvider>
       </body>
