@@ -74,6 +74,16 @@ export const TOPICS: Topic[] = [
       "Sepsis fra en obstruert, infisert urinvei — krever akutt avlastning i tillegg til antibiotika.",
   },
   {
+    id: "ureterstein-komplisert",
+    cat: "akutt",
+    title: "Komplisert ureterstensanfall",
+    status: "ferdig",
+    icd: "N13.2 / N20.1",
+    contentType: "simple",
+    summary:
+      "Obstruerende ureterstein med faresignaler (infeksjon, solitær nyre, nyresvikt, intraktable smerter) — krever akutt avlastning.",
+  },
+  {
     id: "nyretraume",
     cat: "akutt",
     title: "Traumatisk nyreblødning (nyretraume)",
