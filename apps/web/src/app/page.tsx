@@ -17,7 +17,6 @@ const HOME_CARD_CLASS: Record<string, string> = {
 export default function HomePage() {
   const categories = getCategories();
   const topics = getTopics().filter((t) => t.status === "ferdig" && t.cat !== "om");
-  const categoryById = new Map(categories.map((c) => [c.id, c]));
 
   return (
     <>
@@ -31,24 +30,32 @@ export default function HomePage() {
           Guidelines — samlet ett sted for rask oppslag i klinisk hverdag.
         </p>
       </div>
-      <h2 className="font-display text-heading mb-4 mt-0 text-[19px] font-bold">Alle oppslag</h2>
-      <div className="home-grid">
-        {topics.map((t) => {
-          const category = categoryById.get(t.cat);
-          return (
-            <div key={t.id} className={`home-card ${HOME_CARD_CLASS[t.cat] ?? ""}`.trim()}>
-              {category && (
-                <span className={`tag ${TAG_CLASS[category.id] ?? ""} mb-2 inline-block`.trim()}>
-                  {category.badgeLabel}
-                </span>
-              )}
-              <h3>{t.title}</h3>
-              {t.summary && <p>{t.summary}</p>}
-              <Link href={`/${t.id}`}>Åpne oppslag →</Link>
+      {categories.map((category) => {
+        const items = topics
+          .filter((t) => t.cat === category.id)
+          .sort((a, b) => a.title.localeCompare(b.title, "nb"));
+        if (!items.length) return null;
+        return (
+          <section key={category.id} className="mb-8">
+            <h2 className="font-display text-heading mb-4 mt-0 flex items-center gap-2 text-[19px] font-bold">
+              <span className={`swatch ${category.swatch}`} />
+              {category.label}
+            </h2>
+            <div className="home-grid">
+              {items.map((t) => (
+                <div key={t.id} className={`home-card ${HOME_CARD_CLASS[t.cat] ?? ""}`.trim()}>
+                  <span className={`tag ${TAG_CLASS[category.id] ?? ""} mb-2 inline-block`.trim()}>
+                    {category.badgeLabel}
+                  </span>
+                  <h3>{t.title}</h3>
+                  {t.summary && <p>{t.summary}</p>}
+                  <Link href={`/${t.id}`}>Åpne oppslag →</Link>
+                </div>
+              ))}
             </div>
-          );
-        })}
-      </div>
+          </section>
+        );
+      })}
     </>
   );
 }
