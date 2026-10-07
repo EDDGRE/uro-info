@@ -308,6 +308,7 @@ export const TOPICS: Topic[] = [
       { id: "oversikt", label: "Oversikt" },
       { id: "behandlingsvalg", label: "Behandlingsvalg" },
       { id: "bcg", label: "BCG-behandling" },
+      { id: "oppfolging", label: "Oppfølging" },
     ],
     indication:
       '<div class="callout"><b>Kjapt sammendrag</b>Over 95 % er urotelialt karsinom. Smertefri makrohematuri er kardinalsymptom. Skillet mellom ikke-muskelinvasiv (NMIBC) og muskelinvasiv (MIBC) sykdom styrer hele behandlingsløpet.</div>',
@@ -321,7 +322,13 @@ export const TOPICS: Topic[] = [
     title: "Nyrekreft (RCC)",
     status: "ferdig",
     icd: "C64",
-    contentType: "simple",
+    contentType: "tabs",
+    tabs: [
+      { id: "oversikt", label: "Oversikt" },
+      { id: "oppfolging", label: "Oppfølging" },
+    ],
+    outro:
+      '<div class="sources"><h4>Kilder</h4><ul><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/nyrecellekreft-handlingsprogram" target="_blank">Nasjonalt handlingsprogram for nyrekreft</a></li><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/nyrecellekreft-handlingsprogram/oppfolging/risikoscoring-hos-pasienter-operert-for-nyrecellecarcinom" target="_blank">Nasjonalt handlingsprogram for nyrekreft — Risikoscoring hos pasienter operert for nyrecellecarcinom</a></li><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/nyrecellekreft-handlingsprogram/oppfolging/anbefalt-oppfolging-etter-risikostratifisering" target="_blank">Nasjonalt handlingsprogram for nyrekreft — Anbefalt oppfølging etter risikostratifisering</a></li><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/nyrecellekreft-handlingsprogram/stadieinndeling-risikogrupper-og-gradering-av-allmenntilstand/risikogrupper-etter-international-metastatic-rcc-database-consortium-imdc" target="_blank">Nasjonalt handlingsprogram for nyrekreft — Risikogrupper etter IMDC</a></li><li><a href="https://doi.org/10.1002/cncr.11234" target="_blank">Leibovich BC et al. Prediction of progression after radical nephrectomy for patients with clear cell renal cell carcinoma</a>. <em>Cancer</em> 2003;97(7):1663–71.</li><li>EAU Guidelines — <a href="https://uroweb.org/guidelines/renal-cell-carcinoma" target="_blank">Renal Cell Carcinoma</a>, uroweb.org</li></ul></div><div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>',
     summary: "Nyrecellekarsinom, ofte tilfeldig oppdaget ved bildediagnostikk av andre årsaker.",
   },
   {
@@ -330,7 +337,13 @@ export const TOPICS: Topic[] = [
     title: "Testikkelkreft",
     status: "ferdig",
     icd: "C62",
-    contentType: "simple",
+    contentType: "tabs",
+    tabs: [
+      { id: "oversikt", label: "Oversikt" },
+      { id: "oppfolging", label: "Oppfølging" },
+    ],
+    outro:
+      '<div class="sources"><h4>Kilder</h4><ul><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/testikkelkreft-handlingsprogram" target="_blank">Nasjonalt handlingsprogram for testikkelkreft</a> (sist oppdatert mai 2025)</li><li><a href="https://www.swenoteca.org" target="_blank">SWENOTECA-protokoller</a> (felles norsk-svensk samarbeid)</li><li>EAU Guidelines — <a href="https://uroweb.org/guidelines/testicular-cancer" target="_blank">Testicular Cancer</a>, uroweb.org</li><li><strong>Ahus urologisk avdeling</strong> — internt undervisningsmateriale om oppfølging etter orkiektomi</li></ul></div><div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>',
     summary:
       "Den vanligste kreftformen hos unge menn, som oftest debuterer med en palpabel testikkelknute.",
   },
@@ -340,7 +353,13 @@ export const TOPICS: Topic[] = [
     title: "Peniskreft",
     status: "ferdig",
     icd: "C60",
-    contentType: "simple",
+    contentType: "tabs",
+    tabs: [
+      { id: "oversikt", label: "Oversikt" },
+      { id: "oppfolging", label: "Oppfølging" },
+    ],
+    outro:
+      '<div class="sources"><h4>Kilder</h4><ul><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/nasjonale-forlop/peniskreft" target="_blank">Pakkeforløp for peniskreft</a></li><li>EAU Guidelines — <a href="https://uroweb.org/guidelines/penile-cancer" target="_blank">Penile Cancer</a>, uroweb.org</li></ul></div><div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på uroweb.org.</div>',
     summary: "Sjelden kreftform i penis, ofte assosiert med fimose og HPV.",
   },
   {
@@ -349,7 +368,13 @@ export const TOPICS: Topic[] = [
     title: "Øvre urotelial kreft",
     status: "ferdig",
     icd: "C65 / C66",
-    contentType: "simple",
+    contentType: "tabs",
+    tabs: [
+      { id: "oversikt", label: "Oversikt" },
+      { id: "oppfolging", label: "Oppfølging" },
+    ],
+    outro:
+      '<div class="sources"><h4>Kilder</h4><ul><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/blaerekreft-handlingsprogram" target="_blank">Nasjonalt handlingsprogram for blære- og urotelkreft</a> (dekker øvre urotelial kreft i eget kapittel)</li><li>EAU Guidelines — <a href="https://uroweb.org/guidelines/upper-urinary-tract-urothelial-cell-carcinoma" target="_blank">Upper Tract Urothelial Carcinoma</a>, uroweb.org</li></ul></div><div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>',
     summary: "Kreft i urotelet i nyrebekken eller ureter.",
   },
   {
