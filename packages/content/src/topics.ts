@@ -129,6 +129,16 @@ export const TOPICS: Topic[] = [
     summary: "Steindannelse i urinveiene som kan gi kolikksmerter, obstruksjon og infeksjon.",
   },
   {
+    id: "blaresten",
+    cat: "benigne",
+    title: "Blæresten",
+    status: "ferdig",
+    icd: "N21.0",
+    contentType: "simple",
+    summary:
+      "Steindannelse i blæren, hos voksne nesten alltid sekundær til stase — f.eks. blæreutløpsobstruksjon eller fremmedlegeme.",
+  },
+  {
     id: "luts",
     cat: "benigne",
     title: "LUTS (nedre urinveissymptomer)",
@@ -184,7 +194,7 @@ export const TOPICS: Topic[] = [
     icd: "N49.9 / N45 / N44",
     contentType: "simple",
     summary:
-      "Akutte skrotalsmerter — differensialdiagnoser (testistorsjon, torkvert testishydatide, epididymitt, skrotal abscess) og håndtering.",
+      "Akutte skrotalsmerter — differensialdiagnoser (testistorsjon, torkvert appendix testis, epididymitt, skrotal abscess) og håndtering.",
   },
   {
     id: "ed",
@@ -365,7 +375,7 @@ export const TOPICS: Topic[] = [
   {
     id: "ovreurotelial",
     cat: "maligne",
-    title: "Øvre urotelial kreft",
+    title: "Øvre urotelial kreft (UTUC)",
     status: "ferdig",
     icd: "C65 / C66",
     contentType: "tabs",
@@ -551,7 +561,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     hasChecklist: true,
     indication:
-      '<div class="callout"><b>Indikasjon</b>Permanent, elektiv mannlig sterilisering.</div>',
+      '<div class="callout"><b>Indikasjon</b>Permanent, elektiv mannlig sterilisering.</div><div class="callout internal"><b>Ahus internt</b>Vasektomi utføres dessverre ikke ved Ahus. Pasienter som ønsker inngrepet henvises til annet behandlingssted.</div>',
     summary: "Kirurgisk avbrytelse av sædlederne for permanent mannlig sterilisering.",
   },
   {
@@ -669,7 +679,7 @@ export const TOPICS: Topic[] = [
     contentType: "toggle",
     hasChecklist: true,
     indication:
-      '<div class="callout"><b>Indikasjon</b>Symptomgivende eller tilfeldig påvist blærestein.</div>',
+      '<div class="callout"><b>Indikasjon</b>Symptomgivende eller tilfeldig påvist blærestein — se Blæresten for utredning og bakenforliggende årsaker.</div>',
     summary: "Skopisk knusning av blærestein.",
   },
   {
@@ -747,11 +757,12 @@ export const TOPICS: Topic[] = [
   {
     id: "inkontinenskirurgi",
     cat: "kirurgi",
-    title: "Midturetral slynge og kunstig urinsfinkter",
+    title: "Kunstig urinsfinkter (AMS 800) og slynger",
     status: "ferdig",
     icd: "N39.3",
     contentType: "simple",
-    summary: "Kirurgisk behandling av stressinkontinens med slynge eller kunstig lukkemuskel.",
+    summary:
+      "Kunstig urinsfinkter (AMS 800) er Ahus' hovedprosedyre ved mannlig stressinkontinens. Midturetral slynge utføres av gynekologisk avdeling.",
   },
   {
     id: "adrenalektomi",

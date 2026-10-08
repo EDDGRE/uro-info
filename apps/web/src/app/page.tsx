@@ -29,6 +29,11 @@ export default function HomePage() {
           Bygger på Helsedirektoratets retningslinjer, Ahus&rsquo; interne prosedyrer og EAU
           Guidelines — samlet ett sted for rask oppslag i klinisk hverdag.
         </p>
+        <p className="home-hero-disclaimer">
+          Siden er bygget med hjelp av kunstig intelligens (KI) og kvalitetssikres fortløpende av
+          forfatter mot primærkildene. Den erstatter ikke gjeldende retningslinjer eller klinisk
+          skjønn — se Om siden for kildeprinsipper.
+        </p>
       </div>
       {categories.map((category) => {
         const items = topics
