@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -18,6 +19,7 @@ import { ContentWithAnchor } from "@/components/topic/content-with-anchor";
 import { FavoriteButton } from "@/components/topic/favorite-button";
 import { RecordVisit } from "@/components/topic/record-visit";
 import { PsadCalculator } from "@/components/topic/psad-calculator";
+import { PsaDtCalculator } from "@/components/topic/psa-dt-calculator";
 import { KidneyGrowthCalculator } from "@/components/topic/kidney-growth-calculator";
 import { LeibovichCalculator } from "@/components/topic/leibovich-calculator";
 import { TAG_CLASS } from "@/lib/tag-class";
@@ -72,15 +74,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       {topic.indication && <div dangerouslySetInnerHTML={{ __html: topic.indication }} />}
 
       {topic.contentType === "simple" && !topic.hasChecklist && (
-        <>
-          <ContentWithAnchor html={getTopicHtml(topic.id)} />
-          {topic.id === "nyrekreft" && (
-            <>
-              <LeibovichCalculator />
-              <KidneyGrowthCalculator />
-            </>
-          )}
-        </>
+        <ContentWithAnchor html={getTopicHtml(topic.id)} />
       )}
       {topic.contentType === "simple" && topic.hasChecklist && (
         <TabbedContent
@@ -115,10 +109,25 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
         <TabbedContent
           tabs={topic.tabs.map((t) => {
             const isProstatakreftUtredning = topic.id === "prostatakreft" && t.id === "utredning";
+            const isNyrekreftOversikt = topic.id === "nyrekreft" && t.id === "oversikt";
+            const isNyrekreftOppfolging = topic.id === "nyrekreft" && t.id === "oppfolging";
+            let extra: ReactNode;
+            if (isProstatakreftUtredning) {
+              extra = (
+                <>
+                  <PsadCalculator />
+                  <PsaDtCalculator />
+                </>
+              );
+            } else if (isNyrekreftOversikt) {
+              extra = <KidneyGrowthCalculator />;
+            } else if (isNyrekreftOppfolging) {
+              extra = <LeibovichCalculator />;
+            }
             return {
               ...t,
               html: getTopicTabHtml(topic.id, t.id),
-              extra: isProstatakreftUtredning ? <PsadCalculator /> : undefined,
+              extra,
               htmlAfter: isProstatakreftUtredning
                 ? getTopicTabHtml(topic.id, "utredning-tail")
                 : undefined,
