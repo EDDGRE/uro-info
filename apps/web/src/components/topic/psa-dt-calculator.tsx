@@ -2,14 +2,19 @@
 
 import { useState } from "react";
 
+const MS_PER_MONTH = (1000 * 60 * 60 * 24 * 365.25) / 12;
+
 export function PsaDtCalculator() {
   const [psa1, setPsa1] = useState("");
+  const [date1, setDate1] = useState("");
   const [psa2, setPsa2] = useState("");
-  const [months, setMonths] = useState("");
+  const [date2, setDate2] = useState("");
 
   const psa1Num = parseFloat(psa1.replace(",", "."));
   const psa2Num = parseFloat(psa2.replace(",", "."));
-  const monthsNum = parseFloat(months.replace(",", "."));
+  const d1 = date1 ? new Date(date1) : null;
+  const d2 = date2 ? new Date(date2) : null;
+  const monthsNum = d1 && d2 ? (d2.getTime() - d1.getTime()) / MS_PER_MONTH : NaN;
 
   const valid = psa1Num > 0 && psa2Num > 0 && monthsNum > 0;
   const rising = valid && psa2Num > psa1Num;
@@ -40,6 +45,12 @@ export function PsaDtCalculator() {
           />
         </label>
         <label className="calc-field">
+          Dato PSA 1
+          <input type="date" value={date1} onChange={(e) => setDate1(e.target.value)} />
+        </label>
+      </div>
+      <div className="calc-row">
+        <label className="calc-field">
           PSA 2 (ng/mL)
           <input
             inputMode="decimal"
@@ -49,26 +60,27 @@ export function PsaDtCalculator() {
           />
         </label>
         <label className="calc-field">
-          Tid mellom målinger (mnd)
-          <input
-            inputMode="decimal"
-            value={months}
-            onChange={(e) => setMonths(e.target.value)}
-            placeholder="f.eks. 6"
-          />
+          Dato PSA 2
+          <input type="date" value={date2} onChange={(e) => setDate2(e.target.value)} />
         </label>
       </div>
-      {valid && !rising ? (
+      {d1 && d2 && monthsNum <= 0 ? (
+        <div className="calc-result">Dato PSA 2 må være etter dato PSA 1.</div>
+      ) : valid && !rising ? (
         <div className="calc-result">
           PSA 2 er ikke høyere enn PSA 1 — ingen doblingstid å beregne.
         </div>
       ) : dtMonths !== null && verdict ? (
         <div className={`calc-result ${verdict.warn ? "warn" : ""}`.trim()}>
           PSA-doblingstid ≈ {dtMonths.toFixed(1)} måneder — {verdict.label}
+          <span style={{ fontWeight: 400 }}>
+            {" "}
+            (tid mellom målinger: {monthsNum.toFixed(1)} mnd)
+          </span>
         </div>
       ) : (
         <div className="calc-result">
-          Fyll inn to PSA-målinger (stigende) og tiden mellom dem for å beregne doblingstid.
+          Fyll inn to PSA-målinger (stigende) med dato for hver, for å beregne doblingstid.
         </div>
       )}
       <p className="calc-note">
