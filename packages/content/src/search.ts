@@ -74,13 +74,11 @@ function getTopicSegments(topic: Topic): Segment[] {
     return segments;
   }
   // "tabs"
-  return (topic.tabs ?? []).map((t) => {
-    const tail =
-      topic.id === "prostatakreft" && t.id === "utredning"
-        ? getTopicTabHtml(topic.id, "utredning-tail")
-        : "";
-    return { tabId: t.id, tabLabel: t.label, html: getTopicTabHtml(topic.id, t.id) + tail };
-  });
+  return (topic.tabs ?? []).map((t) => ({
+    tabId: t.id,
+    tabLabel: t.label,
+    html: getTopicTabHtml(topic.id, t.id),
+  }));
 }
 
 export function buildSearchIndex(): SearchEntry[] {

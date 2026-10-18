@@ -128,9 +128,6 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
               ...t,
               html: getTopicTabHtml(topic.id, t.id),
               extra,
-              htmlAfter: isProstatakreftUtredning
-                ? getTopicTabHtml(topic.id, "utredning-tail")
-                : undefined,
             };
           })}
         />

@@ -296,6 +296,7 @@ export const TOPICS: Topic[] = [
     contentType: "tabs",
     tabs: [
       { id: "utredning", label: "Utredning" },
+      { id: "staging", label: "Staging" },
       { id: "koelis", label: "Koelis" },
       { id: "mdt", label: "MDT" },
       { id: "behandlingsvalg", label: "Behandlingsvalg" },

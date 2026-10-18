@@ -9,10 +9,8 @@ interface Tab {
   id: string;
   label: string;
   html: string;
-  /** Rendered between `html` and `htmlAfter` — e.g. an interactive calculator. */
+  /** Rendered after `html` — e.g. an interactive calculator. */
   extra?: ReactNode;
-  /** Extra raw HTML rendered after `extra`, for splitting long tab content around `extra`. */
-  htmlAfter?: string;
 }
 
 export function TabbedContent({ tabs }: { tabs: Tab[] }) {
@@ -45,9 +43,6 @@ export function TabbedContent({ tabs }: { tabs: Tab[] }) {
         <TabsContent key={t.id} value={t.id}>
           <div className="content" dangerouslySetInnerHTML={{ __html: t.html }} />
           {t.extra}
-          {t.htmlAfter && (
-            <div className="content" dangerouslySetInnerHTML={{ __html: t.htmlAfter }} />
-          )}
         </TabsContent>
       ))}
     </Tabs>
