@@ -478,6 +478,35 @@ table.datatable tr:hover td {
   color: var(--ink);
   width: 140px;
 }
+.calc-add-row {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--steel);
+  background: none;
+  border: 1px dashed var(--line-strong);
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin: 0 0 12px;
+  cursor: pointer;
+}
+.calc-add-row:hover {
+  background: var(--steel-tint);
+}
+.calc-remove-row {
+  align-self: flex-end;
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--ink-soft);
+  background: none;
+  border: none;
+  padding: 6px 2px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.calc-remove-row:hover {
+  color: var(--high);
+}
 .calc-result {
   font-family: var(--mono);
   font-size: 13.3px;
