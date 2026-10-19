@@ -386,7 +386,7 @@ export const TOPICS: Topic[] = [
       { id: "oppfolging", label: "Oppfølging" },
     ],
     outro:
-      '<div class="sources"><h4>Kilder</h4><ul><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/blaerekreft-handlingsprogram" target="_blank">Nasjonalt handlingsprogram for blære- og urotelkreft</a> (dekker øvre urotelial kreft i eget kapittel)</li><li>EAU Guidelines — <a href="https://uroweb.org/guidelines/upper-urinary-tract-urothelial-cell-carcinoma" target="_blank">Upper Tract Urothelial Carcinoma</a>, uroweb.org</li></ul></div><div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>',
+      '<div class="sources"><h4>Kilder</h4><ul><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/blaerekreft-handlingsprogram/diagnostisering/utredning-og-klassifikasjon-av-utuc-upper-tract-urothelial-carcinoma" target="_blank">Nasjonalt handlingsprogram for blære- og urotelkreft, kap. 6.4: Utredning og klassifikasjon av UTUC</a> (sist oppdatert 24. april 2026)</li><li>EAU Guidelines — <a href="https://uroweb.org/guidelines/upper-urinary-tract-urothelial-cell-carcinoma" target="_blank">Upper Tract Urothelial Carcinoma</a>, uroweb.org</li></ul></div><div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>',
     summary: "Kreft i urotelet i nyrebekken eller ureter.",
   },
   {
