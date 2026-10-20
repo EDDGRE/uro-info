@@ -800,6 +800,22 @@ export const TOPICS: Topic[] = [
     summary: "Ny innfesting av ureter i blæren ved distal striktur, skade eller refluks.",
   },
   {
+    id: "blare-ureterskader",
+    cat: "kirurgi",
+    title: "Blære- og ureterskader",
+    status: "ferdig",
+    contentType: "tabs",
+    tabs: [
+      { id: "blareskade", label: "Blæreskade" },
+      { id: "ureterskader", label: "Ureterskader" },
+    ],
+    indication:
+      '<div class="callout"><b>Kjapt sammendrag</b>De fleste blære- og ureterskader er iatrogene (gynekologisk, kolorektal, karkirurgisk og endourologisk kirurgi). Skader oppdaget peroperativt repareres der og da; skader oppdaget sent avlastes først, med elektiv rekonstruksjon senere.</div>',
+    outro:
+      '<div class="sources"><h4>Kilder</h4><ul><li>Lærebøker i urologi og EAU Guidelines — <a href="https://uroweb.org/guidelines/urological-trauma" target="_blank">Urological Trauma</a>, uroweb.org (generell referanse til traumekapittelet — ikke side-/avsnittspesifikk)</li></ul></div><div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Tallverdiene er veiledende, hentet fra lærebøker og EAU-retningslinjen for urologiske traumer — sjekk mot nyeste versjon og lokale prosedyrer før klinisk bruk.</div>',
+    summary: "Diagnostikk og kirurgisk håndtering av iatrogene og traumatiske blære-/ureterskader.",
+  },
+  {
     id: "transvesikal-prostatektomi",
     cat: "kirurgi",
     title: "Transvesikal prostatektomi",
