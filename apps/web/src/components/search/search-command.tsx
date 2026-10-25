@@ -140,8 +140,8 @@ export function SearchCommand() {
         onClick={() => setOpen(true)}
         className="w-full max-w-[420px] justify-start gap-2 rounded-full border-white/20 bg-white/10 text-white/80 hover:bg-white/15 hover:text-white"
       >
-        <Search className="h-3.5 w-3.5 opacity-70" />
-        <span className="flex-1 text-left text-sm font-normal">
+        <Search className="h-3.5 w-3.5 shrink-0 opacity-70" />
+        <span className="min-w-0 flex-1 truncate text-left text-sm font-normal">
           Søk (f.eks. TURP, Gleason, PSA-residiv)…
         </span>
         <kbd className="hidden rounded border border-white/20 px-1.5 py-0.5 font-mono text-[10px] sm:inline">

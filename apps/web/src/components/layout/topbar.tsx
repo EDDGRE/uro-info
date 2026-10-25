@@ -26,11 +26,13 @@ export function Topbar({ categories, topics }: { categories: Category[]; topics:
       >
         Ansvarlig: <b className="font-semibold text-[#edeff2]">Edda Greaker</b>
       </Link>
-      <div className="ml-auto flex max-w-[420px] flex-1 items-center gap-2 lg:ml-4">
+      <div className="ml-auto flex min-w-0 max-w-[420px] flex-1 items-center gap-2 lg:ml-4">
         <SearchCommand />
       </div>
-      <AhusToggle />
-      <ThemeToggle />
+      <div className="flex shrink-0 items-center">
+        <AhusToggle />
+        <ThemeToggle />
+      </div>
     </header>
   );
 }
