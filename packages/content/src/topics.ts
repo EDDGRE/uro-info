@@ -590,7 +590,6 @@ export const TOPICS: Topic[] = [
     cat: "kirurgi",
     title: "Detorkvering og fiksasjon ved testistorsjon",
     status: "ferdig",
-    ahusOnly: true,
     ncsp: "KFH20, KFH10",
     icd: "N44",
     komp: [
@@ -611,7 +610,6 @@ export const TOPICS: Topic[] = [
     cat: "kirurgi",
     title: "Intern uretrotomi",
     status: "ferdig",
-    ahusOnly: true,
     ncsp: "KDV12, KCX20",
     icd: "N35.8",
     komp: [
@@ -631,7 +629,6 @@ export const TOPICS: Topic[] = [
     cat: "kirurgi",
     title: "Botulinumtoksin (Botox) i blære",
     status: "ferdig",
-    ahusOnly: true,
     contentType: "toggle",
     hasChecklist: true,
     indication:
@@ -644,7 +641,6 @@ export const TOPICS: Topic[] = [
     cat: "kirurgi",
     title: "Sakral nervemodulasjon (SNM)",
     status: "ferdig",
-    ahusOnly: true,
     contentType: "toggle",
     hasChecklist: true,
     indication:
@@ -657,7 +653,6 @@ export const TOPICS: Topic[] = [
     cat: "kirurgi",
     title: "Optilume (medikamentavgivende ballongdilatasjon)",
     status: "ferdig",
-    ahusOnly: true,
     ncsp: "KDH62, KUD02",
     icd: "N35.8",
     contentType: "toggle",
@@ -671,7 +666,6 @@ export const TOPICS: Topic[] = [
     cat: "kirurgi",
     title: "Cystolitotripsi",
     status: "ferdig",
-    ahusOnly: true,
     ncsp: "KCE02",
     icd: "N21.0",
     komp: [
@@ -695,7 +689,6 @@ export const TOPICS: Topic[] = [
     cat: "kirurgi",
     title: "Hydrocelectomi ad modum Winkelmann",
     status: "ferdig",
-    ahusOnly: true,
     ncsp: "KFD20",
     icd: "N43.3",
     komp: [
@@ -719,7 +712,6 @@ export const TOPICS: Topic[] = [
     cat: "kirurgi",
     title: "Orkiektomi (unilateral)",
     status: "ferdig",
-    ahusOnly: true,
     ncsp: "KFC00",
     icd: "C62 / N51.1",
     komp: [
@@ -756,7 +748,6 @@ export const TOPICS: Topic[] = [
     cat: "kirurgi",
     title: "Penisplastikk (Peyronies sykdom)",
     status: "ferdig",
-    ahusOnly: true,
     ncsp: "KGH20",
     icd: "N48.6",
     contentType: "toggle",
