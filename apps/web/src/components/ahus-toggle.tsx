@@ -40,22 +40,29 @@ export function AhusToggle() {
         className="text-inherit hover:bg-white/10"
         onClick={() => setOpen((o) => !o)}
       >
-        <Building2 className={`h-4 w-4 ${hydrated && !show ? "opacity-40" : ""}`} />
+        <Building2 className={`h-4 w-4 text-[#dd93b8] ${hydrated && !show ? "opacity-40" : ""}`} />
       </Button>
       {open && (
         <div
           role="dialog"
           aria-label="Ahus-internt innhold"
-          className="border-border bg-popover text-popover-foreground absolute right-0 top-[calc(100%+8px)] z-50 w-[300px] rounded-md border p-3.5 text-left shadow-lg"
+          className="border-internal bg-internal-tint text-popover-foreground absolute right-0 top-[calc(100%+8px)] z-50 w-[300px] rounded-r-md border-l-[3px] p-3.5 text-left shadow-lg"
         >
-          <p className="mb-1.5 text-[13px] font-semibold">Ahus-internt innhold</p>
-          <p className="text-muted-foreground mb-3 text-[12.5px] leading-snug">
+          <p className="text-internal mb-1.5 font-mono text-[11px] uppercase tracking-wide">
+            Ahus-internt innhold
+          </p>
+          <p className="mb-3 text-[12.5px] leading-snug opacity-85">
             Noe av innholdet er merket «Ahus internt» — lokal praksis ved Ahus urologisk avdeling,
             ikke en nasjonal retningslinje eller EAU-anbefaling. Er du fra et annet sykehus, stemmer
             dette sannsynligvis ikke med din egen avdelings prosedyrer, og vi anbefaler at du
             skjuler det.
           </p>
-          <Button variant="outline" size="sm" className="w-full" onClick={toggle}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-internal text-internal hover:bg-internal/10 w-full"
+            onClick={toggle}
+          >
             {show ? "Skjul Ahus-internt innhold" : "Vis Ahus-internt innhold"}
           </Button>
         </div>
