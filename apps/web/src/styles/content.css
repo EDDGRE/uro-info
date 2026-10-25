@@ -129,6 +129,13 @@
   border-color: var(--low);
   background: var(--low-tint);
 }
+/* Reader preference, toggled in the header: hides Ahus-internal callouts and topics
+   written entirely from Ahus' own operation notes (tagged `data-ahus-only`), for
+   visitors from other hospitals/departments. See use-ahus-visibility.ts. */
+html[data-show-ahus="false"] .callout.internal,
+html[data-show-ahus="false"] [data-ahus-only] {
+  display: none;
+}
 .callout b {
   display: block;
   font-family: var(--mono);

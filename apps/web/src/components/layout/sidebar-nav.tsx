@@ -40,6 +40,7 @@ export function SidebarNav({
               href={`/${t.id}`}
               active={pathname === `/${t.id}`}
               onNavigate={onNavigate}
+              ahusOnly={t.ahusOnly}
             >
               <Star className="text-amber h-3 w-3 shrink-0 fill-current" />
               {t.title}
@@ -56,6 +57,7 @@ export function SidebarNav({
               href={`/${t.id}`}
               active={pathname === `/${t.id}`}
               onNavigate={onNavigate}
+              ahusOnly={t.ahusOnly}
             >
               {t.title}
             </NavLink>
@@ -85,6 +87,7 @@ export function SidebarNav({
                   href={`/${t.id}`}
                   active={pathname === `/${t.id}`}
                   onNavigate={onNavigate}
+                  ahusOnly={t.ahusOnly}
                 >
                   {t.title}
                   {favorites.has(t.id) && (
@@ -123,15 +126,17 @@ function NavLink({
   href,
   active,
   onNavigate,
+  ahusOnly,
   children,
 }: {
   href: string;
   active: boolean;
   onNavigate?: () => void;
+  ahusOnly?: boolean;
   children: ReactNode;
 }) {
   return (
-    <li>
+    <li data-ahus-only={ahusOnly ? "true" : undefined}>
       <Link
         href={href}
         onClick={onNavigate}

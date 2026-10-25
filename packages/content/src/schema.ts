@@ -51,5 +51,10 @@ export const topicSchema = z.object({
   outro: z.string().optional(),
   /** When true, an extra "Preop. sjekkliste" tab is rendered, content from topics/<id>.checklist.html */
   hasChecklist: z.boolean().optional(),
+  /** When true, the topic's content is written entirely from Ahus' own internal operation
+   * notes/procedure templates rather than general + a separate local-practice callout — so
+   * there's nothing general left to show once Ahus-internal content is hidden. The topic is
+   * hidden entirely (home page, sidebar, search) when the reader has that preference off. */
+  ahusOnly: z.boolean().optional(),
 });
 export type Topic = z.infer<typeof topicSchema>;

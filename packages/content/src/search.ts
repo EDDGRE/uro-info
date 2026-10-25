@@ -29,6 +29,9 @@ export interface SearchEntry {
   anchor?: string;
   /** Plain text of just this section, used for matching + snippets. */
   bodyText: string;
+  /** Mirrors `Topic.ahusOnly` — lets the frontend exclude Ahus-only topics from results
+   * when the reader has chosen to hide Ahus-internal content. */
+  ahusOnly?: boolean;
 }
 
 interface Segment {
@@ -109,6 +112,7 @@ export function buildSearchIndex(): SearchEntry[] {
           heading: section.heading,
           anchor: section.anchor,
           bodyText,
+          ahusOnly: topic.ahusOnly,
         });
       });
     });
@@ -122,6 +126,7 @@ export function buildSearchIndex(): SearchEntry[] {
         category: topic.cat,
         codeText,
         bodyText: outroText,
+        ahusOnly: topic.ahusOnly,
       });
     }
   }

@@ -48,7 +48,11 @@ export default function HomePage() {
             </h2>
             <div className="home-grid">
               {items.map((t) => (
-                <div key={t.id} className={`home-card ${HOME_CARD_CLASS[t.cat] ?? ""}`.trim()}>
+                <div
+                  key={t.id}
+                  className={`home-card ${HOME_CARD_CLASS[t.cat] ?? ""}`.trim()}
+                  data-ahus-only={t.ahusOnly ? "true" : undefined}
+                >
                   <span className={`tag ${TAG_CLASS[category.id] ?? ""} mb-2 inline-block`.trim()}>
                     {category.badgeLabel}
                   </span>

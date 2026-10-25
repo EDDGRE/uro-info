@@ -16,6 +16,7 @@ import {
 } from "@uro-info/ui";
 
 import { buildHash } from "@/lib/hash-nav";
+import { useAhusVisibility } from "@/lib/use-ahus-visibility";
 
 const CATEGORY_LABELS: Record<string, string> = {
   akutt: "Akutturologi",
@@ -42,7 +43,7 @@ interface Match {
 // or code match is de-duped to the topic's first entry (its intro, before any heading —
 // so it links to the plain topic page) while body matches are kept per-section, each
 // linking straight to its own tab/heading.
-function filterEntries(entries: SearchEntry[], query: string): Match[] {
+function filterEntries(entries: SearchEntry[], query: string, showAhus: boolean): Match[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];
 
@@ -53,6 +54,7 @@ function filterEntries(entries: SearchEntry[], query: string): Match[] {
   const codeSeen = new Set<string>();
 
   for (const entry of entries) {
+    if (!showAhus && entry.ahusOnly) continue;
     if (entry.title.toLowerCase().includes(q)) {
       if (!titleSeen.has(entry.topicId)) {
         titleSeen.add(entry.topicId);
@@ -76,8 +78,12 @@ export function SearchCommand() {
   const [query, setQuery] = useState("");
   const [entries, setEntries] = useState<SearchEntry[]>([]);
   const router = useRouter();
+  const { show: showAhus } = useAhusVisibility();
 
-  const matches = useMemo(() => filterEntries(entries, query), [entries, query]);
+  const matches = useMemo(
+    () => filterEntries(entries, query, showAhus),
+    [entries, query, showAhus],
+  );
 
   // Fetched as a static asset (see app/search-index.json/route.ts) rather than passed
   // down from the root layout, so the ~200KB of topic text isn't re-embedded in every

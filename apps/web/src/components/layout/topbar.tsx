@@ -4,6 +4,7 @@ import type { Category, Topic } from "@uro-info/content";
 import { MobileNav } from "./mobile-nav";
 import { SearchCommand } from "@/components/search/search-command";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { AhusToggle } from "@/components/ahus-toggle";
 import { UroMark } from "@/components/icons/uro-mark";
 
 export function Topbar({ categories, topics }: { categories: Category[]; topics: Topic[] }) {
@@ -28,6 +29,7 @@ export function Topbar({ categories, topics }: { categories: Category[]; topics:
       <div className="ml-auto flex max-w-[420px] flex-1 items-center gap-2 lg:ml-4">
         <SearchCommand />
       </div>
+      <AhusToggle />
       <ThemeToggle />
     </header>
   );
