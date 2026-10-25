@@ -26,7 +26,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Uro Info — Klinisk oppslagsverk for LIS i urologi",
+  title: "Uro Info — Klinisk urologisk oppslagsverk",
   description:
     "Klinisk oppslagsverk for leger i spesialisering i urologi: benigne og maligne tilstander, behandlingsvalg og operasjonsteknikk.",
   appleWebApp: {

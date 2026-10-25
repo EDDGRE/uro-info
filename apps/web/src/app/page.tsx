@@ -6,7 +6,7 @@ import { TAG_CLASS } from "@/lib/tag-class";
 import { UroMark } from "@/components/icons/uro-mark";
 
 export const metadata: Metadata = {
-  title: "Uro Info — Klinisk oppslagsverk for LIS i urologi",
+  title: "Uro Info — Klinisk urologisk oppslagsverk",
 };
 
 const HOME_CARD_CLASS: Record<string, string> = {
@@ -23,7 +23,7 @@ export default function HomePage() {
       <div className="home-hero">
         <h1 className="flex items-center gap-3">
           <UroMark className="h-8 w-auto shrink-0 text-white" />
-          Uro Info — Klinisk oppslagsverk for LIS i urologi
+          Uro Info — Klinisk urologisk oppslagsverk
         </h1>
         <p>
           Bygger på Helsedirektoratets retningslinjer, Ahus&rsquo; interne prosedyrer og EAU
