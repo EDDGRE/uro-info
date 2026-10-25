@@ -136,6 +136,18 @@ html[data-show-ahus="false"] .callout.internal,
 html[data-show-ahus="false"] [data-ahus-only] {
   display: none;
 }
+/* Frame for diagrams transcribed from Ahus' own photographed/internal material
+   (flowcharts etc.) — same border/background tokens as .callout.internal, so a
+   diagram reads as "Ahus internt" just like the boxes do. Always pair with a
+   `data-ahus-only` wrapper so it also respects the toggle above. */
+.flowchart-internal {
+  border: 1px solid var(--internal);
+  background: var(--internal-tint);
+  border-radius: 6px;
+  padding: 18px;
+  margin: 0 0 16px;
+  overflow-x: auto;
+}
 .callout b {
   display: block;
   font-family: var(--mono);
