@@ -265,6 +265,23 @@ table.datatable tr:hover td {
   margin-bottom: 4px;
 }
 
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 9px 16px;
+  background: var(--steel);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.contact-btn:hover {
+  background: var(--steel-deep);
+}
+
 .disclaimer {
   margin-top: 20px;
   padding: 10px 14px;

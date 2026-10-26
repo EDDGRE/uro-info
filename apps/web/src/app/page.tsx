@@ -30,8 +30,7 @@ export default function HomePage() {
           Guidelines — samlet ett sted for raskt oppslag i klinisk hverdag.
         </p>
         <p className="home-hero-ahus-note">
-          Besøkende fra andre sykehus: bygningsikonet i header kan aktiveres for å skjule innhold
-          merket «Ahus internt» da dette muligens ikke samsvarer med eksterne rutiner.
+          Oppgi passordet for å få tilgang til internt innhold for Ahus-ansatte.
         </p>
         <p className="home-hero-disclaimer">
           Siden er bygget med hjelp av kunstig intelligens (KI) og kvalitetssikres fortløpende av

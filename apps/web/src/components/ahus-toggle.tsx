@@ -92,8 +92,7 @@ export function AhusToggle() {
           ) : (
             <>
               <p className="mb-3 text-[12.5px] leading-snug opacity-85">
-                Innhold merket «Ahus internt» er beskyttet med et eget passord, utover
-                hovedpassordet til siden. Skriv det inn for å låse opp.
+                Oppgi passordet for å få tilgang til internt innhold for Ahus-ansatte.
               </p>
               <form onSubmit={handleSubmit} className="flex flex-col gap-2">
                 <Input
