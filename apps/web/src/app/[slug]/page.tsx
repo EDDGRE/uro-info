@@ -24,6 +24,7 @@ import { KidneyGrowthCalculator } from "@/components/topic/kidney-growth-calcula
 import { LeibovichCalculator } from "@/components/topic/leibovich-calculator";
 import { NmibcFollowupCalculator } from "@/components/topic/nmibc-followup-calculator";
 import { UtucFollowupCalculator } from "@/components/topic/utuc-followup-calculator";
+import { ProstateRiskCalculator } from "@/components/topic/prostate-risk-calculator";
 import { TAG_CLASS } from "@/lib/tag-class";
 
 export function generateStaticParams() {
@@ -111,6 +112,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
         <TabbedContent
           tabs={topic.tabs.map((t) => {
             const isProstatakreftUtredning = topic.id === "prostatakreft" && t.id === "utredning";
+            const isProstatakreftStaging = topic.id === "prostatakreft" && t.id === "staging";
             const isNyrekreftOversikt = topic.id === "nyrekreft" && t.id === "oversikt";
             const isNyrekreftOppfolging = topic.id === "nyrekreft" && t.id === "oppfolging";
             const isBlarekreftOppfolging = topic.id === "blarekreft" && t.id === "oppfolging";
@@ -123,6 +125,8 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
                   <PsaDtCalculator />
                 </>
               );
+            } else if (isProstatakreftStaging) {
+              extra = <ProstateRiskCalculator />;
             } else if (isNyrekreftOversikt) {
               extra = <KidneyGrowthCalculator />;
             } else if (isNyrekreftOppfolging) {
