@@ -17,7 +17,7 @@ export function Topbar({ categories, topics }: { categories: Category[]; topics:
           Uro Info
         </span>
         <span className="hidden font-mono text-[11px] text-[#9fb0c4] sm:inline">
-          {"// LIS-oppslagsverk i urologi"}
+          {"// Oppslagsverk i urologi"}
         </span>
       </Link>
       <Link

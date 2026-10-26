@@ -399,6 +399,12 @@ table.datatable tr:hover td {
   font-size: 11px !important;
   color: rgba(255, 255, 255, 0.45) !important;
 }
+.home-hero-ahus-note {
+  margin-top: 10px !important;
+  font-size: 12px !important;
+  color: #dd93b8 !important;
+  max-width: 600px;
+}
 .home-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

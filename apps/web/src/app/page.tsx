@@ -27,7 +27,11 @@ export default function HomePage() {
         </h1>
         <p>
           Bygger på Helsedirektoratets retningslinjer, Ahus&rsquo; interne prosedyrer og EAU
-          Guidelines — samlet ett sted for rask oppslag i klinisk hverdag.
+          Guidelines — samlet ett sted for raskt oppslag i klinisk hverdag.
+        </p>
+        <p className="home-hero-ahus-note">
+          Besøkende fra andre sykehus: bygningsikonet i headeren skjuler alt innhold merket «Ahus
+          internt», siden det sannsynligvis ikke stemmer med din egen avdelings prosedyrer.
         </p>
         <p className="home-hero-disclaimer">
           Siden er bygget med hjelp av kunstig intelligens (KI) og kvalitetssikres fortløpende av
