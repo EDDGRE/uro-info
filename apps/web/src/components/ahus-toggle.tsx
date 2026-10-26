@@ -52,10 +52,8 @@ export function AhusToggle() {
             Ahus-internt innhold
           </p>
           <p className="mb-3 text-[12.5px] leading-snug opacity-85">
-            Noe av innholdet er merket «Ahus internt» — lokal praksis ved Ahus urologisk avdeling,
-            ikke en nasjonal retningslinje eller EAU-anbefaling. Er du fra et annet sykehus, stemmer
-            dette sannsynligvis ikke med din egen avdelings prosedyrer, og vi anbefaler at du
-            skjuler det.
+            Besøkende fra andre sykehus: bygningsikonet kan aktiveres for å skjule innhold merket
+            «Ahus internt» da dette muligens ikke samsvarer med eksterne rutiner.
           </p>
           <Button
             variant="outline"
