@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { Menu } from "lucide-react";
-import type { Category, Topic } from "@uro-info/content";
+import type { Category } from "@uro-info/content";
 import { Button, Sheet, SheetContent, SheetTitle, SheetTrigger } from "@uro-info/ui";
 
-import { SidebarNav } from "./sidebar-nav";
+import { SidebarNav, type NavTopic } from "./sidebar-nav";
 
-export function MobileNav({ categories, topics }: { categories: Category[]; topics: Topic[] }) {
+export function MobileNav({ categories, topics }: { categories: Category[]; topics: NavTopic[] }) {
   const [open, setOpen] = useState(false);
 
   return (

@@ -10,13 +10,21 @@ import { cn } from "@uro-info/ui";
 import { useFavorites } from "@/lib/use-favorites";
 import { useRecent } from "@/lib/use-recent";
 
+/** Just the fields navigation actually renders — deliberately not the full `Topic`
+ * (which carries each topic's full HTML in `indication`/`outro`). Those fields would
+ * otherwise get serialized into every page's hydration payload via this "use client"
+ * tree, regardless of which page is open, which is exactly the kind of leak the
+ * Ahus-password Worker gate (worker/index.ts) is meant to prevent — see
+ * apps/web/src/app/layout.tsx, which does the trimming before passing topics down. */
+export type NavTopic = Pick<Topic, "id" | "title" | "cat" | "status" | "ahusOnly">;
+
 export function SidebarNav({
   categories,
   topics,
   onNavigate,
 }: {
   categories: Category[];
-  topics: Topic[];
+  topics: NavTopic[];
   onNavigate?: () => void;
 }) {
   const pathname = usePathname();
@@ -24,11 +32,11 @@ export function SidebarNav({
   const recent = useRecent();
 
   const byId = new Map(topics.map((t) => [t.id, t]));
-  const favoriteTopics = favorites.ids.map((id) => byId.get(id)).filter(Boolean) as Topic[];
+  const favoriteTopics = favorites.ids.map((id) => byId.get(id)).filter(Boolean) as NavTopic[];
   const recentTopics = recent.ids
     .map((id) => byId.get(id))
     .filter(Boolean)
-    .filter((t) => !favorites.has(t!.id)) as Topic[];
+    .filter((t) => !favorites.has(t!.id)) as NavTopic[];
 
   return (
     <nav className="flex flex-col gap-1 py-4">

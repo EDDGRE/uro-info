@@ -1,13 +1,14 @@
 import Link from "next/link";
-import type { Category, Topic } from "@uro-info/content";
+import type { Category } from "@uro-info/content";
 
 import { MobileNav } from "./mobile-nav";
+import type { NavTopic } from "./sidebar-nav";
 import { SearchCommand } from "@/components/search/search-command";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AhusToggle } from "@/components/ahus-toggle";
 import { UroMark } from "@/components/icons/uro-mark";
 
-export function Topbar({ categories, topics }: { categories: Category[]; topics: Topic[] }) {
+export function Topbar({ categories, topics }: { categories: Category[]; topics: NavTopic[] }) {
   return (
     <header className="border-primary-deep bg-primary-deep sticky top-0 z-40 flex h-14 items-center gap-4 border-b px-4 text-[#edeff2]">
       <MobileNav categories={categories} topics={topics} />

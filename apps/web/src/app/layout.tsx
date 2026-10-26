@@ -49,7 +49,20 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const categories = getCategories();
-  const topics = getTopics();
+  // Deliberately trimmed to just what the nav renders — not the full Topic (which
+  // carries each topic's complete HTML in `indication`/`outro`). Topbar/Sidebar are
+  // "use client" trees, so whatever's passed here gets serialized into *every* page's
+  // hydration payload regardless of which page is open; shipping full topic HTML here
+  // would undermine the Ahus-password Worker gate (worker/index.ts), which can only
+  // strip Ahus-internal content from a page's own server-rendered output, not from
+  // unrelated topics' data riding along in the global nav's props.
+  const navTopics = getTopics().map((t) => ({
+    id: t.id,
+    title: t.title,
+    cat: t.cat,
+    status: t.status,
+    ahusOnly: t.ahusOnly,
+  }));
 
   return (
     <html lang="no" data-scroll-behavior="smooth" suppressHydrationWarning>
@@ -57,9 +70,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         className={`${plexSans.className} ${plexMono.className} ${spaceGrotesk.className} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Topbar categories={categories} topics={topics} />
+          <Topbar categories={categories} topics={navTopics} />
           <div className="flex min-h-[calc(100vh-56px)]">
-            <Sidebar categories={categories} topics={topics} />
+            <Sidebar categories={categories} topics={navTopics} />
             <main className="min-w-0 flex-1 px-4 pb-24 pt-9 md:px-10">
               {children}
               <SiteDisclaimer />
