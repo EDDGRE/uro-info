@@ -27,6 +27,12 @@ export const CATEGORIES: Category[] = [
     badgeLabel: "Operasjonsteknikk",
   },
   {
+    id: "barn",
+    label: "Barneurologi",
+    swatch: "sw-barn",
+    badgeLabel: "Barn",
+  },
+  {
     id: "admin",
     label: "Henvisningsvurdering",
     swatch: "sw-admin",

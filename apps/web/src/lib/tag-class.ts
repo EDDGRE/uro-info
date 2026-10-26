@@ -7,4 +7,5 @@ export const TAG_CLASS: Partial<Record<CategoryId, string>> = {
   kirurgi: "tag-kirurgi",
   admin: "tag-internal",
   akutt: "tag-akutt",
+  barn: "tag-barn",
 };

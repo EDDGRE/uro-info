@@ -57,6 +57,10 @@
   background: var(--akutt-tint);
   color: var(--akutt);
 }
+.tag-barn {
+  background: var(--low-tint);
+  color: var(--low);
+}
 .tag-internal {
   background: var(--internal-tint);
   color: var(--internal);
@@ -441,6 +445,9 @@ table.datatable tr:hover td {
 .home-card.kirurgi {
   border-top-color: var(--amber);
 }
+.home-card.barn {
+  border-top-color: var(--low);
+}
 .home-card h3 {
   margin: 0 0 6px;
   font-family: var(--display);
@@ -481,6 +488,9 @@ table.datatable tr:hover td {
 }
 .sw-akutt {
   background: var(--akutt);
+}
+.sw-barn {
+  background: var(--low);
 }
 
 .calc-box {

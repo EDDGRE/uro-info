@@ -851,6 +851,36 @@ export const TOPICS: Topic[] = [
     summary: "Anbefalt antibiotikaprofylakse per inngrepstype ved urologisk kirurgi.",
   },
   {
+    id: "udt",
+    cat: "barn",
+    title: "Udescendert testikkel (UDT)",
+    status: "ferdig",
+    icd: "Q53.1 / Q53.2",
+    contentType: "simple",
+    summary:
+      "Kryptorkisme hos gutt — utredning, henvisningstidspunkt og orkiopeksi, inkl. malignitets- og fertilitetsrisiko.",
+  },
+  {
+    id: "hypospadi",
+    cat: "barn",
+    title: "Hypospadi",
+    status: "ferdig",
+    icd: "Q54",
+    contentType: "simple",
+    summary:
+      "Medfødt ventral feilplassering av urinrørsåpningen — klassifikasjon, assosierte funn og henvisning (ikke sirkumsider før vurdering).",
+  },
+  {
+    id: "uvi-vur-barn",
+    cat: "barn",
+    title: "Febril UVI og VUR hos barn",
+    status: "ferdig",
+    icd: "N39.0 / N13.7",
+    contentType: "simple",
+    summary:
+      "Utredning av febril urinveisinfeksjon hos småbarn, gradering av vesikoureteral refluks og behandlingsprinsipper.",
+  },
+  {
     id: "henvisningsvurdering",
     cat: "admin",
     title: "Prioritering av henvisninger",

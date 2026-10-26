@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 const HOME_CARD_CLASS: Record<string, string> = {
   maligne: "malign",
   kirurgi: "kirurgi",
+  barn: "barn",
 };
 
 export default function HomePage() {

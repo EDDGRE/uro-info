@@ -1,6 +1,14 @@
 import { z } from "zod";
 
-export const categoryIdSchema = z.enum(["akutt", "benigne", "maligne", "kirurgi", "admin", "om"]);
+export const categoryIdSchema = z.enum([
+  "akutt",
+  "benigne",
+  "maligne",
+  "kirurgi",
+  "barn",
+  "admin",
+  "om",
+]);
 export type CategoryId = z.infer<typeof categoryIdSchema>;
 
 export const categorySchema = z.object({
