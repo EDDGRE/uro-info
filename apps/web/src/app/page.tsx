@@ -30,8 +30,8 @@ export default function HomePage() {
           Guidelines — samlet ett sted for raskt oppslag i klinisk hverdag.
         </p>
         <p className="home-hero-ahus-note">
-          Besøkende fra andre sykehus: bygningsikonet i headeren skjuler alt innhold merket «Ahus
-          internt», da dette muligens ikke samsvarer med din egen avdelings rutiner.
+          Besøkende fra andre sykehus: bygningsikonet i header kan aktiveres for å skjule innhold
+          merket «Ahus internt» da dette muligens ikke samsvarer med eksterne rutiner.
         </p>
         <p className="home-hero-disclaimer">
           Siden er bygget med hjelp av kunstig intelligens (KI) og kvalitetssikres fortløpende av
