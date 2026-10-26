@@ -856,6 +856,7 @@ export const TOPICS: Topic[] = [
     title: "Prioritering av henvisninger",
     status: "ferdig",
     contentType: "simple",
+    ahusOnly: true,
     summary: "Veiledning for vurdering og prioritering av henvisninger til urologisk poliklinikk.",
   },
   {
