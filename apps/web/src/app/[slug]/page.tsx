@@ -22,6 +22,7 @@ import { PsadCalculator } from "@/components/topic/psad-calculator";
 import { PsaDtCalculator } from "@/components/topic/psa-dt-calculator";
 import { KidneyGrowthCalculator } from "@/components/topic/kidney-growth-calculator";
 import { LeibovichCalculator } from "@/components/topic/leibovich-calculator";
+import { NmibcFollowupCalculator } from "@/components/topic/nmibc-followup-calculator";
 import { TAG_CLASS } from "@/lib/tag-class";
 
 export function generateStaticParams() {
@@ -111,6 +112,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
             const isProstatakreftUtredning = topic.id === "prostatakreft" && t.id === "utredning";
             const isNyrekreftOversikt = topic.id === "nyrekreft" && t.id === "oversikt";
             const isNyrekreftOppfolging = topic.id === "nyrekreft" && t.id === "oppfolging";
+            const isBlarekreftOppfolging = topic.id === "blarekreft" && t.id === "oppfolging";
             let extra: ReactNode;
             if (isProstatakreftUtredning) {
               extra = (
@@ -123,6 +125,8 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
               extra = <KidneyGrowthCalculator />;
             } else if (isNyrekreftOppfolging) {
               extra = <LeibovichCalculator />;
+            } else if (isBlarekreftOppfolging) {
+              extra = <NmibcFollowupCalculator />;
             }
             return {
               ...t,
