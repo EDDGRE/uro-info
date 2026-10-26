@@ -31,7 +31,7 @@ export default function HomePage() {
         </p>
         <p className="home-hero-ahus-note">
           Besøkende fra andre sykehus: bygningsikonet i headeren skjuler alt innhold merket «Ahus
-          internt», siden det sannsynligvis ikke stemmer med din egen avdelings prosedyrer.
+          internt», da dette muligens ikke samsvarer med din egen avdelings rutiner.
         </p>
         <p className="home-hero-disclaimer">
           Siden er bygget med hjelp av kunstig intelligens (KI) og kvalitetssikres fortløpende av
