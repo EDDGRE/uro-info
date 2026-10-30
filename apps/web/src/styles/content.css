@@ -61,6 +61,10 @@
   background: var(--low-tint);
   color: var(--low);
 }
+.tag-forskning {
+  background: var(--forskning-tint);
+  color: var(--forskning);
+}
 .tag-internal {
   background: var(--internal-tint);
   color: var(--internal);
@@ -448,6 +452,9 @@ table.datatable tr:hover td {
 .home-card.barn {
   border-top-color: var(--low);
 }
+.home-card.forskning {
+  border-top-color: var(--forskning);
+}
 .home-card h3 {
   margin: 0 0 6px;
   font-family: var(--display);
@@ -491,6 +498,9 @@ table.datatable tr:hover td {
 }
 .sw-barn {
   background: var(--low);
+}
+.sw-forskning {
+  background: var(--forskning);
 }
 
 .calc-box {

@@ -881,6 +881,15 @@ export const TOPICS: Topic[] = [
       "Utredning av febril urinveisinfeksjon hos småbarn, gradering av vesikoureteral refluks og behandlingsprinsipper.",
   },
   {
+    id: "forskning-prostatakreft",
+    cat: "forskning",
+    title: "Forskning — Prostatakreft",
+    status: "ferdig",
+    contentType: "simple",
+    summary:
+      "Studiene bak gjeldende anbefalinger for prostatakreft (SPCG-4, ProtecT, PIVOT, STAMPEDE m.fl.) — styrker, svakheter og hvorfor de til dels spriker.",
+  },
+  {
     id: "henvisningsvurdering",
     cat: "admin",
     title: "Prioritering av henvisninger",

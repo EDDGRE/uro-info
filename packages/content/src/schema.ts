@@ -6,6 +6,7 @@ export const categoryIdSchema = z.enum([
   "maligne",
   "kirurgi",
   "barn",
+  "forskning",
   "admin",
   "om",
 ]);

@@ -44,6 +44,8 @@
   --internal-tint: #fbeaf1;
   --akutt: #c4451f;
   --akutt-tint: #f5e1d8;
+  --forskning: #6a4c93;
+  --forskning-tint: #ece6f5;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
   --sans: "IBM Plex Sans", system-ui, sans-serif;
   --display: "Space Grotesk", system-ui, sans-serif;
@@ -104,6 +106,8 @@
   --internal-tint: #2f1f28;
   --akutt: #e0764a;
   --akutt-tint: #2c1c14;
+  --forskning: #b89add;
+  --forskning-tint: #231c30;
 
   --heading: var(--steel);
   --primary-foreground: #0b1420;

@@ -13,6 +13,7 @@ const HOME_CARD_CLASS: Record<string, string> = {
   maligne: "malign",
   kirurgi: "kirurgi",
   barn: "barn",
+  forskning: "forskning",
 };
 
 export default function HomePage() {
