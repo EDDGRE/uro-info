@@ -187,6 +187,16 @@ export const TOPICS: Topic[] = [
     summary: "Væskeansamling rundt testikkelen, eller utvidede vener i pungen (varikocele).",
   },
   {
+    id: "induratio-penis-plastica",
+    cat: "benigne",
+    title: "Induratio penis plastica (Peyronies sykdom)",
+    status: "ferdig",
+    icd: "N48.6",
+    contentType: "simple",
+    summary:
+      "Fibrøs plakkdannelse i tunica albuginea gir penil krumning — faseinndeling, konservativ behandling og indikasjon for kirurgi.",
+  },
+  {
     id: "akutt-skrotum",
     cat: "akutt",
     title: "Akutt skrotum",
@@ -302,6 +312,7 @@ export const TOPICS: Topic[] = [
       { id: "behandlingsvalg", label: "Behandlingsvalg" },
       { id: "adt", label: "ADT" },
       { id: "oppfolging", label: "Oppfølging" },
+      { id: "forskning", label: "Forskning" },
     ],
     indication:
       '<div class="callout"><b>Kjapt sammendrag</b>Prostatakreft er den vanligste kreftformen hos menn i Norge. De fleste tilfeller er lokalisert og langsomtvoksende. Utredning bygger på PSA → bpMR/mpMR prostata → målrettet + systematisk biopsi. Risikogruppering (EAU-modellen) styrer valg mellom aktiv overvåking, kirurgi, stråling og eventuell hormonbehandling.</div>',
@@ -321,6 +332,7 @@ export const TOPICS: Topic[] = [
       { id: "behandlingsvalg", label: "Behandlingsvalg" },
       { id: "bcg", label: "BCG-behandling" },
       { id: "oppfolging", label: "Oppfølging" },
+      { id: "forskning", label: "Forskning" },
     ],
     indication:
       '<div class="callout"><b>Kjapt sammendrag</b>Over 95 % er urotelialt karsinom. Smertefri makrohematuri er kardinalsymptom. Skillet mellom ikke-muskelinvasiv (NMIBC) og muskelinvasiv (MIBC) sykdom styrer hele behandlingsløpet.</div>',
@@ -338,6 +350,7 @@ export const TOPICS: Topic[] = [
     tabs: [
       { id: "oversikt", label: "Oversikt" },
       { id: "oppfolging", label: "Oppfølging" },
+      { id: "forskning", label: "Forskning" },
     ],
     outro:
       '<div class="sources"><h4>Kilder</h4><ul><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/nyrecellekreft-handlingsprogram" target="_blank">Nasjonalt handlingsprogram for nyrekreft</a></li><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/nyrecellekreft-handlingsprogram/oppfolging/risikoscoring-hos-pasienter-operert-for-nyrecellecarcinom" target="_blank">Nasjonalt handlingsprogram for nyrekreft — Risikoscoring hos pasienter operert for nyrecellecarcinom</a></li><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/nyrecellekreft-handlingsprogram/oppfolging/anbefalt-oppfolging-etter-risikostratifisering" target="_blank">Nasjonalt handlingsprogram for nyrekreft — Anbefalt oppfølging etter risikostratifisering</a></li><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/nyrecellekreft-handlingsprogram/stadieinndeling-risikogrupper-og-gradering-av-allmenntilstand/risikogrupper-etter-international-metastatic-rcc-database-consortium-imdc" target="_blank">Nasjonalt handlingsprogram for nyrekreft — Risikogrupper etter IMDC</a></li><li><a href="https://doi.org/10.1002/cncr.11234" target="_blank">Leibovich BC et al. Prediction of progression after radical nephrectomy for patients with clear cell renal cell carcinoma</a>. <em>Cancer</em> 2003;97(7):1663–71.</li><li>EAU Guidelines — <a href="https://uroweb.org/guidelines/renal-cell-carcinoma" target="_blank">Renal Cell Carcinoma</a>, uroweb.org</li></ul></div><div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no.</div>',
@@ -384,6 +397,7 @@ export const TOPICS: Topic[] = [
     tabs: [
       { id: "oversikt", label: "Oversikt" },
       { id: "oppfolging", label: "Oppfølging" },
+      { id: "forskning", label: "Forskning" },
     ],
     outro:
       '<div class="sources"><h4>Kilder</h4><ul><li>Helsedirektoratet — <a href="https://www.helsedirektoratet.no/retningslinjer/blaerekreft-handlingsprogram/diagnostisering/utredning-og-klassifikasjon-av-utuc-upper-tract-urothelial-carcinoma" target="_blank">Nasjonalt handlingsprogram for blære- og urotelkreft, kap. 6.4: Utredning og klassifikasjon av UTUC</a> (sist oppdatert 24. april 2026)</li><li>EAU Guidelines — <a href="https://uroweb.org/guidelines/upper-urinary-tract-urothelial-cell-carcinoma" target="_blank">Upper Urinary Tract Urothelial Carcinoma</a> (Limited Text Update mars 2026), uroweb.org — behandlingstabell etter lokalisasjon/risiko og adjuvant systemisk behandling er hentet fra figur 7.1–7.2 og anbefalingstabellen i kap. 7; oppfølgingsprinsippene fra kap. 8</li></ul></div><div class="disclaimer">Kun til bruk som internt faglig oppslagsverk. Sjekk alltid siste versjon på helsedirektoratet.no og uroweb.org.</div>',
@@ -879,15 +893,6 @@ export const TOPICS: Topic[] = [
     contentType: "simple",
     summary:
       "Utredning av febril urinveisinfeksjon hos småbarn, gradering av vesikoureteral refluks og behandlingsprinsipper.",
-  },
-  {
-    id: "forskning-prostatakreft",
-    cat: "forskning",
-    title: "Forskning — Prostatakreft",
-    status: "ferdig",
-    contentType: "simple",
-    summary:
-      "Studiene bak gjeldende anbefalinger for prostatakreft (SPCG-4, ProtecT, PIVOT, STAMPEDE m.fl.) — styrker, svakheter og hvorfor de til dels spriker.",
   },
   {
     id: "henvisningsvurdering",
