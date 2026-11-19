@@ -20,6 +20,18 @@ export const categorySchema = z.object({
 });
 export type Category = z.infer<typeof categorySchema>;
 
+/** Sub-grouping used only within the "kirurgi" category — splits Operasjonsteknikker
+ * into approach-based sections in the sidebar nav. */
+export const surgerySubcatSchema = z.enum(["robot", "endo", "apen", "andre"]);
+export type SurgerySubcat = z.infer<typeof surgerySubcatSchema>;
+
+export const SURGERY_SUBCAT_LABELS: Record<SurgerySubcat, string> = {
+  robot: "Robot-/laparoskopisk kirurgi",
+  endo: "Endourologi",
+  apen: "Åpen kirurgi",
+  andre: "Andre prosedyrer",
+};
+
 export const competencyItemSchema = z.object({
   label: z.string(),
   count: z.number(),
@@ -43,6 +55,9 @@ export type TabDef = z.infer<typeof tabDefSchema>;
 export const topicSchema = z.object({
   id: z.string(),
   cat: categoryIdSchema,
+  /** Only meaningful when cat is "kirurgi" — groups the topic within Operasjonsteknikker
+   * into a robot/endourologi/åpen/andre section in the sidebar nav. */
+  subcat: surgerySubcatSchema.optional(),
   title: z.string(),
   status: topicStatusSchema,
   contentType: topicContentTypeSchema,

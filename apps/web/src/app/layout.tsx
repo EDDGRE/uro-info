@@ -60,6 +60,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     id: t.id,
     title: t.title,
     cat: t.cat,
+    subcat: t.subcat,
     status: t.status,
     ahusOnly: t.ahusOnly,
   }));

@@ -406,6 +406,7 @@ export const TOPICS: Topic[] = [
   {
     id: "ralp",
     cat: "kirurgi",
+    subcat: "robot",
     title: "RALP — Robotassistert prostatektomi",
     status: "ferdig",
     komp: [
@@ -423,6 +424,7 @@ export const TOPICS: Topic[] = [
   {
     id: "turp",
     cat: "kirurgi",
+    subcat: "endo",
     title: "TURP",
     status: "ferdig",
     ncsp: "KED22",
@@ -442,6 +444,7 @@ export const TOPICS: Topic[] = [
   {
     id: "turbt",
     cat: "kirurgi",
+    subcat: "endo",
     title: "TURB",
     status: "ferdig",
     ncsp: "KCD02",
@@ -461,6 +464,7 @@ export const TOPICS: Topic[] = [
   {
     id: "nefrektomi",
     cat: "kirurgi",
+    subcat: "robot",
     title: "Nefrektomi (radikal/partiell)",
     status: "ferdig",
     komp: [
@@ -486,6 +490,7 @@ export const TOPICS: Topic[] = [
   {
     id: "rirs",
     cat: "kirurgi",
+    subcat: "endo",
     title: "Ureterorenoskopi / RIRS",
     status: "ferdig",
     ncsp: "KBE12, KBV02",
@@ -513,6 +518,7 @@ export const TOPICS: Topic[] = [
   {
     id: "pcnl",
     cat: "kirurgi",
+    subcat: "endo",
     title: "PCNL",
     status: "ferdig",
     komp: [
@@ -530,6 +536,7 @@ export const TOPICS: Topic[] = [
   {
     id: "cystektomi",
     cat: "kirurgi",
+    subcat: "robot",
     title: "Cystektomi og urinavledning",
     status: "ferdig",
     komp: [
@@ -547,6 +554,7 @@ export const TOPICS: Topic[] = [
   {
     id: "sirkumsisjon",
     cat: "kirurgi",
+    subcat: "apen",
     title: "Sirkumsisjon",
     status: "ferdig",
     ncsp: "KGH10",
@@ -566,6 +574,7 @@ export const TOPICS: Topic[] = [
   {
     id: "vasektomi",
     cat: "kirurgi",
+    subcat: "apen",
     title: "Vasektomi",
     status: "ferdig",
     komp: [
@@ -583,6 +592,7 @@ export const TOPICS: Topic[] = [
   {
     id: "orkidopeksi",
     cat: "kirurgi",
+    subcat: "apen",
     title: "Orkiopeksi",
     status: "ferdig",
     ncsp: "KFH10",
@@ -602,6 +612,7 @@ export const TOPICS: Topic[] = [
   {
     id: "testistorsjon-op",
     cat: "kirurgi",
+    subcat: "apen",
     title: "Detorkvering og fiksasjon ved testistorsjon",
     status: "ferdig",
     ncsp: "KFH20, KFH10",
@@ -622,6 +633,7 @@ export const TOPICS: Topic[] = [
   {
     id: "intern-uretrotomi",
     cat: "kirurgi",
+    subcat: "endo",
     title: "Intern uretrotomi",
     status: "ferdig",
     ncsp: "KDV12, KCX20",
@@ -641,6 +653,7 @@ export const TOPICS: Topic[] = [
   {
     id: "botox-blare",
     cat: "kirurgi",
+    subcat: "andre",
     title: "Botulinumtoksin (Botox) i blære",
     status: "ferdig",
     contentType: "toggle",
@@ -653,6 +666,7 @@ export const TOPICS: Topic[] = [
   {
     id: "snm",
     cat: "kirurgi",
+    subcat: "andre",
     title: "Sakral nervemodulasjon (SNM)",
     status: "ferdig",
     contentType: "toggle",
@@ -665,6 +679,7 @@ export const TOPICS: Topic[] = [
   {
     id: "optilume",
     cat: "kirurgi",
+    subcat: "endo",
     title: "Optilume (medikamentavgivende ballongdilatasjon)",
     status: "ferdig",
     ncsp: "KDH62, KUD02",
@@ -678,6 +693,7 @@ export const TOPICS: Topic[] = [
   {
     id: "cystolitotripsi",
     cat: "kirurgi",
+    subcat: "endo",
     title: "Cystolitotripsi",
     status: "ferdig",
     ncsp: "KCE02",
@@ -701,6 +717,7 @@ export const TOPICS: Topic[] = [
   {
     id: "hydrocelectomi",
     cat: "kirurgi",
+    subcat: "apen",
     title: "Hydrocelectomi ad modum Winkelmann",
     status: "ferdig",
     ncsp: "KFD20",
@@ -724,6 +741,7 @@ export const TOPICS: Topic[] = [
   {
     id: "orkiektomi",
     cat: "kirurgi",
+    subcat: "apen",
     title: "Orkiektomi (unilateral)",
     status: "ferdig",
     ncsp: "KFC00",
@@ -743,6 +761,7 @@ export const TOPICS: Topic[] = [
   {
     id: "spk-innleggelse",
     cat: "kirurgi",
+    subcat: "andre",
     title: "Suprapubisk kateter (SPK)",
     status: "ferdig",
     komp: [
@@ -760,6 +779,7 @@ export const TOPICS: Topic[] = [
   {
     id: "penisplastikk",
     cat: "kirurgi",
+    subcat: "apen",
     title: "Penisplastikk (Peyronies sykdom)",
     status: "ferdig",
     ncsp: "KGH20",
@@ -773,6 +793,7 @@ export const TOPICS: Topic[] = [
   {
     id: "inkontinenskirurgi",
     cat: "kirurgi",
+    subcat: "apen",
     title: "Kunstig urinsfinkter (AMS 800) og slynger",
     status: "ferdig",
     icd: "N39.3",
@@ -783,6 +804,7 @@ export const TOPICS: Topic[] = [
   {
     id: "adrenalektomi",
     cat: "kirurgi",
+    subcat: "robot",
     title: "Adrenalektomi",
     status: "ferdig",
     contentType: "simple",
@@ -791,6 +813,7 @@ export const TOPICS: Topic[] = [
   {
     id: "nefroureterektomi",
     cat: "kirurgi",
+    subcat: "robot",
     title: "Nefroureterektomi",
     status: "ferdig",
     contentType: "simple",
@@ -800,6 +823,7 @@ export const TOPICS: Topic[] = [
   {
     id: "ureteropyeloplastikk",
     cat: "kirurgi",
+    subcat: "robot",
     title: "Ureteropyeloplastikk",
     status: "ferdig",
     contentType: "simple",
@@ -808,6 +832,7 @@ export const TOPICS: Topic[] = [
   {
     id: "ureterreimplantasjon",
     cat: "kirurgi",
+    subcat: "apen",
     title: "Reimplantasjon av ureter",
     status: "ferdig",
     contentType: "simple",
@@ -816,6 +841,7 @@ export const TOPICS: Topic[] = [
   {
     id: "blare-ureterskader",
     cat: "kirurgi",
+    subcat: "apen",
     title: "Blære- og ureterskader",
     status: "ferdig",
     contentType: "tabs",
@@ -832,6 +858,7 @@ export const TOPICS: Topic[] = [
   {
     id: "transvesikal-prostatektomi",
     cat: "kirurgi",
+    subcat: "apen",
     title: "Transvesikal prostatektomi",
     status: "ferdig",
     contentType: "simple",
@@ -840,6 +867,7 @@ export const TOPICS: Topic[] = [
   {
     id: "kryoablasjon",
     cat: "kirurgi",
+    subcat: "andre",
     title: "Kryoablasjon (nyre)",
     status: "ferdig",
     contentType: "simple",
@@ -849,6 +877,7 @@ export const TOPICS: Topic[] = [
   {
     id: "prostataembolisering",
     cat: "kirurgi",
+    subcat: "andre",
     title: "Embolisering av prostata (PAE)",
     status: "ferdig",
     contentType: "simple",
@@ -859,6 +888,7 @@ export const TOPICS: Topic[] = [
   {
     id: "antibiotikaprofylakse",
     cat: "kirurgi",
+    subcat: "andre",
     title: "Antibiotikaprofylakse ved kirurgi",
     status: "ferdig",
     contentType: "simple",

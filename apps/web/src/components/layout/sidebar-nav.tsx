@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Star } from "lucide-react";
 import type { Category, Topic } from "@uro-info/content";
+import { SURGERY_SUBCAT_LABELS, type SurgerySubcat } from "@uro-info/content/schema";
 import { cn } from "@uro-info/ui";
 
 import { useFavorites } from "@/lib/use-favorites";
@@ -16,7 +17,7 @@ import { useRecent } from "@/lib/use-recent";
  * tree, regardless of which page is open, which is exactly the kind of leak the
  * Ahus-password Worker gate (worker/index.ts) is meant to prevent — see
  * apps/web/src/app/layout.tsx, which does the trimming before passing topics down. */
-export type NavTopic = Pick<Topic, "id" | "title" | "cat" | "status" | "ahusOnly">;
+export type NavTopic = Pick<Topic, "id" | "title" | "cat" | "subcat" | "status" | "ahusOnly">;
 
 export function SidebarNav({
   categories,
@@ -88,34 +89,87 @@ export function SidebarNav({
               </>
             }
           >
-            {items.map((t) =>
-              t.status === "ferdig" ? (
-                <NavLink
-                  key={t.id}
-                  href={`/${t.id}`}
-                  active={pathname === `/${t.id}`}
-                  onNavigate={onNavigate}
-                  ahusOnly={t.ahusOnly}
-                >
-                  {t.title}
-                  {favorites.has(t.id) && (
-                    <Star className="text-amber h-3 w-3 shrink-0 fill-current" />
-                  )}
-                </NavLink>
-              ) : (
-                <span
-                  key={t.id}
-                  className="text-muted-foreground/60 flex items-center justify-between gap-2 px-4 py-1.5 text-[13.5px]"
-                >
-                  {t.title}
-                  <span className="pill">planlagt</span>
-                </span>
-              ),
+            {cat.id === "kirurgi" ? (
+              <SurgerySubgroups
+                items={items}
+                pathname={pathname}
+                onNavigate={onNavigate}
+                favorites={favorites}
+              />
+            ) : (
+              items.map((t) => <TopicNavItem key={t.id} topic={t} pathname={pathname} onNavigate={onNavigate} favorites={favorites} />)
             )}
           </NavGroup>
         );
       })}
     </nav>
+  );
+}
+
+function TopicNavItem({
+  topic: t,
+  pathname,
+  onNavigate,
+  favorites,
+}: {
+  topic: NavTopic;
+  pathname: string;
+  onNavigate?: () => void;
+  favorites: ReturnType<typeof useFavorites>;
+}) {
+  return t.status === "ferdig" ? (
+    <NavLink href={`/${t.id}`} active={pathname === `/${t.id}`} onNavigate={onNavigate} ahusOnly={t.ahusOnly}>
+      {t.title}
+      {favorites.has(t.id) && <Star className="text-amber h-3 w-3 shrink-0 fill-current" />}
+    </NavLink>
+  ) : (
+    <li
+      data-ahus-only={t.ahusOnly ? "true" : undefined}
+      className="text-muted-foreground/60 flex items-center justify-between gap-2 px-4 py-1.5 text-[13.5px]"
+    >
+      {t.title}
+      <span className="pill">planlagt</span>
+    </li>
+  );
+}
+
+const SURGERY_SUBCAT_ORDER: SurgerySubcat[] = ["robot", "endo", "apen", "andre"];
+
+function SurgerySubgroups({
+  items,
+  pathname,
+  onNavigate,
+  favorites,
+}: {
+  items: NavTopic[];
+  pathname: string;
+  onNavigate?: () => void;
+  favorites: ReturnType<typeof useFavorites>;
+}) {
+  const grouped = SURGERY_SUBCAT_ORDER.map((subcat) => ({
+    subcat,
+    items: items.filter((t) => t.subcat === subcat),
+  })).filter((g) => g.items.length > 0);
+  const ungrouped = items.filter((t) => !t.subcat);
+
+  return (
+    <>
+      {grouped.map(({ subcat, items: subItems }) => (
+        <li key={subcat} className="mt-2.5 first:mt-0">
+          <h4 className="text-muted-foreground/80 mx-4 mb-1 text-[10px] font-semibold uppercase tracking-wider">
+            {SURGERY_SUBCAT_LABELS[subcat]}
+          </h4>
+          <ul className="m-0 list-none p-0">
+            {subItems.map((t) => (
+              <TopicNavItem key={t.id} topic={t} pathname={pathname} onNavigate={onNavigate} favorites={favorites} />
+            ))}
+          </ul>
+        </li>
+      ))}
+      {ungrouped.map((t) => (
+        <TopicNavItem key={t.id} topic={t} pathname={pathname} onNavigate={onNavigate} favorites={favorites} />
+      ))}
+    </>
   );
 }
 
