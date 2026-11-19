@@ -653,7 +653,7 @@ export const TOPICS: Topic[] = [
   {
     id: "botox-blare",
     cat: "kirurgi",
-    subcat: "andre",
+    subcat: "endo",
     title: "Botulinumtoksin (Botox) i blære",
     status: "ferdig",
     contentType: "toggle",
